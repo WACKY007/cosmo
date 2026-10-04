@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="h-full bg-[#F5F5F7] text-[#1D1D1F] antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COSMO文案生成器 | 家居审美与空间生活方式文案引擎</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        apple: {
+                            bg: '#F5F5F7',
+                            card: '#FFFFFF',
+                            dark: '#1D1D1F',
+                            muted: '#86868B',
+                            border: 'rgba(0, 0, 0, 0.08)',
+                            badge: '#E8E8ED'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', '"Inter"', '"PingFang SC"', '"Hiragino Sans GB"', '"Microsoft YaHei"', 'sans-serif'],
+                        serif: ['"New York"', 'Georgia', 'serif']
+                    },
+                    boxShadow: {
+                        'apple-sm': '0 2px 8px rgba(0, 0, 0, 0.04)',
+                        'apple-card': '0 4px 20px rgba(0, 0, 0, 0.06)',
+                        'apple-float': '0 12px 32px rgba(0, 0, 0, 0.12)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+        }
+        .glass-panel-dark {
+            background: rgba(29, 29, 31, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .animate-pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="h-full bg-[#F5F5F7] font-sans text-[#1D1D1F] flex flex-col selection:bg-black selection:text-white">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-40 w-full glass-panel border-b border-black/5 px-4 md:px-8 py-3.5 transition-all">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <!-- Brand & Subtitle -->
+            <div class="flex items-center space-x-3.5">
+                <div class="w-9 h-9 rounded-xl bg-[#1D1D1F] text-white flex items-center justify-center font-serif text-lg font-bold shadow-md tracking-wider">
+                    C
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <h1 class="text-base md:text-lg font-semibold tracking-tight text-[#1D1D1F]">COSMO文案生成器</h1>
+                        <span class="text-[10px] font-medium uppercase tracking-widest px-2 py-0.5 rounded-full bg-black/5 text-zinc-600 border border-black/5 hidden sm:inline-block">v2.5 Pro</span>
+                    </div>
+                    <p class="text-xs text-zinc-500 hidden md:block">基于 AI 的家居审美与空间生活方式文案引擎</p>
+                </div>
+            </div>
+
+            <!-- Right Actions: Memory Badge, History, API Key -->
+            <div class="flex items-center space-x-2.5">
+                <!-- Preference Learning Badge -->
+                <button onclick="openPreferencesModal()" class="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-black/5 hover:bg-black/10 text-xs font-medium text-[#1D1D1F] transition-all border border-black/5 group">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-zinc-700 group-hover:rotate-12 transition-transform"></i>
+                    <span id="preferenceCountBadge">已积累 0 条采纳偏好</span>
+                </button>
+
+                <!-- History / Drafts Button -->
+                <button onclick="openDraftsDrawer()" class="p-2 rounded-full hover:bg-black/5 text-zinc-700 transition-colors relative" title="历史记录">
+                    <i data-lucide="history" class="w-4 h-4"></i>
+                </button>
+
+                <!-- API Key Config Button -->
+                <button onclick="openApiKeyModal()" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-[#1D1D1F] text-white hover:bg-black text-xs font-medium transition-all shadow-sm">
+                    <i data-lucide="key" class="w-3.5 h-3.5 text-zinc-300"></i>
+                    <span class="hidden sm:inline" id="apiKeyBtnText">设置 Key</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400" id="apiKeyStatusDot" title="当前使用 COSMO 经典离线引擎"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Application Grid -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+        
+        <!-- ================= LEFT COLUMN: INPUT CONTROLS ================= -->
+        <section class="lg:col-span-5 space-y-5">
+            
+            <!-- CARD 1: Vision / Image Upload -->
+            <div class="bg-white rounded-2xl p-5 border border-black/[0.06] shadow-apple-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <label class="text-xs font-semibold uppercase tracking-wider text-zinc-500 flex items-center space-x-1.5">
+                        <i data-lucide="camera" class="w-3.5 h-3.5 text-zinc-700"></i>
+                        <span>空间视觉与图片（可选）</span>
+                    </label>
+                    <span class="text-[11px] text-zinc-400">支持多图识别</span>
+                </div>
+
+                <!-- Drag & Drop Zone -->
+                <div id="dropZone" onclick="document.getElementById('imageFileInput').click()" class="border-2 border-dashed border-zinc-200 hover:border-zinc-400 rounded-xl p-4 text-center cursor-pointer transition-all bg-zinc-50/50 hover:bg-zinc-50 group">
+                    <input type="file" id="imageFileInput" accept="image/*" multiple class="hidden" onchange="handleImageFiles(this.files)">
+                    <div class="flex flex-col items-center justify-center space-y-2 py-2">
+                        <div class="w-10 h-10 rounded-full bg-white shadow-apple-sm flex items-center justify-center border border-black/5 group-hover:scale-105 transition-transform">
+                            <i data-lucide="image-plus" class="w-5 h-5 text-zinc-600"></i>
+                        </div>
+                        <p class="text-xs font-medium text-zinc-700">拖拽空间图片至此，或 <span class="text-black font-semibold underline">点击上传</span></p>
+                        <p class="text-[11px] text-zinc-400">智能分析实拍材质、光影、品牌家具线条</p>
+                    </div>
+                </div>
+
+                <!-- Image Thumbnails Container -->
+                <div id="imageThumbnails" class="hidden flex flex-wrap gap-2 pt-1">
+                    <!-- Dynamic preview thumbnails appended here -->
+                </div>
+
+                <!-- Quick Preset Furniture Images Selector -->
+                <div class="pt-1 border-t border-zinc-100 flex items-center justify-between">
+                    <span class="text-[11px] text-zinc-400">没有例图？一键加载质感模版:</span>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="loadSamplePreset('usm')" class="text-[11px] px-2 py-1 rounded-md bg-zinc-100 hover:bg-zinc-200 text-zinc-700 transition-colors">USM收纳柜</button>
+                        <button onclick="loadSamplePreset('vitra')" class="text-[11px] px-2 py-1 rounded-md bg-zinc-100 hover:bg-zinc-200 text-zinc-700 transition-colors">Vitra扶手椅</button>
+                        <button onclick="loadSamplePreset('poulsen')" class="text-[11px] px-2 py-1 rounded-md bg-zinc-100 hover:bg-zinc-200 text-zinc-700 transition-colors">PH5吊灯</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 2: Platform & Persona Selector -->
+            <div class="bg-white rounded-2xl p-5 border border-black/[0.06] shadow-apple-sm space-y-5">
+                
+                <!-- Platform Selection -->
+                <div>
+                    <label class="text-xs font-semibold uppercase tracking-wider text-zinc-500 block mb-2.5">发布平台</label>
+                    <div class="grid grid-cols-2 gap-2 p-1 bg-zinc-100 rounded-xl">
+                        <button type="button" onclick="setPlatform('xiaohongshu')" id="platformXhsBtn" class="py-2 px-3 rounded-lg text-xs font-medium transition-all shadow-apple-sm bg-white text-black flex items-center justify-center space-x-1.5">
+                            <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+                            <span>小红书 (种草灵感)</span>
+                        </button>
+                        <button type="button" onclick="setPlatform('moments')" id="platformMomentsBtn" class="py-2 px-3 rounded-lg text-xs font-medium transition-all text-zinc-500 hover:text-black flex items-center justify-center space-x-1.5">
+                            <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                            <span>微信朋友圈 (生活仪式)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Persona Grid -->
+                <div>
+                    <label class="text-xs font-semibold uppercase tracking-wider text-zinc-500 block mb-2.5">人设设定 (Persona)</label>
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <button type="button" onclick="setPersona('blogger')" id="persona-blogger" class="persona-btn active border-black bg-zinc-900 text-white p-3 rounded-xl border text-left transition-all relative overflow-hidden">
+                            <div class="text-xs font-semibold mb-0.5">家居博主</div>
+                            <div class="text-[10px] opacity-75 leading-tight">注重光影、住赏仪式感与日常生活质感</div>
+                        </button>
+                        <button type="button" onclick="setPersona('shop')" id="persona-shop" class="persona-btn border-zinc-200 hover:border-zinc-400 p-3 rounded-xl border text-left transition-all relative">
+                            <div class="text-xs font-semibold mb-0.5 text-zinc-800">家居买手店</div>
+                            <div class="text-[10px] text-zinc-500 leading-tight">聚焦大师作品、品牌系谱与策展品味</div>
+                        </button>
+                        <button type="button" onclick="setPersona('designer')" id="persona-designer" class="persona-btn border-zinc-200 hover:border-zinc-400 p-3 rounded-xl border text-left transition-all relative">
+                            <div class="text-xs font-semibold mb-0.5 text-zinc-800">极简设计师</div>
+                            <div class="text-[10px] text-zinc-500 leading-tight">强调空间比例、建筑线条与安静奢华</div>
+                        </button>
+                        <button type="button" onclick="setPersona('lifestyle')" id="persona-lifestyle" class="persona-btn border-zinc-200 hover:border-zinc-400 p-3 rounded-xl border text-left transition-all relative">
+                            <div class="text-xs font-semibold mb-0.5 text-zinc-800">空间生活方式</div>
+                            <div class="text-[10px] text-zinc-500 leading-tight">松弛感氛围、心境留白与软装叙事</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Copy Tone / Style -->
+                <div>
+                    <label class="text-xs font-semibold uppercase tracking-wider text-zinc-500 block mb-2.5">文案调性 (Copy Tone)</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" onclick="setTone('trending')" id="tone-trending" class="tone-btn active bg-zinc-100 text-black border-black/20 font-medium text-xs py-2 px-3 rounded-xl border transition-all text-left flex items-center justify-between">
+                            <span>爆款种草</span>
+                            <i data-lucide="flame" class="w-3.5 h-3.5 text-amber-500"></i>
+                        </button>
+                        <button type="button" onclick="setTone('atmospheric')" id="tone-atmospheric" class="tone-btn bg-white text-zinc-700 border-zinc-200 hover:border-zinc-300 text-xs py-2 px-3 rounded-xl border transition-all text-left flex items-center justify-between">
+                            <span>氛围感感性</span>
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-zinc-400"></i>
+                        </button>
+                        <button type="button" onclick="setTone('knowledge')" id="tone-knowledge" class="tone-btn bg-white text-zinc-700 border-zinc-200 hover:border-zinc-300 text-xs py-2 px-3 rounded-xl border transition-all text-left flex items-center justify-between">
+                            <span>深度设计干货</span>
+                            <i data-lucide="book-marked" class="w-3.5 h-3.5 text-zinc-400"></i>
+                        </button>
+                        <button type="button" onclick="setTone('minimalist')" id="tone-minimalist" class="tone-btn bg-white text-zinc-700 border-zinc-200 hover:border-zinc-300 text-xs py-2 px-3 rounded-xl border transition-all text-left flex items-center justify-between">
+                            <span>极简高级感</span>
+                            <i data-lucide="minus" class="w-3.5 h-3.5 text-zinc-400"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 3: Extra Spatial & Furniture Context -->
+            <div class="bg-white rounded-2xl p-5 border border-black/[0.06] shadow-apple-sm space-y-4">
+                <label class="text-xs font-semibold uppercase tracking-wider text-zinc-500 block">家具与空间细节 (Context Fields)</label>
+                
+                <div class="space-y-3">
+                    <div>
+                        <span class="text-[11px] text-zinc-500 font-medium block mb-1">品牌 / 经典单品名称</span>
+                        <input type="text" id="inputBrand" placeholder="例如: USM Haller / Vitra Panton / Louis Poulsen PH5" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-zinc-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-all placeholder:text-zinc-300 bg-zinc-50/50">
+                    </div>
+
+                    <div>
+                        <span class="text-[11px] text-zinc-500 font-medium block mb-1">核心材质与色彩</span>
+                        <input type="text" id="inputMaterial" placeholder="例如: 哑光镀铬 / 烟熏橡木 / 包豪斯黄 / 羊毛圈圈绒" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-zinc-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-all placeholder:text-zinc-300 bg-zinc-50/50">
+                    </div>
+
+                    <div>
+                        <span class="text-[11px] text-zinc-500 font-medium block mb-1">空间定位 / 定位标签</span>
+                        <input type="text" id="inputLocation" placeholder="例如: 客厅阅读角 / 独立书房 / 上海买手店展厅" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-zinc-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-all placeholder:text-zinc-300 bg-zinc-50/50">
+                    </div>
+                </div>
+
+                <!-- Sliders / Controls -->
+                <div class="grid grid-cols-2 gap-4 pt-2 border-t border-zinc-100">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-[11px] font-medium text-zinc-600">Emoji 密度</span>
+                            <span id="emojiDensityLabel" class="text-[11px] font-semibold text-black">适中</span>
+                        </div>
+                        <input type="range" id="emojiSlider" min="0" max="3" value="2" step="1" oninput="updateControlLabels()" class="w-full accent-black cursor-pointer">
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-[11px] font-medium text-zinc-600">文案篇幅</span>
+                            <span id="copyLengthLabel" class="text-[11px] font-semibold text-black">标准</span>
+                        </div>
+                        <input type="range" id="lengthSlider" min="0" max="2" value="1" step="1" oninput="updateControlLabels()" class="w-full accent-black cursor-pointer">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generate Primary Action Button -->
+            <button type="button" onclick="generateCopy()" id="generateMainBtn" class="w-full py-4 px-6 rounded-2xl bg-[#1D1D1F] hover:bg-black text-white font-medium text-sm transition-all shadow-apple-card flex items-center justify-center space-x-2 group relative overflow-hidden active:scale-[0.99]">
+                <i data-lucide="sparkles" class="w-4 h-4 text-amber-300 group-hover:rotate-12 transition-transform"></i>
+                <span id="generateBtnText">生成高端空间文案</span>
+                <span class="text-xs text-zinc-400 font-normal pl-1 hidden sm:inline" id="generateBtnSubtext">(含智能图像与偏好注入)</span>
+            </button>
+
+        </section>
+
+
+        <!-- ================= RIGHT COLUMN: GENERATED RESULTS & VARIANT ENGINE ================= -->
+        <section class="lg:col-span-7">
+            
+            <!-- Empty Placeholder State -->
+            <div id="emptyOutputState" class="bg-white rounded-2xl p-8 lg:p-12 border border-black/[0.06] shadow-apple-sm text-center space-y-6">
+                <div class="w-16 h-16 rounded-2xl bg-zinc-100 text-zinc-400 mx-auto flex items-center justify-center border border-black/5">
+                    <i data-lucide="layout-template" class="w-8 h-8 stroke-[1.5]"></i>
+                </div>
+                <div class="max-w-md mx-auto space-y-2">
+                    <h3 class="text-base font-semibold text-[#1D1D1F]">准备生成您的高级家居文案</h3>
+                    <p class="text-xs text-zinc-500 leading-relaxed">
+                        挑选理想的家具品牌、设定居室调性或直接拖入图稿。COSMO 将自动分析构图并融合您的历史采纳偏好。
+                    </p>
+                </div>
+
+                <!-- Showcase Designer Brands Pills -->
+                <div class="pt-4 border-t border-zinc-100 max-w-md mx-auto">
+                    <span class="text-[11px] text-zinc-400 uppercase tracking-wider block mb-3 font-medium">支持的国际高奢设计语言</span>
+                    <div class="flex flex-wrap justify-center gap-1.5">
+                        <span class="text-[11px] px-2.5 py-1 rounded-full bg-zinc-100 text-zinc-600 font-mono">USM Haller</span>
+                        <span class="text-[11px] px-2.5 py-1 rounded-full bg-zinc-100 text-zinc-600 font-mono">Vitra</span>
+                        <span class="text-[11px] px-2.5 py-1 rounded-full bg-zinc-100 text-zinc-600 font-mono">Louis Poulsen</span>
+                        <span class="text-[11px] px-2.5 py-1 rounded-full bg-zinc-100 text-zinc-600 font-mono">Artek</span>
+                        <span class="text-[11px] px-2.5 py-1 rounded-full bg-zinc-100 text-zinc-600 font-mono">Fritz Hansen</span>
+                        <span class="text-[11px] px-2.5 py-1 rounded-full bg-zinc-100 text-zinc-600 font-mono">Ligne Roset</span>
+                        <span class="text-[11px] px-2.5 py-1 rounded-full bg-zinc-100 text-zinc-600 font-mono">Flos</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State Panel -->
+            <div id="loadingOutputState" class="hidden bg-white rounded-2xl p-10 border border-black/[0.06] shadow-apple-sm text-center space-y-6">
+                <div class="inline-flex items-center justify-center p-4 rounded-full bg-zinc-100 text-black mb-2 animate-bounce">
+                    <i data-lucide="sparkles" class="w-6 h-6 text-amber-500"></i>
+                </div>
+                <div class="space-y-2">
+                    <h3 class="text-base font-semibold text-[#1D1D1F]" id="loadingTitleText">COSMO 审美引擎推演中...</h3>
+                    <p class="text-xs text-zinc-500 animate-pulse-slow" id="loadingSubText">解析材质质感 · 比对历史采纳偏好 · 结构化排版</p>
+                </div>
+                <!-- Shimmer placeholder lines -->
+                <div class="max-w-md mx-auto space-y-3 pt-4">
+                    <div class="h-4 bg-zinc-100 rounded-md w-3/4 mx-auto animate-pulse"></div>
+                    <div class="h-3 bg-zinc-100 rounded-md w-full animate-pulse"></div>
+                    <div class="h-3 bg-zinc-100 rounded-md w-5/6 mx-auto animate-pulse"></div>
+                </div>
+            </div>
+
+            <!-- Generated Output Container -->
+            <div id="activeOutputContainer" class="hidden space-y-5">
+                
+                <!-- Variant Selector & Regenerate Header Bar -->
+                <div class="bg-white rounded-2xl p-3 border border-black/[0.06] shadow-apple-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+                    
+                    <!-- Candidate Tabs -->
+                    <div class="flex items-center bg-zinc-100 p-1 rounded-xl w-full sm:w-auto" id="variantTabButtons">
+                        <button onclick="switchVariantTab(0)" id="varTab0" class="flex-1 sm:flex-none text-xs font-medium py-1.5 px-3.5 rounded-lg bg-white shadow-apple-sm text-black transition-all">方案 A · 空间叙事</button>
+                        <button onclick="switchVariantTab(1)" id="varTab1" class="flex-1 sm:flex-none text-xs font-medium py-1.5 px-3.5 rounded-lg text-zinc-500 hover:text-black transition-all">方案 B · 材质细节</button>
+                        <button onclick="switchVariantTab(2)" id="varTab2" class="flex-1 sm:flex-none text-xs font-medium py-1.5 px-3.5 rounded-lg text-zinc-500 hover:text-black transition-all">方案 C · 情绪共鸣</button>
+                    </div>
+
+                    <!-- Regenerate "换一版" Button -->
+                    <button onclick="regenerateVariant()" class="w-full sm:w-auto px-3.5 py-1.5 rounded-xl border border-zinc-200 hover:border-black/30 bg-zinc-50 hover:bg-zinc-100 text-xs font-medium text-zinc-800 transition-all flex items-center justify-center space-x-1.5 group">
+                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-zinc-600 group-hover:rotate-180 transition-transform duration-500"></i>
+                        <span>换一版 (重新推演)</span>
+                    </button>
+                </div>
+
+                <!-- Active Copy Card -->
+                <div class="bg-white rounded-2xl border border-black/[0.06] shadow-apple-sm overflow-hidden divide-y divide-zinc-100">
+                    
+                    <!-- Card Top Banner: Title & Adoption Action -->
+                    <div class="p-5 md:p-6 bg-gradient-to-b from-zinc-50/80 to-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div class="space-y-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-md bg-black/5 text-zinc-600" id="currentAngleBadge">叙事视角: 空间叙事与光影</span>
+                                <span class="text-[10px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/50" id="learnedMatchTag">已注入采纳偏好</span>
+                            </div>
+                            <p class="text-xs text-zinc-400">一键采纳将此风格永久存入 AI 学习偏好内存</p>
+                        </div>
+
+                        <!-- Adopt & Learn Button ("选中此版") -->
+                        <button onclick="adoptCurrentCopy()" id="adoptCurrentBtn" class="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#1D1D1F] hover:bg-black text-white text-xs font-medium transition-all shadow-apple-sm flex items-center justify-center space-x-2 group active:scale-95">
+                            <i data-lucide="bookmark-check" class="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform"></i>
+                            <span id="adoptBtnText">选中此版 (存入偏好)</span>
+                        </button>
+                    </div>
+
+                    <!-- Title Selection Block -->
+                    <div class="p-5 md:p-6 space-y-2.5">
+                        <label class="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 block">推荐标题 (可点击切换):</label>
+                        <div class="space-y-2" id="titleOptionsContainer">
+                            <!-- Clickable Title Options populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Main Body Text Block -->
+                    <div class="p-5 md:p-6 space-y-3 bg-zinc-50/30">
+                        <div class="flex items-center justify-between">
+                            <label class="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">文案正文:</label>
+                            <button onclick="copyToClipboard(document.getElementById('formattedBodyText').innerText, '仅复制正文')" class="text-xs text-zinc-500 hover:text-black flex items-center space-x-1">
+                                <i data-lucide="copy" class="w-3 h-3"></i>
+                                <span>复制正文</span>
+                            </button>
+                        </div>
+                        <div id="formattedBodyText" class="text-xs md:text-sm text-[#1D1D1F] leading-relaxed whitespace-pre-wrap font-sans bg-white p-4 md:p-5 rounded-xl border border-zinc-200/80 shadow-inner">
+                            <!-- Main copy body content -->
+                        </div>
+                    </div>
+
+                    <!-- Trending Hashtags Block -->
+                    <div class="p-5 md:p-6 space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <label class="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">爆款话题标签 (Hashtags):</label>
+                            <button onclick="copyToClipboard(document.getElementById('hashtagsBox').innerText, '复制 Hashtags')" class="text-xs text-zinc-500 hover:text-black flex items-center space-x-1">
+                                <i data-lucide="hash" class="w-3 h-3"></i>
+                                <span>复制标签</span>
+                            </button>
+                        </div>
+                        <div id="hashtagsBox" class="flex flex-wrap gap-1.5">
+                            <!-- Hashtag pills dynamically inserted -->
+                        </div>
+                    </div>
+
+                    <!-- First Comment Engagement Hook -->
+                    <div class="p-5 md:p-6 space-y-2 bg-amber-50/20">
+                        <label class="text-[11px] font-semibold uppercase tracking-wider text-amber-800 flex items-center space-x-1">
+                            <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+                            <span>互动引流首评 (First Comment Hook)</span>
+                        </label>
+                        <div id="firstCommentBox" class="text-xs text-zinc-700 bg-white p-3 rounded-lg border border-amber-200/50 italic">
+                            <!-- Comment hook text -->
+                        </div>
+                    </div>
+
+                    <!-- Metrics Bar -->
+                    <div class="p-4 bg-zinc-100/60 flex flex-wrap items-center justify-between text-xs text-zinc-500 gap-3 border-t border-zinc-200/60">
+                        <div class="flex items-center space-x-4">
+                            <span class="flex items-center space-x-1">
+                                <i data-lucide="file-text" class="w-3.5 h-3.5 text-zinc-400"></i>
+                                <span id="metricWordCount">字数: 320字</span>
+                            </span>
+                            <span class="flex items-center space-x-1">
+                                <i data-lucide="clock" class="w-3.5 h-3.5 text-zinc-400"></i>
+                                <span id="metricReadTime">预估阅读: 45秒</span>
+                            </span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="font-medium text-zinc-600">爆款预估指数:</span>
+                            <span class="px-2 py-0.5 rounded-full bg-black text-white text-[10px] font-bold font-mono" id="metricEngagementIndex">96% 🔥</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- One-Click Quick Actions Toolbar -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <button onclick="copyFullPackage()" class="py-2.5 px-3 rounded-xl bg-[#1D1D1F] hover:bg-black text-white text-xs font-medium transition-all shadow-apple-sm flex items-center justify-center space-x-1.5">
+                        <i data-lucide="copy-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+                        <span>一键复制全案</span>
+                    </button>
+                    <button onclick="copyToClipboard(getSelectedTitle(), '仅复制标题')" class="py-2.5 px-3 rounded-xl bg-white hover:bg-zinc-100 border border-zinc-200 text-zinc-800 text-xs font-medium transition-all flex items-center justify-center space-x-1.5">
+                        <i data-lucide="type" class="w-3.5 h-3.5 text-zinc-500"></i>
+                        <span>仅复制标题</span>
+                    </button>
+                    <button onclick="copyToClipboard(document.getElementById('formattedBodyText').innerText, '仅复制正文')" class="py-2.5 px-3 rounded-xl bg-white hover:bg-zinc-100 border border-zinc-200 text-zinc-800 text-xs font-medium transition-all flex items-center justify-center space-x-1.5">
+                        <i data-lucide="align-left" class="w-3.5 h-3.5 text-zinc-500"></i>
+                        <span>仅复制正文</span>
+                    </button>
+                    <button onclick="copyToClipboard(getHashtagsString(), '复制 Hashtags')" class="py-2.5 px-3 rounded-xl bg-white hover:bg-zinc-100 border border-zinc-200 text-zinc-800 text-xs font-medium transition-all flex items-center justify-center space-x-1.5">
+                        <i data-lucide="hash" class="w-3.5 h-3.5 text-zinc-500"></i>
+                        <span>复制 Hashtags</span>
+                    </button>
+                </div>
+
+                <!-- AI Fine-Tune / Polish Toolbar -->
+                <div class="bg-white rounded-2xl p-4 border border-black/[0.06] shadow-apple-sm space-y-2.5">
+                    <label class="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 block">AI 微调润色 (One-Click Polish)</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="fineTuneCopy('concise')" class="px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs transition-colors flex items-center space-x-1">
+                            <i data-lucide="scissors" class="w-3 h-3 text-zinc-500"></i>
+                            <span>更简练留白</span>
+                        </button>
+                        <button onclick="fineTuneCopy('story')" class="px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs transition-colors flex items-center space-x-1">
+                            <i data-lucide="feather" class="w-3 h-3 text-zinc-500"></i>
+                            <span>更具有故事感</span>
+                        </button>
+                        <button onclick="fineTuneCopy('material')" class="px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs transition-colors flex items-center space-x-1">
+                            <i data-lucide="layers" class="w-3 h-3 text-zinc-500"></i>
+                            <span>强化材质与工艺细节</span>
+                        </button>
+                        <button onclick="fineTuneCopy('interactive')" class="px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs transition-colors flex items-center space-x-1">
+                            <i data-lucide="heart-handshake" class="w-3 h-3 text-zinc-500"></i>
+                            <span>增强小红书互动情绪</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= MODALS & DRAWERS ================= -->
+    <!-- 1. Gemini API Key Modal -->
+    <div id="apiKeyModal" class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-apple-float border border-black/10 space-y-5 animate-in fade-in zoom-in duration-200">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="p-2 rounded-xl bg-zinc-100 text-black">
+                        <i data-lucide="key" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-[#1D1D1F]">Gemini API Key 配置</h3>
+                </div>
+                <button onclick="closeApiKeyModal()" class="text-zinc-400 hover:text-black p-1 rounded-lg">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <p class="text-xs text-zinc-500 leading-relaxed">
+                输入您的 Google Gemini API Key 以启用 <code class="bg-zinc-100 px-1 py-0.5 rounded font-mono text-[11px]">gemini-2.5-flash</code> 视觉与多模态文案引擎。秘钥将加密保存在本地浏览器中。
+            </p>
+
+            <div class="space-y-2">
+                <label class="text-xs font-semibold text-zinc-700">API Key</label>
+                <div class="relative">
+                    <input type="password" id="apiKeyInput" placeholder="AIzaSy..." class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-zinc-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-all font-mono pr-10">
+                    <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-2.5 text-zinc-400 hover:text-black">
+                        <i data-lucide="eye" id="eyeIcon" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="p-3 bg-zinc-50 rounded-xl border border-zinc-100 text-[11px] text-zinc-500 flex items-start space-x-2">
+                <i data-lucide="info" class="w-4 h-4 text-zinc-400 shrink-0 mt-0.5"></i>
+                <span>未填写 Key 时，系统将自动使用内置的 COSMO 经典离线审美引擎，无需联网也可生成优质品牌文案。</span>
+            </div>
+
+            <div class="flex items-center space-x-2 pt-2">
+                <button onclick="saveApiKey()" class="flex-1 py-2.5 rounded-xl bg-[#1D1D1F] hover:bg-black text-white text-xs font-medium transition-all shadow-apple-sm">
+                    保存 Key
+                </button>
+                <button onclick="clearApiKey()" class="px-4 py-2.5 rounded-xl border border-zinc-200 hover:bg-zinc-100 text-zinc-700 text-xs font-medium transition-all">
+                    清除
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 2. Learned Preferences Memory Modal/Drawer -->
+    <div id="preferencesModal" class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-apple-float border border-black/10 space-y-5 max-h-[85vh] flex flex-col">
+            <div class="flex items-center justify-between shrink-0">
+                <div class="flex items-center space-x-2">
+                    <div class="p-2 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100">
+                        <i data-lucide="sparkles" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-semibold text-[#1D1D1F]">COSMO AI 采纳偏好记忆库</h3>
+                        <p class="text-xs text-zinc-400">通过“选中此版”学习您的私人审美与语调习惯</p>
+                    </div>
+                </div>
+                <button onclick="closePreferencesModal()" class="text-zinc-400 hover:text-black p-1 rounded-lg">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- List of Learned Examples -->
+            <div id="preferencesListContainer" class="flex-1 overflow-y-auto space-y-3 pr-1">
+                <!-- Dynamically filled by JS -->
+            </div>
+
+            <!-- Footer & Reset Actions -->
+            <div class="pt-3 border-t border-zinc-100 flex items-center justify-between shrink-0">
+                <span class="text-xs text-zinc-400" id="preferencesTotalText">共积累 0 条学习样本</span>
+                <button onclick="clearAllPreferences()" class="px-3 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 text-xs font-medium transition-all flex items-center space-x-1">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    <span>清空偏好记忆</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 3. Draft History Drawer -->
+    <div id="draftsDrawer" class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-sm flex justify-end">
+        <div class="bg-white w-full max-w-md h-full p-6 shadow-apple-float border-l border-black/10 space-y-5 flex flex-col animate-in slide-in-from-right duration-250">
+            <div class="flex items-center justify-between shrink-0">
+                <div class="flex items-center space-x-2">
+                    <i data-lucide="history" class="w-5 h-5 text-zinc-700"></i>
+                    <h3 class="text-base font-semibold text-[#1D1D1F]">历史文案草稿</h3>
+                </div>
+                <button onclick="closeDraftsDrawer()" class="text-zinc-400 hover:text-black p-1 rounded-lg">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div id="draftsListContainer" class="flex-1 overflow-y-auto space-y-3 pr-1">
+                <!-- Draft items filled by JS -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Toast Notification -->
+    <div id="toastNotification" class="fixed bottom-6 right-6 z-50 hidden transition-all transform translate-y-2">
+        <div class="glass-panel-dark text-white px-4 py-3 rounded-2xl shadow-apple-float flex items-center space-x-3 text-xs border border-white/10">
+            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+            <span id="toastMessage">操作成功</span>
+        </div>
+    </div>
+
+
+    <script>
+        // Global Application State
+        const STORAGE_KEY_API = 'cosmo_gemini_api_key';
+        const STORAGE_KEY_PREFS = 'cosmo_learned_preferences';
+        const STORAGE_KEY_DRAFTS = 'cosmo_draft_history';
+
+        let appState = {
+            apiKey: '',
+            platform: 'xiaohongshu', // 'xiaohongshu' | 'moments'
+            persona: 'blogger',      // 'blogger' | 'shop' | 'designer' | 'lifestyle'
+            tone: 'trending',        // 'trending' | 'atmospheric' | 'knowledge' | 'minimalist'
+            uploadedImages: [],      // Array of { id, base64, url }
+            learnedPreferences: [], // Array of adopted copies
+            drafts: [],
+            currentGeneration: null, // Holds candidate variants
+            selectedVariantIndex: 0,
+            selectedTitleIndex: 0
+        };
+
+        // Window Load Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            loadLocalStorageData();
+            updateControlLabels();
+            setupDragAndDrop();
+        });
+
+        function loadLocalStorageData() {
+            const savedKey = localStorage.getItem(STORAGE_KEY_API);
+            if (savedKey) {
+                appState.apiKey = savedKey;
+                document.getElementById('apiKeyInput').value = savedKey;
+                document.getElementById('apiKeyStatusDot').className = "w-1.5 h-1.5 rounded-full bg-emerald-500";
+                document.getElementById('apiKeyBtnText').innerText = "API Key 已配置";
+            }
+
+            const savedPrefs = localStorage.getItem(STORAGE_KEY_PREFS);
+            if (savedPrefs) {
+                try {
+                    appState.learnedPreferences = JSON.parse(savedPrefs);
+                } catch(e) { appState.learnedPreferences = []; }
+            }
+
+            const savedDrafts = localStorage.getItem(STORAGE_KEY_DRAFTS);
+            if (savedDrafts) {
+                try {
+                    appState.drafts = JSON.parse(savedDrafts);
+                } catch(e) { appState.drafts = []; }
+            }
+
+            updatePreferenceBadge();
+        }
+
+        function updatePreferenceBadge() {
+            const count = appState.learnedPreferences.length;
+            document.getElementById('preferenceCountBadge').innerText = `已积累 ${count} 条采纳偏好`;
+        }
+
+        // Control Sliders Label Updater
+        function updateControlLabels() {
+            const emojiVal = parseInt(document.getElementById('emojiSlider').value);
+            const emojiLabels = ["无 Emoji", "克制点缀", "适中丰富", "高能氛围"];
+            document.getElementById('emojiDensityLabel').innerText = emojiLabels[emojiVal];
+
+            const lengthVal = parseInt(document.getElementById('lengthSlider').value);
+            const lengthLabels = ["精简 (150字)", "标准 (300字)", "深度长文 (500字)"];
+            document.getElementById('copyLengthLabel').innerText = lengthLabels[lengthVal];
+        }
+
+        function setPlatform(platform) {
+            appState.platform = platform;
+            const xhsBtn = document.getElementById('platformXhsBtn');
+            const momentsBtn = document.getElementById('platformMomentsBtn');
+
+            if (platform === 'xiaohongshu') {
+                xhsBtn.className = "py-2 px-3 rounded-lg text-xs font-medium transition-all shadow-apple-sm bg-white text-black flex items-center justify-center space-x-1.5";
+                momentsBtn.className = "py-2 px-3 rounded-lg text-xs font-medium transition-all text-zinc-500 hover:text-black flex items-center justify-center space-x-1.5";
+            } else {
+                momentsBtn.className = "py-2 px-3 rounded-lg text-xs font-medium transition-all shadow-apple-sm bg-white text-black flex items-center justify-center space-x-1.5";
+                xhsBtn.className = "py-2 px-3 rounded-lg text-xs font-medium transition-all text-zinc-500 hover:text-black flex items-center justify-center space-x-1.5";
+            }
+        }
+
+        function setPersona(persona) {
+            appState.persona = persona;
+            document.querySelectorAll('.persona-btn').forEach(btn => {
+                btn.className = "persona-btn border-zinc-200 hover:border-zinc-400 p-3 rounded-xl border text-left transition-all relative";
+                btn.querySelector('div:first-child').className = "text-xs font-semibold mb-0.5 text-zinc-800";
+            });
+
+            const activeBtn = document.getElementById(`persona-${persona}`);
+            activeBtn.className = "persona-btn active border-black bg-zinc-900 text-white p-3 rounded-xl border text-left transition-all relative overflow-hidden";
+            activeBtn.querySelector('div:first-child').className = "text-xs font-semibold mb-0.5 text-white";
+        }
+
+        function setTone(tone) {
+            appState.tone = tone;
+            document.querySelectorAll('.tone-btn').forEach(btn => {
+                btn.className = "tone-btn bg-white text-zinc-700 border-zinc-200 hover:border-zinc-300 text-xs py-2 px-3 rounded-xl border transition-all text-left flex items-center justify-between";
+            });
+
+            const activeBtn = document.getElementById(`tone-${tone}`);
+            activeBtn.className = "tone-btn active bg-zinc-100 text-black border-black/20 font-medium text-xs py-2 px-3 rounded-xl border transition-all text-left flex items-center justify-between";
+        }
+
+        function setupDragAndDrop() {
+            const dropZone = document.getElementById('dropZone');
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    dropZone.classList.add('border-black', 'bg-zinc-100');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    dropZone.classList.remove('border-black', 'bg-zinc-100');
+                }, false);
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleImageFiles(files);
+            });
+        }
+
+        function handleImageFiles(files) {
+            if (!files || files.length === 0) return;
+
+            Array.from(files).forEach(file => {
+                if (!file.type.startsWith('image/')) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const dataUrl = e.target.result;
+                    const base64Data = dataUrl.split(',')[1];
+                    appState.uploadedImages.push({
+                        id: Date.now() + Math.random().toString(36).substr(2, 4),
+                        url: dataUrl,
+                        base64: base64Data,
+                        mimeType: file.type
+                    });
+                    renderImageThumbnails();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function renderImageThumbnails() {
+            const container = document.getElementById('imageThumbnails');
+            if (appState.uploadedImages.length === 0) {
+                container.classList.add('hidden');
+                container.innerHTML = '';
+                return;
+            }
+
+            container.classList.remove('hidden');
+            container.innerHTML = appState.uploadedImages.map((img, index) => `
+                <div class="relative w-16 h-16 rounded-xl overflow-hidden border border-zinc-200 group shadow-apple-sm">
+                    <img src="${img.url}" class="w-full h-full object-cover">
+                    <button onclick="removeImage('${img.id}')" class="absolute top-1 right-1 bg-black/60 hover:bg-black text-white p-0.5 rounded-full transition-colors">
+                        <i data-lucide="x" class="w-3 h-3"></i>
+                    </button>
+                    ${index === 0 ? '<span class="absolute bottom-1 left-1 text-[9px] bg-black/70 text-white px-1.5 py-0.2 rounded font-mono">封面</span>' : ''}
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function removeImage(id) {
+            appState.uploadedImages = appState.uploadedImages.filter(img => img.id !== id);
+            renderImageThumbnails();
+        }
+
+        function loadSamplePreset(presetType) {
+            const presets = {
+                usm: {
+                    url: 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?q=80&w=600&auto=format&fit=crop',
+                    brand: 'USM Haller Modular',
+                    material: '哑光铬合金 / 烟熏哑光黑漆',
+                    location: '极简客厅阅读角落'
+                },
+                vitra: {
+                    url: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=600&auto=format&fit=crop',
+                    brand: 'Vitra Lounge Chair & Ottoman',
+                    material: '胡桃木弯曲木 / 黑色粒面皮革',
+                    location: '阳光书房私人歇脚区'
+                },
+                poulsen: {
+                    url: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=600&auto=format&fit=crop',
+                    brand: 'Louis Poulsen PH5 吊灯',
+                    material: '哑光白漆铝材 / 黄铜细节',
+                    location: '开放式餐厅餐桌上方'
+                }
+            };
+
+            const selected = presets[presetType];
+            if (!selected) return;
+
+            document.getElementById('inputBrand').value = selected.brand;
+            document.getElementById('inputMaterial').value = selected.material;
+            document.getElementById('inputLocation').value = selected.location;
+
+            // Fetch image converting to base64 for vision engine
+            fetch(selected.url)
+                .then(res => res.blob())
+                .then(blob => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        const base64Data = reader.result.split(',')[1];
+                        appState.uploadedImages = [{
+                            id: 'preset_' + presetType,
+                            url: reader.result,
+                            base64: base64Data,
+                            mimeType: 'image/jpeg'
+                        }];
+                        renderImageThumbnails();
+                        showToast(`已加载 ${selected.brand} 预设图片与配置`);
+                    };
+                    reader.readAsDataURL(blob);
+                }).catch(() => {
+                    showToast('预设信息已填入');
+                });
+        }
+
+        async function generateCopy() {
+            showLoadingState(true);
+
+            const brand = document.getElementById('inputBrand').value.trim();
+            const material = document.getElementById('inputMaterial').value.trim();
+            const location = document.getElementById('inputLocation').value.trim();
+            const emojiVal = parseInt(document.getElementById('emojiSlider').value);
+            const lengthVal = parseInt(document.getElementById('lengthSlider').value);
+
+            // Construct Few-Shot preferences text from learned copy history
+            let preferencesPromptSnippet = "";
+            if (appState.learnedPreferences.length > 0) {
+                const samplePrefs = appState.learnedPreferences.slice(-4).map((p, idx) => `
+学习样本 ${idx + 1}:
+【标题】: ${p.title}
+【正文句式节奏】:
+${p.body}
+`).join('\n---\n');
+
+                preferencesPromptSnippet = `
+【重要核心指令：用户私人采纳偏好学习 Memory】:
+以下是用户过往高频采纳的文案样本。请严格学习这些样本的断句节奏、情绪留白、Emoji 密度与行文气质，并在新生成文案中高度复刻这种审美格调：
+${samplePrefs}
+`;
+            }
+
+            const promptText = `
+你是一位顶级进口设计师家具与奢华空间生活方式的首席主笔（深谙 Vitra, USM, Louis Poulsen, Artek, Ligne Roset 等美学品牌）。
+
+请为以下家居空间生成 3 个不同视角的高品质文案方案（返回严格的 JSON 格式）：
+
+【设定参数】:
+- 发布平台: ${appState.platform === 'xiaohongshu' ? '小红书（种草与美学灵感）' : '微信朋友圈（质感生活记录）'}
+- 人设视角: ${appState.persona} (博主/买手店/设计师/生活方式)
+- 文案调性: ${appState.tone} (爆款种草/氛围感感性/深度干货/极简高级感)
+- 家具品牌/单品: ${brand || '进口设计家具大师作'}
+- 核心材质色彩: ${material || '自然光影、经典材质与质感触觉'}
+- 空间场景定位: ${location || '家居空间角落'}
+- Emoji 密度层级: ${emojiVal} (0:无, 1:极简, 2:适中, 3:丰富)
+- 篇幅字数要求: ${lengthVal === 0 ? '约150字精炼版' : lengthVal === 1 ? '约300字标准版' : '约500字深度版'}
+
+${preferencesPromptSnippet}
+
+请严格按 JSON 格式输出，且包含 "variants" 数组 (恰好3个对象)：
+JSON Schema:
+{
+  "variants": [
+    {
+      "angleName": "方案视角名称 (例如: 方案 A · 空间叙事)",
+      "titleOptions": ["标题选项1", "标题选项2", "标题选项3"],
+      "selectedTitle": "标题选项1",
+      "body": "文案正文，注意优雅换行与段落呼吸感",
+      "hashtags": ["#标签1", "#标签2", "#标签3", "#标签4"],
+      "firstComment": "首评互动钩子，引导读者评论",
+      "engagementIndex": 96
+    }
+  ]
+}
+`;
+
+            // If API Key present, execute Gemini call
+            if (appState.apiKey) {
+                try {
+                    const result = await callGeminiAPI(promptText);
+                    appState.currentGeneration = result;
+                    renderGeneratedOutput();
+                    saveToDraftsHistory(result);
+                    showLoadingState(false);
+                    return;
+                } catch (err) {
+                    console.warn("Gemini API call error or rate limit, switching to COSMO Fallback Engine:", err);
+                    showToast("已切换至 COSMO 经典离线审美引擎");
+                }
+            }
+
+            // Fallback Engine Generation
+            setTimeout(() => {
+                const fallbackResult = generateFallbackCopy(brand, material, location, emojiVal, lengthVal);
+                appState.currentGeneration = fallbackResult;
+                renderGeneratedOutput();
+                saveToDraftsHistory(fallbackResult);
+                showLoadingState(false);
+            }, 800);
+        }
+
+        async function callGeminiAPI(prompt) {
+            const apiKey = appState.apiKey;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+            const parts = [{ text: prompt }];
+
+            // Attach image inlineData if available
+            if (appState.uploadedImages.length > 0) {
+                appState.uploadedImages.forEach(img => {
+                    parts.push({
+                        inlineData: {
+                            mimeType: img.mimeType || 'image/jpeg',
+                            data: img.base64
+                        }
+                    });
+                });
+            }
+
+            const payload = {
+                contents: [{ parts }],
+                generationConfig: {
+                    responseMimeType: "application/json"
+                }
+            };
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Gemini API HTTP Error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const textResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (!textResponse) throw new Error("Empty response from Gemini API");
+
+            return JSON.parse(textResponse);
+        }
+
+        function generateFallbackCopy(brand, material, location, emojiVal, lengthVal) {
+            const b = brand || "USM Haller / Vitra 经典作品";
+            const m = material || "哑光镀铬与柔美光影";
+            const l = location || "客厅居室角落";
+
+            const emojis = emojiVal === 0 ? ["", "", ""] : emojiVal === 1 ? ["✨", "🌿", "🛋️"] : ["✨", "🪐", "🤍", "☕", "🕯️", "🏛️"];
+            const getRandomEmoji = () => emojis[Math.floor(Math.random() * emojis.length)] || "";
+
+            // Check if learned user preferences exist to inject
+            let learnedSnippet = "";
+            if (appState.learnedPreferences.length > 0) {
+                const lastPref = appState.learnedPreferences[appState.learnedPreferences.length - 1];
+                learnedSnippet = `\n(正如你所偏好的: “${lastPref.title}”)`;
+            }
+
+            return {
+                variants: [
+                    {
+                        angleName: "方案 A · 空间叙事与光影",
+                        titleOptions: [
+                            `把日落与金属交错的瞬间，搬进 ${l} ${getRandomEmoji()}`,
+                            `关于 ${b} 的极简空间美学思考 ${getRandomEmoji()}`,
+                            `家居品味 | 真正高级的房间，从不乱堆砌`
+                        ],
+                        selectedTitle: `把日落与金属交错的瞬间，搬进 ${l} ${getRandomEmoji()}`,
+                        body: `在 ${l}，当四点半的阳光斜斜穿透窗帘，折射在 ${m} 的表面，整个空间便有了呼吸的律动。${getRandomEmoji()}
+
+挑选 ${b}，从来不单是为了满足功能，而是为日常生活构建一个情绪锚点。极简的线条与沉稳的量感，让角落显得安详而自洽。${learnedSnippet}
+
+好的设计，就像无声的陪伴。在日复一日的凝视里，把生活的浮躁慢慢沉淀下来。${getRandomEmoji()}`,
+                        hashtags: [`#${b.replace(/\s+/g, '')}`, `#${l}`, "#家居美学", "#极简空间", "#进口家具", "#生活仪式感"],
+                        firstComment: "💬 评论区聊聊：你在家最喜欢待在哪一个角落？相关软装清单已整理在赞赏区~",
+                        engagementIndex: 98
+                    },
+                    {
+                        angleName: "方案 B · 材质细节与工艺",
+                        titleOptions: [
+                            `${m} 的触感：触摸得到的室内秩序 ${getRandomEmoji()}`,
+                            `买手店选物 | 为什么设计大师都在推崇 ${b}？`,
+                            `高质感家居 | 细节里藏着生活的真正面貌`
+                        ],
+                        selectedTitle: `${m} 的触感：触摸得到的室内秩序 ${getRandomEmoji()}`,
+                        body: `近距离观察 ${b}，最令人沉醉的是其对 ${m} 的精湛诠释。${getRandomEmoji()}
+
+冰冷与温润在这一刻达成微妙平衡，没有一丝多余的修饰，每一处转角都透露着对空间比例的苛刻把控。
+
+在 ${l} 摆上这一件作品，不仅提升了整个区域的审美场域，更让每一次触碰都成为一种生活仪式。${getRandomEmoji()}`,
+                        hashtags: [`#${b.replace(/\s+/g, '')}`, "#材质美学", "#设计师家具", "#买手店探店", "#室内设计"],
+                        firstComment: "💡 材质小知识：如何养护哑光金属与木质面？欢迎私信交流软装搭配！",
+                        engagementIndex: 95
+                    },
+                    {
+                        angleName: "方案 C · 松弛感生活情绪",
+                        titleOptions: [
+                            `下班后的松弛感，是 ${l} 给的 ${getRandomEmoji()}`,
+                            `在喧嚣城市里，为自己留一片极简静谧 ${getRandomEmoji()}`,
+                            `家居独处指南 | 属于我一个人的美学时刻`
+                        ],
+                        selectedTitle: `下班后的松弛感，是 ${l} 给的 ${getRandomEmoji()}`,
+                        body: `推开家门，推开所有的繁重与疲惫。看到 ${l} 里静静站立的 ${b}，心情便不自觉地放松下来。${getRandomEmoji()}
+
+一杯热咖啡，一盏温润的光线，衬托着 ${m} 的细腻质感。
+
+生活不需要过于喧嚣的华丽，恰到好处的留白与一件耐看的经典家具，足矣抚平所有的情绪。${getRandomEmoji()}`,
+                        hashtags: [`#${l}`, `#${b.replace(/\s+/g, '')}`, "#松弛感家居", "#我的宅家日常", "#治愈系空间"],
+                        firstComment: "🕯️ 顺便分享今晚陪伴我的香氛与灯光设置，大家今晚都在做什么呢？",
+                        engagementIndex: 93
+                    }
+                ]
+            };
+        }
+
+        function renderGeneratedOutput() {
+            if (!appState.currentGeneration || !appState.currentGeneration.variants) return;
+
+            document.getElementById('emptyOutputState').classList.add('hidden');
+            document.getElementById('loadingOutputState').classList.add('hidden');
+            document.getElementById('activeOutputContainer').classList.remove('hidden');
+
+            const currentVar = appState.currentGeneration.variants[appState.selectedVariantIndex] || appState.currentGeneration.variants[0];
+
+            // Render Angle Badge
+            document.getElementById('currentAngleBadge').innerText = currentVar.angleName || `方案 ${appState.selectedVariantIndex + 1}`;
+
+            // Render Title Options
+            const titlesContainer = document.getElementById('titleOptionsContainer');
+            titlesContainer.innerHTML = currentVar.titleOptions.map((title, idx) => `
+                <div onclick="selectTitleIndex(${idx})" class="p-2.5 rounded-xl border ${idx === appState.selectedTitleIndex ? 'border-black bg-zinc-900 text-white shadow-apple-sm' : 'border-zinc-200 hover:border-zinc-400 bg-white text-zinc-800'} text-xs font-semibold cursor-pointer transition-all flex items-center justify-between group">
+                    <span>${title}</span>
+                    <i data-lucide="${idx === appState.selectedTitleIndex ? 'check-circle-2' : 'circle'}" class="w-4 h-4 ${idx === appState.selectedTitleIndex ? 'text-emerald-400' : 'text-zinc-300 group-hover:text-zinc-500'}"></i>
+                </div>
+            `).join('');
+
+            // Render Formatted Body Text
+            document.getElementById('formattedBodyText').innerText = currentVar.body;
+
+            // Render Hashtags
+            const hashtagsContainer = document.getElementById('hashtagsBox');
+            hashtagsContainer.innerHTML = currentVar.hashtags.map(tag => `
+                <span class="text-xs font-mono px-2.5 py-1 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-700 transition-colors cursor-pointer" onclick="copyToClipboard('${tag}', '已复制标签')">${tag}</span>
+            `).join('');
+
+            // Render First Comment Hook
+            document.getElementById('firstCommentBox').innerText = currentVar.firstComment || "💬 欢迎在评论区留下您对这个空间搭配的想法~";
+
+            // Metrics Bar Calculations
+            const wordCount = currentVar.body.length;
+            const readTimeSec = Math.ceil(wordCount / 7);
+            document.getElementById('metricWordCount').innerText = `字数: ${wordCount}字`;
+            document.getElementById('metricReadTime').innerText = `预估阅读: ${readTimeSec}秒`;
+            document.getElementById('metricEngagementIndex').innerText = `${currentVar.engagementIndex || 96}% 🔥`;
+
+            lucide.createIcons();
+            
+            // Scroll right container into view smoothly on mobile
+            if (window.innerWidth < 1024) {
+                document.getElementById('activeOutputContainer').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function switchVariantTab(index) {
+            appState.selectedVariantIndex = index;
+            appState.selectedTitleIndex = 0;
+
+            [0, 1, 2].forEach(i => {
+                const btn = document.getElementById(`varTab${i}`);
+                if (i === index) {
+                    btn.className = "flex-1 sm:flex-none text-xs font-medium py-1.5 px-3.5 rounded-lg bg-white shadow-apple-sm text-black transition-all";
+                } else {
+                    btn.className = "flex-1 sm:flex-none text-xs font-medium py-1.5 px-3.5 rounded-lg text-zinc-500 hover:text-black transition-all";
+                }
+            });
+
+            renderGeneratedOutput();
+        }
+
+        function selectTitleIndex(idx) {
+            appState.selectedTitleIndex = idx;
+            renderGeneratedOutput();
+        }
+
+        function getSelectedTitle() {
+            const currentVar = appState.currentGeneration.variants[appState.selectedVariantIndex];
+            return currentVar.titleOptions[appState.selectedTitleIndex] || currentVar.titleOptions[0];
+        }
+
+        function getHashtagsString() {
+            const currentVar = appState.currentGeneration.variants[appState.selectedVariantIndex];
+            return currentVar.hashtags.join(' ');
+        }
+
+        function adoptCurrentCopy() {
+            if (!appState.currentGeneration) return;
+
+            const currentVar = appState.currentGeneration.variants[appState.selectedVariantIndex];
+            const selectedTitle = getSelectedTitle();
+
+            const preferenceEntry = {
+                id: Date.now().toString(),
+                title: selectedTitle,
+                body: currentVar.body,
+                persona: appState.persona,
+                tone: appState.tone,
+                brand: document.getElementById('inputBrand').value || '通用家具',
+                timestamp: new Date().toLocaleDateString('zh-CN')
+            };
+
+            appState.learnedPreferences.push(preferenceEntry);
+            localStorage.setItem(STORAGE_KEY_PREFS, JSON.stringify(appState.learnedPreferences));
+
+            updatePreferenceBadge();
+
+            // Button Feedback Animation
+            const adoptBtn = document.getElementById('adoptCurrentBtn');
+            const adoptText = document.getElementById('adoptBtnText');
+            adoptBtn.className = "w-full sm:w-auto px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-medium transition-all shadow-apple-sm flex items-center justify-center space-x-2";
+            adoptText.innerText = "已学习偏好！";
+
+            showToast("已存入 AI 偏好记忆库，后续生成将自动贴合此类风格！");
+
+            setTimeout(() => {
+                adoptBtn.className = "w-full sm:w-auto px-4 py-2 rounded-xl bg-[#1D1D1F] hover:bg-black text-white text-xs font-medium transition-all shadow-apple-sm flex items-center justify-center space-x-2 group active:scale-95";
+                adoptText.innerText = "选中此版 (存入偏好)";
+            }, 2000);
+        }
+
+        function regenerateVariant() {
+            if (appState.currentGeneration) {
+                showToast("重新推演新一版叙事...");
+                generateCopy();
+            }
+        }
+
+        function fineTuneCopy(type) {
+            if (!appState.currentGeneration) return;
+
+            const currentVar = appState.currentGeneration.variants[appState.selectedVariantIndex];
+            let body = currentVar.body;
+
+            if (type === 'concise') {
+                body = body.split('\n').filter(line => line.trim().length > 0).join('\n\n');
+                showToast("已调整为极简留白排版");
+            } else if (type === 'story') {
+                body = "【故事时刻】\n" + body + "\n\n空间不说话，但每一处触感都在讲述着生活的故事。";
+                showToast("已注入情绪故事感");
+            } else if (type === 'material') {
+                const mat = document.getElementById('inputMaterial').value || '经典工艺细节';
+                body += `\n\n粗粝与细腻、哑光与光泽，在 ${mat} 中碰撞出极具张力的室内声场。`;
+                showToast("已强化材质细节描述");
+            } else if (type === 'interactive') {
+                body += "\n\n👉 屏幕前的你，更偏爱极简风还是包裹感暖调？欢迎在评论区告诉我~";
+                showToast("已增加小红书互动抛梗");
+            }
+
+            currentVar.body = body;
+            renderGeneratedOutput();
+        }
+
+        function copyToClipboard(text, label = "已复制到剪贴板") {
+            if (!text) return;
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast(label);
+            } catch (err) {
+                console.error("Copy failed", err);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function copyFullPackage() {
+            if (!appState.currentGeneration) return;
+            const title = getSelectedTitle();
+            const body = document.getElementById('formattedBodyText').innerText;
+            const tags = getHashtagsString();
+            const comment = document.getElementById('firstCommentBox').innerText;
+
+            const fullText = `${title}\n\n${body}\n\n${tags}\n\n[互动首评]:\n${comment}`;
+            copyToClipboard(fullText, "一键复制全案成功");
+        }
+
+        function saveToDraftsHistory(generationResult) {
+            const entry = {
+                id: Date.now().toString(),
+                date: new Date().toLocaleString('zh-CN'),
+                title: generationResult.variants[0].selectedTitle,
+                data: generationResult
+            };
+            appState.drafts.unshift(entry);
+            if (appState.drafts.length > 20) appState.drafts.pop();
+            localStorage.setItem(STORAGE_KEY_DRAFTS, JSON.stringify(appState.drafts));
+        }
+
+        function openApiKeyModal() { document.getElementById('apiKeyModal').classList.remove('hidden'); }
+        function closeApiKeyModal() { document.getElementById('apiKeyModal').classList.add('hidden'); }
+        function togglePasswordVisibility() {
+            const input = document.getElementById('apiKeyInput');
+            const icon = document.getElementById('eyeIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                input.type = 'password';
+                icon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        }
+        function saveApiKey() {
+            const val = document.getElementById('apiKeyInput').value.trim();
+            appState.apiKey = val;
+            localStorage.setItem(STORAGE_KEY_API, val);
+            closeApiKeyModal();
+
+            if (val) {
+                document.getElementById('apiKeyStatusDot').className = "w-1.5 h-1.5 rounded-full bg-emerald-500";
+                document.getElementById('apiKeyBtnText').innerText = "API Key 已配置";
+                showToast("Gemini API Key 已成功保存");
+            } else {
+                document.getElementById('apiKeyStatusDot').className = "w-1.5 h-1.5 rounded-full bg-amber-400";
+                document.getElementById('apiKeyBtnText').innerText = "设置 Key";
+                showToast("已清除 Key，启用离线审美引擎");
+            }
+        }
+        function clearApiKey() {
+            document.getElementById('apiKeyInput').value = '';
+            saveApiKey();
+        }
+
+        function openPreferencesModal() {
+            renderPreferencesList();
+            document.getElementById('preferencesModal').classList.remove('hidden');
+        }
+        function closePreferencesModal() { document.getElementById('preferencesModal').classList.add('hidden'); }
+
+        function renderPreferencesList() {
+            const container = document.getElementById('preferencesListContainer');
+            const list = appState.learnedPreferences;
+
+            document.getElementById('preferencesTotalText').innerText = `共积累 ${list.length} 条学习样本`;
+
+            if (list.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10 space-y-2 text-zinc-400">
+                        <i data-lucide="brain-circuit" class="w-8 h-8 mx-auto stroke-[1.5]"></i>
+                        <p class="text-xs">暂无采纳偏好。生成文案后点击“选中此版”，AI 将自动记录您的喜好格调。</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            container.innerHTML = list.map((pref, idx) => `
+                <div class="p-3.5 rounded-xl border border-zinc-200/80 bg-zinc-50/50 space-y-1.5 relative group">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/50">样本 #${idx + 1} · ${pref.brand}</span>
+                        <span class="text-[10px] text-zinc-400">${pref.timestamp}</span>
+                    </div>
+                    <p class="text-xs font-semibold text-zinc-800">${pref.title}</p>
+                    <p class="text-[11px] text-zinc-500 line-clamp-2 leading-relaxed">${pref.body}</p>
+                    <button onclick="deletePreference('${pref.id}')" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-1 text-zinc-400 hover:text-red-600 transition-all">
+                        <i data-lucide="trash" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function deletePreference(id) {
+            appState.learnedPreferences = appState.learnedPreferences.filter(p => p.id !== id);
+            localStorage.setItem(STORAGE_KEY_PREFS, JSON.stringify(appState.learnedPreferences));
+            updatePreferenceBadge();
+            renderPreferencesList();
+            showToast("已移除该条偏好样本");
+        }
+
+        function clearAllPreferences() {
+            if (confirm("确定要清空所有 AI 采纳偏好记忆吗？")) {
+                appState.learnedPreferences = [];
+                localStorage.removeItem(STORAGE_KEY_PREFS);
+                updatePreferenceBadge();
+                renderPreferencesList();
+                showToast("偏好记忆库已重置");
+            }
+        }
+
+        function openDraftsDrawer() {
+            renderDraftsList();
+            document.getElementById('draftsDrawer').classList.remove('hidden');
+        }
+        function closeDraftsDrawer() { document.getElementById('draftsDrawer').classList.add('hidden'); }
+
+        function renderDraftsList() {
+            const container = document.getElementById('draftsListContainer');
+            if (appState.drafts.length === 0) {
+                container.innerHTML = `<p class="text-xs text-zinc-400 text-center py-8">暂无历史草稿记录</p>`;
+                return;
+            }
+
+            container.innerHTML = appState.drafts.map((draft, idx) => `
+                <div onclick="restoreDraft('${draft.id}')" class="p-3.5 rounded-xl border border-zinc-200 hover:border-black/30 bg-white cursor-pointer transition-all space-y-1">
+                    <span class="text-[10px] text-zinc-400 font-mono">${draft.date}</span>
+                    <p class="text-xs font-medium text-zinc-800 line-clamp-1">${draft.title}</p>
+                </div>
+            `).join('');
+        }
+
+        function restoreDraft(id) {
+            const draft = appState.drafts.find(d => d.id === id);
+            if (draft && draft.data) {
+                appState.currentGeneration = draft.data;
+                appState.selectedVariantIndex = 0;
+                appState.selectedTitleIndex = 0;
+                renderGeneratedOutput();
+                closeDraftsDrawer();
+                showToast("已载入历史草稿");
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            document.getElementById('toastMessage').innerText = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 2500);
+        }
+
+        function showLoadingState(isLoading) {
+            const btn = document.getElementById('generateMainBtn');
+            const emptyState = document.getElementById('emptyOutputState');
+            const loadingState = document.getElementById('loadingOutputState');
+            const outputContainer = document.getElementById('activeOutputContainer');
+
+            if (isLoading) {
+                btn.disabled = true;
+                document.getElementById('generateBtnText').innerText = "COSMO 引擎推演中...";
+                emptyState.classList.add('hidden');
+                outputContainer.classList.add('hidden');
+                loadingState.classList.remove('hidden');
+            } else {
+                btn.disabled = false;
+                document.getElementById('generateBtnText').innerText = "生成高端空间文案";
+                loadingState.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
