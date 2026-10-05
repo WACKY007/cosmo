@@ -1,914 +1,1123 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMO文案生成器 | 高端家居与空间美学文案引擎</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        apple: {
-                            bg: '#F5F5F7',
-                            card: '#FFFFFF',
-                            border: '#E5E5EA',
-                            text: '#1D1D1F',
-                            muted: '#86868B',
-                            subtle: '#F2F2F7',
-                            dark: '#000000',
-                            accent: '#0071E3',
-                            accentHover: '#0077ED'
-                        }
-                    },
-                    borderRadius: {
-                        '2xl': '18px',
-                        '3xl': '24px',
-                    },
-                    fontFamily: {
-                        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"SF Pro Display"', '"SF Pro Icons"', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            background-color: #F5F5F7;
-            color: #1D1D1F;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COSMO文案生成器 | Apple Minimalist Copy Studio</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Inter & SF Pro Font Stack -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        /* Glassmorphism & Custom scrollbar */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Inter", sans-serif;
+      background-color: #F5F5F7;
+      color: #1D1D1F;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.15);
-            border-radius: 999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 0, 0, 0.3);
-        }
+    /* Custom Glassmorphism & Apple Shadow Effects */
+    .apple-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.04);
+      border-radius: 20px;
+    }
 
-        /* Segmented Controller Slider Styling */
-        .segmented-btn.active {
-            background-color: #FFFFFF;
-            color: #000000;
-            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08), 0px 1px 2px rgba(0, 0, 0, 0.04);
-            font-weight: 600;
-        }
+    .apple-card-subtle {
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 18px;
+    }
 
-        /* Smooth bounce animation for Toast */
-        @keyframes toastIn {
-            0% { transform: translate(-50%, -100%) scale(0.9); opacity: 0; }
-            70% { transform: translate(-50%, 8px) scale(1.02); opacity: 1; }
-            100% { transform: translate(-50%, 0) scale(1); opacity: 1; }
-        }
-        .toast-animate {
-            animation: toastIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
+    .apple-button {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .apple-button:hover {
+      transform: translateY(-1px);
+    }
 
-        /* Title capsule selection animation */
-        .title-capsule {
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .title-capsule.active {
-            background-color: #1D1D1F;
-            color: #FFFFFF;
-            border-color: #1D1D1F;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-        }
-    </style>
+    .apple-button:active {
+      transform: scale(0.98);
+    }
+
+    /* Drag and Drop Zone Dynamics */
+    .drop-active {
+      border-color: #000000 !important;
+      background-color: rgba(240, 240, 242, 0.8) !important;
+      transform: scale(1.01);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    /* Pulse Glow */
+    @keyframes subtlePulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    .animate-subtle-pulse {
+      animation: subtlePulse 2s infinite ease-in-out;
+    }
+  </style>
 </head>
-<body class="min-h-screen flex flex-col pb-12 antialiased">
+<body class="min-h-screen flex flex-col justify-between selection:bg-black selection:text-white">
 
-    <div id="toast-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none flex flex-col items-center gap-2"></div>
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 transform -translate-y-12 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 bg-black/90 text-white text-sm font-medium px-5 py-3 rounded-full shadow-2xl backdrop-blur-md">
+    <i id="toast-icon" class="fa-solid fa-check text-green-400"></i>
+    <span id="toast-msg">已复制到剪贴板</span>
+  </div>
 
-    <header class="sticky top-0 z-40 glass-panel border-b border-apple-border/60">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-xl bg-black text-white flex items-center justify-center font-bold text-lg tracking-wider shadow-sm">
-                    C
-                </div>
-                <div>
-                    <h1 class="text-base font-semibold tracking-tight text-apple-text">COSMO 文案生成器</h1>
-                    <p class="text-[11px] text-apple-muted font-normal">高端家具 · 空间美学 · 爆款内容工作流</p>
-                </div>
-            </div>
-
-            <div class="flex items-center space-x-3">
-                <!-- In-Context Memory Badge -->
-                <div class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-apple-subtle border border-apple-border text-xs font-medium text-apple-text">
-                    <i class="fa-solid font-bold fa-brain text-purple-600"></i>
-                    <span>已积累 <strong id="memory-count" class="text-black font-semibold">0</strong> 次文案记忆</span>
-                </div>
-
-                <!-- API Key Config Button -->
-                <button onclick="openApiModal()" class="px-3 py-1.5 rounded-full bg-apple-subtle hover:bg-apple-border border border-apple-border text-xs font-medium transition flex items-center gap-1.5 text-apple-text">
-                    <i class="fa-solid fa-key text-apple-muted"></i>
-                    <span id="api-key-status">API Key 设置</span>
-                </button>
-            </div>
+  <!-- Top Navigation Header -->
+  <header class="sticky top-0 z-40 bg-[#F5F5F7]/80 backdrop-blur-md border-b border-black/5 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-black text-white flex items-center justify-center font-bold text-lg tracking-wider shadow-sm">
+          C
         </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 flex-1 w-full">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
-            <!-- LEFT PANEL: Controls & Input Form (5 Cols) -->
-            <section class="lg:col-span-5 space-y-6">
-                <div class="bg-apple-card rounded-3xl p-6 border border-apple-border shadow-sm space-y-6">
-                    
-                    <!-- 1. Platform & Persona -->
-                    <div>
-                        <label class="block text-xs font-semibold text-apple-muted uppercase tracking-wider mb-2.5">1. 发布平台与人设定位</label>
-                        <div class="grid grid-cols-2 gap-3 mb-3">
-                            <button type="button" onclick="setPlatform('xiaohongshu')" id="platform-xhs" class="platform-btn py-2.5 px-3 rounded-2xl border text-xs font-medium flex items-center justify-center gap-2 transition border-black bg-black text-white">
-                                <i class="fa-solid fa-book-open"></i> 小红书爆款
-                            </button>
-                            <button type="button" onclick="setPlatform('moments')" id="platform-moments" class="platform-btn py-2.5 px-3 rounded-2xl border text-xs font-medium flex items-center justify-center gap-2 transition border-apple-border bg-apple-subtle text-apple-text hover:bg-apple-border">
-                                <i class="fa-brands fa-weixin"></i> 微信朋友圈
-                            </button>
-                        </div>
-                        <select id="persona-select" class="w-full py-2.5 px-3 rounded-2xl border border-apple-border bg-apple-subtle text-xs text-apple-text focus:outline-none focus:border-black font-medium transition">
-                            <option value="家居买手店">🛋️ 家居买手店 (品质/设计感/奢品风格)</option>
-                            <option value="家居博主">☕️ 家居博主 (生活方式/日常种草/亲和力)</option>
-                            <option value="独立设计师">📐 独立设计师 (建筑美学/空间干货/严谨专业)</option>
-                            <option value="空间美学家">✨ 空间美学家 (诗意叙事/情绪共鸣/艺术沉淀)</option>
-                        </select>
-                    </div>
-
-                    <!-- 2. Publishing Context -->
-                    <div>
-                        <label class="block text-xs font-semibold text-apple-muted uppercase tracking-wider mb-2.5">2. 发布场景 / 目的</label>
-                        <div class="grid grid-cols-1 gap-2" id="context-options">
-                            <label class="context-card cursor-pointer p-3 rounded-2xl border border-apple-border bg-apple-subtle hover:bg-white transition flex items-start gap-3 border-black bg-white shadow-sm" onclick="selectContext('showroom')">
-                                <input type="radio" name="context" value="showroom" checked class="mt-0.5 accent-black hidden">
-                                <div class="text-lg">🛋️</div>
-                                <div>
-                                    <div class="text-xs font-semibold text-apple-text">展厅新品 / 现货入库</div>
-                                    <div class="text-[11px] text-apple-muted">侧重设计感、空间呈现、欢迎体验现货</div>
-                                </div>
-                            </label>
-
-                            <label class="context-card cursor-pointer p-3 rounded-2xl border border-apple-border bg-apple-subtle hover:bg-white transition flex items-start gap-3" onclick="selectContext('installation')">
-                                <input type="radio" name="context" value="installation" class="mt-0.5 accent-black hidden">
-                                <div class="text-lg">🏠</div>
-                                <div>
-                                    <div class="text-xs font-semibold text-apple-text">客户实装 / 送货实拍</div>
-                                    <div class="text-[11px] text-apple-muted">侧重实际落地效果、空间搭配、质感呈现</div>
-                                </div>
-                            </label>
-
-                            <label class="context-card cursor-pointer p-3 rounded-2xl border border-apple-border bg-apple-subtle hover:bg-white transition flex items-start gap-3" onclick="selectContext('inspiration')">
-                                <input type="radio" name="context" value="inspiration" class="mt-0.5 accent-black hidden">
-                                <div class="text-lg">💡</div>
-                                <div>
-                                    <div class="text-xs font-semibold text-apple-text">灵感搭配 / 设计解读</div>
-                                    <div class="text-[11px] text-apple-muted">侧重设计美学、品牌背景、生活方式</div>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- 3. Emoji Density & Copy Length Segmented Controls -->
-                    <div class="space-y-4">
-                        <!-- Emoji Density -->
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <label class="text-xs font-semibold text-apple-muted uppercase tracking-wider">3. Emoji 表情密度</label>
-                                <span id="emoji-desc" class="text-[11px] text-apple-muted font-medium">克制点缀 (10%-20%)</span>
-                            </div>
-                            <div class="p-1 rounded-2xl bg-apple-subtle flex border border-apple-border/50">
-                                <button type="button" onclick="setEmojiDensity(0)" id="emoji-0" class="segmented-btn flex-1 py-1.5 text-xs rounded-xl font-medium transition text-apple-muted">0% 极简无</button>
-                                <button type="button" onclick="setEmojiDensity(15)" id="emoji-15" class="segmented-btn active flex-1 py-1.5 text-xs rounded-xl font-medium transition">10-20% 克制</button>
-                                <button type="button" onclick="setEmojiDensity(40)" id="emoji-40" class="segmented-btn flex-1 py-1.5 text-xs rounded-xl font-medium transition text-apple-muted">40%+ 丰富</button>
-                            </div>
-                        </div>
-
-                        <!-- Copy Length -->
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <label class="text-xs font-semibold text-apple-muted uppercase tracking-wider">4. 文案篇幅</label>
-                                <span id="length-desc" class="text-[11px] text-apple-muted font-medium">标准种草 (200-400字)</span>
-                            </div>
-                            <div class="p-1 rounded-2xl bg-apple-subtle flex border border-apple-border/50">
-                                <button type="button" onclick="setLength('short')" id="length-short" class="segmented-btn flex-1 py-1.5 text-xs rounded-xl font-medium transition text-apple-muted">精炼短打</button>
-                                <button type="button" onclick="setLength('medium')" id="length-medium" class="segmented-btn active flex-1 py-1.5 text-xs rounded-xl font-medium transition">标准种草</button>
-                                <button type="button" onclick="setLength('long')" id="length-long" class="segmented-btn flex-1 py-1.5 text-xs rounded-xl font-medium transition text-apple-muted">深度解读</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 5. Brand & Material Key Elements Input -->
-                    <div>
-                        <label class="block text-xs font-semibold text-apple-muted uppercase tracking-wider mb-2">5. 材质与品牌关键词增强</label>
-                        <input type="text" id="key-elements" placeholder="输入材质、具体品牌或特征，例如：USM 哑光漆面 光影..." class="w-full py-2.5 px-3.5 rounded-2xl border border-apple-border bg-apple-subtle text-xs text-apple-text focus:outline-none focus:border-black transition mb-2.5">
-                        
-                        <!-- Quick Tags -->
-                        <div class="flex flex-wrap gap-1.5">
-                            <span onclick="appendKeyElement('#USM')" class="cursor-pointer text-[11px] px-2.5 py-1 rounded-full bg-apple-subtle hover:bg-apple-border border border-apple-border/60 text-apple-text transition">#USM</span>
-                            <span onclick="appendKeyElement('#Vitra')" class="cursor-pointer text-[11px] px-2.5 py-1 rounded-full bg-apple-subtle hover:bg-apple-border border border-apple-border/60 text-apple-text transition">#Vitra</span>
-                            <span onclick="appendKeyElement('#Louis Poulsen')" class="cursor-pointer text-[11px] px-2.5 py-1 rounded-full bg-apple-subtle hover:bg-apple-border border border-apple-border/60 text-apple-text transition">#Louis Poulsen</span>
-                            <span onclick="appendKeyElement('#Fritz Hansen')" class="cursor-pointer text-[11px] px-2.5 py-1 rounded-full bg-apple-subtle hover:bg-apple-border border border-apple-border/60 text-apple-text transition">#Fritz Hansen</span>
-                            <span onclick="appendKeyElement('#Artek')" class="cursor-pointer text-[11px] px-2.5 py-1 rounded-full bg-apple-subtle hover:bg-apple-border border border-apple-border/60 text-apple-text transition">#Artek</span>
-                            <span onclick="appendKeyElement('#ClassiCon')" class="cursor-pointer text-[11px] px-2.5 py-1 rounded-full bg-apple-subtle hover:bg-apple-border border border-apple-border/60 text-apple-text transition">#ClassiCon</span>
-                            <span onclick="appendKeyElement('光影美学')" class="cursor-pointer text-[11px] px-2.5 py-1 rounded-full bg-apple-subtle hover:bg-apple-border border border-apple-border/60 text-apple-text transition">#光影美学</span>
-                            <span onclick="appendKeyElement('哑光粉体烤漆')" class="cursor-pointer text-[11px] px-2.5 py-1 rounded-full bg-apple-subtle hover:bg-apple-border border border-apple-border/60 text-apple-text transition">#哑光粉体烤漆</span>
-                            <span onclick="appendKeyElement('实木温润质感')" class="cursor-pointer text-[11px] px-2.5 py-1 rounded-full bg-apple-subtle hover:bg-apple-border border border-apple-border/60 text-apple-text transition">#实木温润质感</span>
-                            <span onclick="appendKeyElement('客户实装')" class="cursor-pointer text-[11px] px-2.5 py-1 rounded-full bg-apple-subtle hover:bg-apple-border border border-apple-border/60 text-apple-text transition">#客户实装</span>
-                            <span onclick="appendKeyElement('展厅现货')" class="cursor-pointer text-[11px] px-2.5 py-1 rounded-full bg-apple-subtle hover:bg-apple-border border border-apple-border/60 text-apple-text transition">#展厅现货</span>
-                        </div>
-                    </div>
-
-                    <!-- 6. Preset Hashtags Settings -->
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <label class="text-xs font-semibold text-apple-muted uppercase tracking-wider">6. 常用话题预设</label>
-                            <button type="button" onclick="saveCustomHashtags()" class="text-[11px] text-apple-accent hover:underline font-medium">保存预设</button>
-                        </div>
-                        <input type="text" id="preset-hashtags" value="#COSMO家居 #深圳家居买手店 #极简空间 #软装搭配 #家居美学" class="w-full py-2.5 px-3.5 rounded-2xl border border-apple-border bg-apple-subtle text-xs text-apple-text focus:outline-none focus:border-black transition">
-                    </div>
-
-                    <!-- 7. Image Upload Area -->
-                    <div>
-                        <label class="block text-xs font-semibold text-apple-muted uppercase tracking-wider mb-2">7. 空间 / 实物配图上传</label>
-                        <div id="drop-zone" onclick="document.getElementById('image-input').click()" class="border-2 border-dashed border-apple-border hover:border-black/40 rounded-2xl p-4 text-center cursor-pointer transition bg-apple-subtle/50 hover:bg-apple-subtle">
-                            <input type="file" id="image-input" multiple accept="image/*" class="hidden" onchange="handleImageUpload(event)">
-                            <i class="fa-solid fa-cloud-arrow-up text-apple-muted text-2xl mb-1.5"></i>
-                            <p class="text-xs text-apple-text font-medium">点击或拖拽图片至此处上传</p>
-                            <p class="text-[10px] text-apple-muted mt-0.5">支持多张家居/空间场景图（视觉分析）</p>
-                        </div>
-
-                        <!-- Thumbnails Preview Grid -->
-                        <div id="image-preview-grid" class="grid grid-cols-4 gap-2.5 mt-3"></div>
-                    </div>
-
-                    <!-- CTA Generate Button -->
-                    <button type="button" onclick="generateCopywriting()" id="generate-btn" class="w-full py-3.5 px-4 rounded-2xl bg-black hover:bg-neutral-800 text-white font-medium text-sm transition shadow-md flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        <span>生成爆款文案</span>
-                    </button>
-                </div>
-            </section>
-
-            <!-- RIGHT PANEL: Output & Interactive Preview (7 Cols) -->
-            <section class="lg:col-span-7 space-y-6">
-                
-                <!-- Output Container Card -->
-                <div id="output-card" class="bg-apple-card rounded-3xl p-6 sm:p-7 border border-apple-border shadow-sm min-h-[620px] flex flex-col justify-between relative overflow-hidden">
-                    
-                    <!-- Empty State Placeholder -->
-                    <div id="empty-state" class="my-auto text-center py-20 space-y-3">
-                        <div class="w-16 h-16 rounded-3xl bg-apple-subtle flex items-center justify-center mx-auto text-apple-muted text-2xl border border-apple-border">
-                            <i class="fa-regular fa-compass"></i>
-                        </div>
-                        <h3 class="text-base font-semibold text-apple-text">准备好构筑完美的空间叙事</h3>
-                        <p class="text-xs text-apple-muted max-w-sm mx-auto">选择场景、调节 Emoji 密度与篇幅，点击“生成爆款文案”。AI 将结合品牌词库与您的专属记忆库为您发声。</p>
-                    </div>
-
-                    <!-- Generating Loading Spinner -->
-                    <div id="loading-state" class="hidden my-auto text-center py-20 space-y-4">
-                        <div class="inline-block animate-spin rounded-full h-8 w-8 border-2 border-black border-t-transparent"></div>
-                        <p class="text-xs font-medium text-apple-text">正在深度分析材质、光影与空间意境...</p>
-                    </div>
-
-                    <!-- Actual Generated Content Section -->
-                    <div id="result-content" class="hidden space-y-6 flex-1">
-                        
-                        <!-- AI Viral Potential Badge -->
-                        <div class="flex items-center justify-between pb-4 border-b border-apple-border">
-                            <div class="flex items-center space-x-2">
-                                <span class="px-2.5 py-1 rounded-full bg-black text-white text-xs font-bold tracking-wide">
-                                    AI 潜力指数 <span id="viral-score">98</span>/100
-                                </span>
-                                <span id="score-highlights" class="text-xs text-apple-muted font-medium truncate">
-                                    黄金前3秒 hook · 高意向种草 · 材质拉满
-                                </span>
-                            </div>
-                            <button onclick="generateVariant()" title="保持当前设置重新推演新视角" class="text-xs font-medium text-apple-accent hover:text-apple-accentHover flex items-center gap-1 bg-apple-subtle hover:bg-apple-border px-3 py-1.5 rounded-full transition border border-apple-border/80">
-                                <i class="fa-solid fa-arrows-rotate"></i> 换一版
-                            </button>
-                        </div>
-
-                        <!-- Multi-Title Capsule Selector Zone -->
-                        <div>
-                            <label class="block text-[11px] font-semibold text-apple-muted uppercase tracking-wider mb-2">多爆款标题备选区（点击可实时切换）</label>
-                            <div id="titles-capsules-container" class="flex flex-wrap gap-2">
-                                <!-- Capsules dynamically injected here -->
-                            </div>
-                        </div>
-
-                        <!-- Copywriting Display Box -->
-                        <div class="bg-apple-subtle/70 rounded-2xl p-5 border border-apple-border/80 relative group">
-                            
-                            <!-- Active Title Display -->
-                            <div class="font-bold text-base text-black mb-3 pb-2 border-b border-apple-border/60 flex items-start justify-between">
-                                <span id="active-title-text">标题生成中...</span>
-                                <span class="text-[10px] text-apple-muted font-normal uppercase px-2 py-0.5 rounded bg-white border border-apple-border ml-2 flex-shrink-0" id="title-tag">材质美学型</span>
-                            </div>
-
-                            <!-- Active Body Display -->
-                            <div id="active-body-text" class="text-xs sm:text-sm text-apple-text leading-relaxed whitespace-pre-wrap font-normal select-text">
-                                正文生成中...
-                            </div>
-
-                            <!-- Active Hashtags Display -->
-                            <div id="active-hashtags-text" class="mt-4 pt-3 border-t border-apple-border/60 text-xs font-medium text-apple-accent space-x-1">
-                                #COSMO家居 #极简空间
-                            </div>
-
-                            <!-- Word Count Info -->
-                            <div class="mt-3 text-[10px] text-apple-muted text-right font-mono" id="word-count-info">
-                                共 285 字 (不含标签)
-                            </div>
-                        </div>
-
-                        <!-- Memory Adoption Section -->
-                        <div class="p-3.5 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-between">
-                            <div class="flex items-center space-x-2.5">
-                                <div class="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center text-xs">
-                                    <i class="fa-solid fa-brain"></i>
-                                </div>
-                                <div>
-                                    <div class="text-xs font-semibold text-purple-950">In-Context 记忆进化系统</div>
-                                    <div class="text-[11px] text-purple-700">采纳文案将加入 AI 专属提示库，越用越懂您的品味</div>
-                                </div>
-                            </div>
-                            <button id="adopt-btn" onclick="adoptCurrentCopy()" class="px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-medium text-xs transition flex items-center gap-1.5 shadow-sm">
-                                <i class="fa-regular fa-bookmark"></i>
-                                <span id="adopt-btn-text">采纳此版</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Bulletproof Copy Actions Bar -->
-                    <div id="action-bar" class="hidden pt-5 border-t border-apple-border mt-auto">
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                            <button onclick="copyToClipboard('all')" class="py-2.5 px-3 rounded-2xl bg-black hover:bg-neutral-800 text-white text-xs font-medium transition flex items-center justify-center gap-1.5 shadow-sm">
-                                <i class="fa-regular fa-copy"></i> 复制全案
-                            </button>
-                            <button onclick="copyToClipboard('title')" class="py-2.5 px-3 rounded-2xl bg-apple-subtle hover:bg-apple-border text-apple-text border border-apple-border text-xs font-medium transition flex items-center justify-center gap-1.5">
-                                <i class="fa-solid fa-heading"></i> 仅复制标题
-                            </button>
-                            <button onclick="copyToClipboard('body')" class="py-2.5 px-3 rounded-2xl bg-apple-subtle hover:bg-apple-border text-apple-text border border-apple-border text-xs font-medium transition flex items-center justify-center gap-1.5">
-                                <i class="fa-solid fa-align-left"></i> 仅复制正文
-                            </button>
-                            <button onclick="copyToClipboard('hashtags')" class="py-2.5 px-3 rounded-2xl bg-apple-subtle hover:bg-apple-border text-apple-text border border-apple-border text-xs font-medium transition flex items-center justify-center gap-1.5">
-                                <i class="fa-solid fa-hashtag"></i> 仅复制话题
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
+        <div>
+          <h1 class="text-lg font-semibold tracking-tight text-black leading-tight">COSMO 文案生成器</h1>
+          <p class="text-xs text-neutral-500 font-normal">家居美学与买手店高阶文案工坊</p>
         </div>
-    </main>
+      </div>
 
-    <!-- Modal: API Key Config -->
-    <div id="api-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-apple-card rounded-3xl max-w-md w-full p-6 border border-apple-border shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-200">
-            <div class="flex justify-between items-center pb-3 border-b border-apple-border">
-                <h3 class="text-base font-semibold text-apple-text flex items-center gap-2">
-                    <i class="fa-solid fa-key text-apple-accent"></i> Gemini API 配置
-                </h3>
-                <button onclick="closeApiModal()" class="text-apple-muted hover:text-black transition">
-                    <i class="fa-solid fa-xmark text-base"></i>
-                </button>
-            </div>
-            
-            <p class="text-xs text-apple-muted leading-relaxed">
-                填入您的 Gemini API Key 可开启 <strong>Gemini 2.5 / Vision 深度图文识图分析</strong>。若未配置，系统将无缝调用高品质本地智能合成引擎，开箱即用。
-            </p>
+      <div class="flex items-center gap-3">
+        <!-- AI Memory Status Button -->
+        <button id="memory-modal-btn" class="apple-button flex items-center gap-2 text-xs font-medium bg-white text-neutral-700 hover:text-black border border-neutral-200/80 px-3.5 py-2 rounded-full shadow-xs">
+          <i class="fa-solid fa-brain text-neutral-500"></i>
+          <span>AI 偏好记忆</span>
+          <span id="memory-count-badge" class="bg-black text-white px-2 py-0.5 rounded-full text-[10px] font-semibold">0</span>
+        </button>
 
-            <div>
-                <label class="block text-xs font-semibold text-apple-text mb-1.5">Gemini API Key</label>
-                <input type="password" id="api-key-input" placeholder="AIzaSy..." class="w-full py-2.5 px-3.5 rounded-2xl border border-apple-border bg-apple-subtle text-xs text-apple-text focus:outline-none focus:border-black font-mono transition">
-            </div>
-
-            <div class="flex justify-end space-x-2 pt-2">
-                <button onclick="closeApiModal()" class="px-4 py-2 rounded-2xl bg-apple-subtle hover:bg-apple-border text-xs font-medium text-apple-text transition">取消</button>
-                <button onclick="saveApiKey()" class="px-4 py-2 rounded-2xl bg-black hover:bg-neutral-800 text-xs font-medium text-white transition">保存 Key</button>
-            </div>
-        </div>
+        <!-- API Key Modal Button -->
+        <button id="api-key-btn" class="apple-button flex items-center gap-2 text-xs font-medium bg-black text-white hover:bg-neutral-800 px-4 py-2 rounded-full shadow-sm">
+          <i class="fa-solid fa-key text-xs"></i>
+          <span id="api-key-status-text">设置 API Key</span>
+        </button>
+      </div>
     </div>
+  </header>
 
-    <!-- Hidden Textarea for Bulletproof ExecCommand Fallback Copying -->
-    <textarea id="hidden-copy-area" class="fixed -top-full -left-full opacity-0 pointer-events-none" aria-hidden="true"></textarea>
+  <!-- Main Workspace Layout -->
+  <main class="max-w-7xl mx-auto px-4 md:px-6 py-8 w-full flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-    <!-- JS Logic -->
-    <script>
-        // Global App State
-        const state = {
-            apiKey: localStorage.getItem('cosmo_api_key') || '',
-            platform: 'xiaohongshu',
-            persona: '家居买手店',
-            context: 'showroom',
-            emojiDensity: 15, // 0, 15, 40
-            length: 'medium', // short, medium, long
-            keyElements: '',
-            hashtags: localStorage.getItem('cosmo_custom_hashtags') || '#COSMO家居 #深圳家居买手店 #极简空间 #软装搭配 #家居美学',
-            uploadedImages: [], // array of base64 string
-            currentData: null,
-            selectedTitleIndex: 0,
-            adoptedMemories: JSON.parse(localStorage.getItem('cosmo_adopted_memories') || '[]')
-        };
+    <!-- LEFT PANEL: Controls & Input Engine (7 Cols) -->
+    <section class="lg:col-span-7 flex flex-col gap-6">
 
-        // Initialize UI on load
-        window.onload = function() {
-            updateMemoryCountDisplay();
-            updateApiKeyStatusDisplay();
-            document.getElementById('preset-hashtags').value = state.hashtags;
-        };
+      <!-- 1. Persona & Scenario Selector Card -->
+      <div class="apple-card p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-neutral-400 flex items-center gap-2">
+            <i class="fa-solid fa-user-ninja text-black"></i> 人设与发布场景
+          </h2>
+          <span class="text-xs text-neutral-400">选择内容输出视角</span>
+        </div>
 
-        function setPlatform(plat) {
-            state.platform = plat;
-            document.querySelectorAll('.platform-btn').forEach(btn => {
-                btn.className = 'platform-btn py-2.5 px-3 rounded-2xl border text-xs font-medium flex items-center justify-center gap-2 transition border-apple-border bg-apple-subtle text-apple-text hover:bg-apple-border';
-            });
-            const activeBtn = document.getElementById(`platform-${plat}`);
-            if (activeBtn) {
-                activeBtn.className = 'platform-btn py-2.5 px-3 rounded-2xl border text-xs font-medium flex items-center justify-center gap-2 transition border-black bg-black text-white';
-            }
-        }
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+          <!-- Persona 1: Home Blogger -->
+          <label class="relative flex flex-col p-4 rounded-2xl border-2 border-black bg-white cursor-pointer transition-all duration-200 select-none hover:shadow-md" id="label-persona-blogger">
+            <input type="radio" name="persona" value="blogger" checked class="sr-only" onchange="updatePersonaStyle()">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="font-semibold text-sm text-black flex items-center gap-2">
+                <i class="fa-solid fa-house-chimney text-neutral-700"></i> 家居博主
+              </span>
+              <span class="w-4 h-4 rounded-full border-2 border-black flex items-center justify-center" id="radio-icon-blogger">
+                <span class="w-2 h-2 rounded-full bg-black"></span>
+              </span>
+            </div>
+            <p class="text-xs text-neutral-500 leading-relaxed">聚焦空间美学、自然光影、生活质感与软装搭配。</p>
+          </label>
 
-        function selectContext(ctx) {
-            state.context = ctx;
-            document.querySelectorAll('.context-card').forEach(card => {
-                card.classList.remove('border-black', 'bg-white', 'shadow-sm');
-                card.classList.add('border-apple-border', 'bg-apple-subtle');
-            });
-            const eventTarget = event.currentTarget;
-            if (eventTarget) {
-                eventTarget.classList.remove('border-apple-border', 'bg-apple-subtle');
-                eventTarget.classList.add('border-black', 'bg-white', 'shadow-sm');
-            }
-        }
+          <!-- Persona 2: Select Shop -->
+          <label class="relative flex flex-col p-4 rounded-2xl border-2 border-transparent bg-neutral-100/80 cursor-pointer transition-all duration-200 select-none hover:bg-neutral-100 hover:shadow-md" id="label-persona-shop">
+            <input type="radio" name="persona" value="shop" class="sr-only" onchange="updatePersonaStyle()">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="font-semibold text-sm text-neutral-800 flex items-center gap-2">
+                <i class="fa-solid fa-store text-neutral-700"></i> 家居买手店
+              </span>
+              <span class="w-4 h-4 rounded-full border border-neutral-400 flex items-center justify-center" id="radio-icon-shop">
+                <span class="w-2 h-2 rounded-full bg-transparent"></span>
+              </span>
+            </div>
+            <p class="text-xs text-neutral-500 leading-relaxed">大师经典选品、品牌传奇故事、极致品味解读。</p>
+          </label>
+        </div>
 
-        function setEmojiDensity(density) {
-            state.emojiDensity = density;
-            ['0', '15', '40'].forEach(id => {
-                const btn = document.getElementById(`emoji-${id}`);
-                btn.classList.remove('active');
-                btn.classList.add('text-apple-muted');
-            });
-            const currentBtn = document.getElementById(`emoji-${density}`);
-            currentBtn.classList.add('active');
-            currentBtn.classList.remove('text-apple-muted');
+        <!-- Scenario Pills -->
+        <div class="space-y-2">
+          <label class="text-xs font-medium text-neutral-600 block">发布目的 / 场景</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" onclick="selectScenario(this, '展厅新品/现货入库')" class="scenario-btn apple-button text-xs font-medium py-2 px-3 rounded-xl border border-black bg-black text-white text-center transition-all">
+              展厅新品/入库
+            </button>
+            <button type="button" onclick="selectScenario(this, '客户实装/送货实拍')" class="scenario-btn apple-button text-xs font-medium py-2 px-3 rounded-xl border border-neutral-200 bg-white text-neutral-700 hover:border-neutral-400 text-center transition-all">
+              客户实装实拍
+            </button>
+            <button type="button" onclick="selectScenario(this, '灵感搭配/设计解读')" class="scenario-btn apple-button text-xs font-medium py-2 px-3 rounded-xl border border-neutral-200 bg-white text-neutral-700 hover:border-neutral-400 text-center transition-all">
+              灵感搭配/解读
+            </button>
+          </div>
+          <input type="hidden" id="selected-scenario" value="展厅新品/现货入库">
+        </div>
+      </div>
 
-            const descMap = {
-                0: '极简无 Emoji (0%)',
-                15: '克制点缀 (10%-20%)',
-                40: '氛围感丰富 (40%+)'
-            };
-            document.getElementById('emoji-desc').innerText = descMap[density];
-        }
+      <!-- 2. Dual-Channel Drag & Drop File Upload Zone -->
+      <div class="apple-card p-6">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-neutral-400 flex items-center gap-2">
+            <i class="fa-solid fa-images text-black"></i> 产品与实拍图片上传
+          </h2>
+          <span class="text-xs text-neutral-400">支持拖拽或点击 (可多选)</span>
+        </div>
 
-        function setLength(len) {
-            state.length = len;
-            ['short', 'medium', 'long'].forEach(id => {
-                const btn = document.getElementById(`length-${id}`);
-                btn.classList.remove('active');
-                btn.classList.add('text-apple-muted');
-            });
-            const currentBtn = document.getElementById(`length-${len}`);
-            currentBtn.classList.add('active');
-            currentBtn.classList.remove('text-apple-muted');
+        <!-- Hidden Native File Input -->
+        <input type="file" id="file-input" multiple accept="image/*" class="hidden">
 
-            const descMap = {
-                short: '精炼短打 (50-150字)',
-                medium: '标准种草 (200-400字)',
-                long: '深度解读 (500字+)'
-            };
-            document.getElementById('length-desc').innerText = descMap[len];
-        }
+        <!-- Drag and Drop Dropzone -->
+        <div id="drop-zone" class="relative group cursor-pointer border-2 border-dashed border-neutral-300 hover:border-neutral-500 rounded-2xl p-6 transition-all duration-200 text-center bg-neutral-50/50 flex flex-col items-center justify-center min-h-[160px]">
+          
+          <!-- Child Elements overlay-safe container with pointer-events-none -->
+          <div class="pointer-events-none flex flex-col items-center justify-center space-y-2">
+            <div class="w-12 h-12 rounded-full bg-white shadow-xs border border-neutral-200/80 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+              <i class="fa-solid fa-cloud-arrow-up text-lg text-neutral-700"></i>
+            </div>
+            <div class="text-xs font-medium text-neutral-700">
+              <span class="text-black font-semibold underline underline-offset-2">点击上传</span> 或将图片拖拽至此处
+            </div>
+            <p class="text-[11px] text-neutral-400">支持 JPG, PNG, WEBP (多图拖拽合成视觉线索)</p>
+          </div>
+        </div>
 
-        function appendKeyElement(tag) {
-            const input = document.getElementById('key-elements');
-            if (input.value.includes(tag)) return;
-            input.value = input.value ? `${input.value.trim()} ${tag}` : tag;
-            showToast(`已添加关键词 ${tag}`);
-        }
+        <!-- Image Thumbnails Grid -->
+        <div id="thumbnail-container" class="grid grid-cols-4 sm:grid-cols-6 gap-3 mt-4 hidden">
+          <!-- Dynamically inserted thumbnails -->
+        </div>
+      </div>
 
-        function saveCustomHashtags() {
-            const val = document.getElementById('preset-hashtags').value.trim();
-            state.hashtags = val;
-            localStorage.setItem('cosmo_custom_hashtags', val);
-            showToast('常用话题预设已保存！');
-        }
+      <!-- 3. Key Elements & Brand Tags Input -->
+      <div class="apple-card p-6">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-neutral-400 flex items-center gap-2">
+            <i class="fa-solid fa-tags text-black"></i> 材质与品牌关键词
+          </h2>
+          <span class="text-xs text-neutral-400">点击快捷添加</span>
+        </div>
 
-        function handleImageUpload(e) {
-            const files = e.target.files;
-            if (!files || files.length === 0) return;
+        <!-- Preset Hot Words -->
+        <div class="flex flex-wrap gap-2 mb-3">
+          <button type="button" onclick="addKeyword('#USM')" class="apple-button text-xs bg-white hover:bg-neutral-100 border border-neutral-200 px-2.5 py-1 rounded-lg text-neutral-600 transition-colors">#USM</button>
+          <button type="button" onclick="addKeyword('#Vitra')" class="apple-button text-xs bg-white hover:bg-neutral-100 border border-neutral-200 px-2.5 py-1 rounded-lg text-neutral-600 transition-colors">#Vitra</button>
+          <button type="button" onclick="addKeyword('#LouisPoulsen')" class="apple-button text-xs bg-white hover:bg-neutral-100 border border-neutral-200 px-2.5 py-1 rounded-lg text-neutral-600 transition-colors">#LouisPoulsen</button>
+          <button type="button" onclick="addKeyword('#FritzHansen')" class="apple-button text-xs bg-white hover:bg-neutral-100 border border-neutral-200 px-2.5 py-1 rounded-lg text-neutral-600 transition-colors">#FritzHansen</button>
+          <button type="button" onclick="addKeyword('#实木质感')" class="apple-button text-xs bg-white hover:bg-neutral-100 border border-neutral-200 px-2.5 py-1 rounded-lg text-neutral-600 transition-colors">#实木质感</button>
+          <button type="button" onclick="addKeyword('#光影氛围')" class="apple-button text-xs bg-white hover:bg-neutral-100 border border-neutral-200 px-2.5 py-1 rounded-lg text-neutral-600 transition-colors">#光影氛围</button>
+          <button type="button" onclick="addKeyword('#客户实装')" class="apple-button text-xs bg-white hover:bg-neutral-100 border border-neutral-200 px-2.5 py-1 rounded-lg text-neutral-600 transition-colors">#客户实装</button>
+        </div>
 
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    state.uploadedImages.push(event.target.result);
-                    renderImagePreviews();
-                };
-                reader.readAsDataURL(file);
-            });
-        }
+        <!-- Active Key Tag Input Pill Box -->
+        <div class="apple-card-subtle p-2.5 flex flex-wrap items-center gap-2 min-h-[44px]">
+          <div id="active-keywords-list" class="flex flex-wrap items-center gap-2">
+            <!-- Active tags render here -->
+          </div>
+          <input type="text" id="custom-keyword-input" placeholder="输入自定义关键词后回车..." class="flex-1 bg-transparent text-xs text-black focus:outline-none min-w-[120px] px-1 py-0.5">
+        </div>
 
-        function removeImage(index) {
-            state.uploadedImages.splice(index, 1);
-            renderImagePreviews();
-        }
+        <!-- Preset Hashtags System -->
+        <div class="mt-4 pt-4 border-t border-neutral-100">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-medium text-neutral-600">常用话题预设 (Hashtags)</span>
+            <span class="text-[11px] text-neutral-400">生成时自动附带于底部</span>
+          </div>
+          <div id="hashtags-list" class="flex flex-wrap gap-2">
+            <!-- Rendered hashtags -->
+          </div>
+        </div>
+      </div>
 
-        function renderImagePreviews() {
-            const grid = document.getElementById('image-preview-grid');
-            grid.innerHTML = '';
-            state.uploadedImages.forEach((imgSrc, idx) => {
-                const container = document.createElement('div');
-                container.className = 'relative group aspect-square rounded-xl overflow-hidden border border-apple-border shadow-sm bg-black/5';
-                container.innerHTML = `
-                    <img src="${imgSrc}" class="w-full h-full object-cover">
-                    <button onclick="removeImage(${idx})" class="absolute top-1 right-1 bg-black/70 hover:bg-black text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] transition opacity-0 group-hover:opacity-100">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                `;
-                grid.appendChild(container);
-            });
-        }
+      <!-- 4. Fine Control Sliders (Emoji Density & Length) -->
+      <div class="apple-card p-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        
+        <!-- Emoji Density -->
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <label class="text-xs font-medium text-neutral-700 flex items-center gap-1.5">
+              <i class="fa-regular fa-face-smile text-neutral-500"></i> Emoji 密度
+            </label>
+            <span id="emoji-level-text" class="text-xs font-semibold text-black">克制点缀 (10-20%)</span>
+          </div>
+          <input type="range" id="emoji-slider" min="0" max="2" value="1" step="1" onchange="updateSliderLabels()" class="w-full accent-black cursor-pointer">
+          <div class="flex justify-between text-[10px] text-neutral-400 font-medium">
+            <span>极简无表情</span>
+            <span>克制点缀</span>
+            <span>氛围拉满</span>
+          </div>
+        </div>
 
-        function showToast(message) {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'toast-animate px-4 py-2.5 rounded-full bg-black/90 text-white text-xs font-medium shadow-xl flex items-center gap-2 border border-white/20 glass-panel';
-            toast.innerHTML = `<i class="fa-solid fa-circle-check text-green-400"></i> <span>${message}</span>`;
+        <!-- Length Control -->
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <label class="text-xs font-medium text-neutral-700 flex items-center gap-1.5">
+              <i class="fa-solid fa-align-left text-neutral-500"></i> 文案篇幅
+            </label>
+            <span id="length-level-text" class="text-xs font-semibold text-black">标准种草 (200-400字)</span>
+          </div>
+          <input type="range" id="length-slider" min="0" max="2" value="1" step="1" onchange="updateSliderLabels()" class="w-full accent-black cursor-pointer">
+          <div class="flex justify-between text-[10px] text-neutral-400 font-medium">
+            <span>精炼短打</span>
+            <span>标准种草</span>
+            <span>深度解读</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Generate Button -->
+      <button id="generate-btn" onclick="generateCopywriting()" class="apple-button w-full bg-black hover:bg-neutral-800 text-white font-semibold py-4 px-6 rounded-2xl shadow-lg flex items-center justify-center gap-3 text-sm tracking-wide transition-all">
+        <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+        <span>生成 COSMO 极简文案</span>
+      </button>
+
+    </section>
+
+    <!-- RIGHT PANEL: Generation Result & Action Engine (5 Cols) -->
+    <section class="lg:col-span-5 flex flex-col">
+      <div class="apple-card p-6 flex-1 flex flex-col justify-between relative min-h-[520px]">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-neutral-100 pb-4 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-green-500 inline-block animate-pulse"></span>
+            <h2 class="text-sm font-semibold text-black tracking-tight">文案成稿工坊</h2>
+          </div>
+          <span id="engine-indicator" class="text-[11px] px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-600 font-medium border border-neutral-200">
+            内置本地引擎
+          </span>
+        </div>
+
+        <!-- Initial Placeholder State -->
+        <div id="output-placeholder" class="flex-1 flex flex-col items-center justify-center py-12 text-center my-auto">
+          <div class="w-16 h-16 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-300 mb-4">
+            <i class="fa-solid fa-feather-pointed text-2xl"></i>
+          </div>
+          <h3 class="text-sm font-semibold text-neutral-700 mb-1">等待生成文案</h3>
+          <p class="text-xs text-neutral-400 max-w-xs leading-relaxed">
+            在左侧配置文件参数或上传家具实拍图片，点击“生成 COSMO 极简文案”即可完成创作。
+          </p>
+        </div>
+
+        <!-- Loading Skeleton State -->
+        <div id="output-loading" class="flex-1 flex flex-col items-center justify-center py-12 hidden my-auto">
+          <div class="relative w-12 h-12 mb-4">
+            <div class="absolute inset-0 rounded-full border-2 border-black/10"></div>
+            <div class="absolute inset-0 rounded-full border-2 border-black border-t-transparent animate-spin"></div>
+          </div>
+          <p class="text-xs font-semibold text-black animate-pulse">COSMO AI 正在思考与磨词...</p>
+          <span class="text-[11px] text-neutral-400 mt-1">融合选品视角与高级调性中</span>
+        </div>
+
+        <!-- Output Content Workspace -->
+        <div id="output-workspace" class="flex-1 flex flex-col justify-between hidden">
+          
+          <div class="space-y-5 overflow-y-auto max-h-[580px] pr-1">
             
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transition = 'opacity 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 2400);
+            <!-- Multi-Title Selector Candidates -->
+            <div class="space-y-2">
+              <label class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block">
+                爆款备选标题 (点击切换主标题)
+              </label>
+              <div id="title-candidates-container" class="space-y-1.5">
+                <!-- Dynamically populated candidate titles -->
+              </div>
+            </div>
+
+            <!-- Active Selected Main Title -->
+            <div class="p-3.5 bg-neutral-900 text-white rounded-xl shadow-xs">
+              <div class="text-[10px] text-neutral-400 uppercase tracking-wider mb-1">当前主标题</div>
+              <h3 id="main-active-title" class="text-sm font-bold leading-snug">
+                <!-- Active title content -->
+              </h3>
+            </div>
+
+            <!-- Copywriting Body Area -->
+            <div class="space-y-2">
+              <label class="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block">正文内容</label>
+              <div id="copy-body-text" class="apple-card-subtle p-4 text-xs leading-relaxed text-neutral-800 whitespace-pre-line font-normal selection:bg-black selection:text-white min-h-[180px]">
+                <!-- Copy body content -->
+              </div>
+            </div>
+
+            <!-- Hashtags Box -->
+            <div id="output-hashtags-display" class="text-xs font-medium text-neutral-500 tracking-wide">
+              <!-- Rendered generated hashtags -->
+            </div>
+          </div>
+
+          <!-- Action Buttons Bar -->
+          <div class="mt-6 pt-4 border-t border-neutral-100 flex flex-col gap-2.5">
+            
+            <!-- Primary Copy Actions -->
+            <div class="grid grid-cols-3 gap-2">
+              <button onclick="copyFullPost()" class="apple-button bg-black hover:bg-neutral-800 text-white text-xs font-semibold py-2.5 px-2 rounded-xl text-center flex items-center justify-center gap-1.5 shadow-xs">
+                <i class="fa-regular fa-copy"></i> 一键全案
+              </button>
+              <button onclick="copyBodyOnly()" class="apple-button bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-medium py-2.5 px-2 rounded-xl text-center flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-align-left"></i> 仅正文
+              </button>
+              <button onclick="copyTitleOnly()" class="apple-button bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-medium py-2.5 px-2 rounded-xl text-center flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-heading"></i> 仅标题
+              </button>
+            </div>
+
+            <!-- Variant Generation & Adopt Memory System -->
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="generateVariant()" class="apple-button border border-neutral-200 hover:bg-neutral-50 text-neutral-700 text-xs font-medium py-2.5 px-3 rounded-xl flex items-center justify-center gap-2">
+                <i class="fa-solid fa-arrows-rotate text-neutral-500"></i> 换一版视角
+              </button>
+              <button id="adopt-btn" onclick="adoptCurrentVersion()" class="apple-button bg-amber-500/10 hover:bg-amber-500/20 text-amber-900 border border-amber-200/60 text-xs font-semibold py-2.5 px-3 rounded-xl flex items-center justify-center gap-2">
+                <i class="fa-solid fa-star text-amber-500"></i> 采纳此版 (学习)
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL 1: API Key Config Modal -->
+  <div id="api-modal" class="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+    <div class="apple-card max-w-md w-full p-6 space-y-4 relative bg-white">
+      <button onclick="toggleApiModal(false)" class="absolute top-4 right-4 text-neutral-400 hover:text-black">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center">
+          <i class="fa-solid fa-key"></i>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-black">Gemini API Key 设置</h3>
+          <p class="text-xs text-neutral-500">配置个人 Key 激活智能视觉识别与深度写作引擎</p>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <label class="text-xs font-medium text-neutral-700">API Key</label>
+        <input type="password" id="api-key-input" placeholder="AIzaSy..." class="w-full bg-neutral-100 border border-neutral-200 rounded-xl px-3.5 py-2.5 text-xs text-black focus:outline-none focus:border-black">
+        <p class="text-[11px] text-neutral-400 leading-relaxed">
+          若未配置或调用失败，系统将无缝切换至高品质内置本地兜底文案引擎。
+        </p>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="saveApiKey()" class="apple-button bg-black text-white text-xs font-semibold px-5 py-2.5 rounded-xl">
+          保存配置
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: AI Few-Shot Memory Manager Modal -->
+  <div id="memory-modal" class="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+    <div class="apple-card max-w-lg w-full p-6 space-y-4 relative bg-white">
+      <button onclick="toggleMemoryModal(false)" class="absolute top-4 right-4 text-neutral-400 hover:text-black">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-brain text-black"></i>
+          <h3 class="text-sm font-semibold text-black">AI 采纳偏好记忆 (Few-Shot Prompt)</h3>
+        </div>
+        <button onclick="clearMemory()" class="text-xs text-red-500 hover:underline font-medium">清空记忆</button>
+      </div>
+
+      <p class="text-xs text-neutral-500 leading-relaxed">
+        每当您点击“采纳此版”，该文案会被存入记忆库，未来使用 Gemini API 生成时会自动作为样本注入，让 AI 越用越了解您的叙事习惯。
+      </p>
+
+      <div id="memory-list" class="space-y-2.5 max-h-[280px] overflow-y-auto pr-1">
+        <!-- Rendered adopted prompts -->
+      </div>
+
+      <div class="flex justify-end pt-2">
+        <button onclick="toggleMemoryModal(false)" class="apple-button bg-black text-white text-xs font-semibold px-5 py-2 rounded-xl">
+          关闭
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="max-w-7xl mx-auto px-6 py-6 text-center text-xs text-neutral-400">
+    COSMO Studio &copy; 2026. Minimalist Aesthetics & Furniture Curation.
+  </footer>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // --- Global State ---
+    let uploadedImages = []; // Stores Base64 data and previews
+    let activeKeywords = ['#实木质感', '#光影氛围'];
+    let hashtags = ['#COSMO家居', '#深圳家居买手店', '#极简空间'];
+    let currentGeneratedData = null; // Stores currently generated title options & body
+    let activeTitleIndex = 0;
+    let dragCounter = 0;
+
+    // Local Storage Keys
+    const API_KEY_STORAGE = 'cosmo_gemini_api_key';
+    const MEMORY_STORAGE = 'cosmo_adopted_memories';
+
+    // Initialize Page
+    document.addEventListener('DOMContentLoaded', () => {
+      initDragAndDrop();
+      renderKeywords();
+      renderHashtags();
+      loadApiKeyStatus();
+      updateMemoryBadge();
+    });
+
+    // --- Drag and Drop File Upload System ---
+    function initDragAndDrop() {
+      const dropZone = document.getElementById('drop-zone');
+      const fileInput = document.getElementById('file-input');
+
+      // Click dropzone to select files
+      dropZone.addEventListener('click', () => {
+        fileInput.click();
+      });
+
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+          handleFiles(e.target.files);
+          fileInput.value = ''; // Reset input
+        }
+      });
+
+      // Prevent browser default file open behavior on entire window & dropzone
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        window.addEventListener(eventName, preventDefaults, false);
+        dropZone.addEventListener(eventName, preventDefaults, false);
+      });
+
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      // Drag enter & leave highlight counter handling
+      dropZone.addEventListener('dragenter', (e) => {
+        dragCounter++;
+        dropZone.classList.add('drop-active');
+      });
+
+      dropZone.addEventListener('dragleave', (e) => {
+        dragCounter--;
+        if (dragCounter <= 0) {
+          dragCounter = 0;
+          dropZone.classList.remove('drop-active');
+        }
+      });
+
+      // Drop Event
+      dropZone.addEventListener('drop', (e) => {
+        dragCounter = 0;
+        dropZone.classList.remove('drop-active');
+        
+        const dt = e.dataTransfer;
+        if (dt && dt.files && dt.files.length > 0) {
+          handleFiles(dt.files);
+        }
+      });
+    }
+
+    // Unified File Handler
+    function handleFiles(files) {
+      const validFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+      if (validFiles.length === 0) {
+        showToast('请拖拽或上传图片文件', 'fa-exclamation-circle text-amber-400');
+        return;
+      }
+
+      let readPromises = validFiles.map(file => {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            resolve({
+              id: Date.now() + Math.random().toString(36).substr(2, 5),
+              base64: e.target.result,
+              mimeType: file.type
+            });
+          };
+          reader.readAsDataURL(file);
+        });
+      });
+
+      Promise.all(readPromises).then(newImages => {
+        uploadedImages = [...uploadedImages, ...newImages];
+        renderThumbnails();
+        showToast(`成功导入 ${newImages.length} 张图片`);
+      });
+    }
+
+    // Render Thumbnail Grid
+    function renderThumbnails() {
+      const container = document.getElementById('thumbnail-container');
+      if (uploadedImages.length === 0) {
+        container.classList.add('hidden');
+        container.innerHTML = '';
+        return;
+      }
+
+      container.classList.remove('hidden');
+      container.innerHTML = uploadedImages.map(img => `
+        <div class="relative group aspect-square rounded-xl overflow-hidden border border-neutral-200/80 bg-neutral-100">
+          <img src="${img.base64}" class="w-full h-full object-cover" alt="Upload thumbnail">
+          <button onclick="removeImage('${img.id}', event)" class="absolute top-1 right-1 bg-black/70 hover:bg-black text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center transition-opacity">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function removeImage(id, e) {
+      e.stopPropagation();
+      uploadedImages = uploadedImages.filter(img => img.id !== id);
+      renderThumbnails();
+    }
+
+    // --- Persona & Option Controls ---
+    function updatePersonaStyle() {
+      const isBlogger = document.querySelector('input[name="persona"]:checked').value === 'blogger';
+      
+      const labelBlogger = document.getElementById('label-persona-blogger');
+      const labelShop = document.getElementById('label-persona-shop');
+      const iconBlogger = document.getElementById('radio-icon-blogger');
+      const iconShop = document.getElementById('radio-icon-shop');
+
+      if (isBlogger) {
+        labelBlogger.className = "relative flex flex-col p-4 rounded-2xl border-2 border-black bg-white cursor-pointer transition-all duration-200 select-none hover:shadow-md";
+        labelShop.className = "relative flex flex-col p-4 rounded-2xl border-2 border-transparent bg-neutral-100/80 cursor-pointer transition-all duration-200 select-none hover:bg-neutral-100 hover:shadow-md";
+        iconBlogger.className = "w-4 h-4 rounded-full border-2 border-black flex items-center justify-center";
+        iconBlogger.innerHTML = `<span class="w-2 h-2 rounded-full bg-black"></span>`;
+        iconShop.className = "w-4 h-4 rounded-full border border-neutral-400 flex items-center justify-center";
+        iconShop.innerHTML = `<span class="w-2 h-2 rounded-full bg-transparent"></span>`;
+      } else {
+        labelShop.className = "relative flex flex-col p-4 rounded-2xl border-2 border-black bg-white cursor-pointer transition-all duration-200 select-none hover:shadow-md";
+        labelBlogger.className = "relative flex flex-col p-4 rounded-2xl border-2 border-transparent bg-neutral-100/80 cursor-pointer transition-all duration-200 select-none hover:bg-neutral-100 hover:shadow-md";
+        iconShop.className = "w-4 h-4 rounded-full border-2 border-black flex items-center justify-center";
+        iconShop.innerHTML = `<span class="w-2 h-2 rounded-full bg-black"></span>`;
+        iconBlogger.className = "w-4 h-4 rounded-full border border-neutral-400 flex items-center justify-center";
+        iconBlogger.innerHTML = `<span class="w-2 h-2 rounded-full bg-transparent"></span>`;
+      }
+    }
+
+    function selectScenario(btn, scenarioText) {
+      document.querySelectorAll('.scenario-btn').forEach(b => {
+        b.className = "scenario-btn apple-button text-xs font-medium py-2 px-3 rounded-xl border border-neutral-200 bg-white text-neutral-700 hover:border-neutral-400 text-center transition-all";
+      });
+      btn.className = "scenario-btn apple-button text-xs font-medium py-2 px-3 rounded-xl border border-black bg-black text-white text-center transition-all";
+      document.getElementById('selected-scenario').value = scenarioText;
+    }
+
+    function updateSliderLabels() {
+      const emojiVal = document.getElementById('emoji-slider').value;
+      const emojiText = ['极简无 Emoji (0%)', '克制点缀 (10-20%)', '氛围感丰富 (40%+)'][emojiVal];
+      document.getElementById('emoji-level-text').innerText = emojiText;
+
+      const lengthVal = document.getElementById('length-slider').value;
+      const lengthText = ['精炼短打 (50-150字)', '标准种草 (200-400字)', '深度解读 (500字+)'][lengthVal];
+      document.getElementById('length-level-text').innerText = lengthText;
+    }
+
+    // --- Keywords & Hashtags Manager ---
+    function addKeyword(kw) {
+      if (!activeKeywords.includes(kw)) {
+        activeKeywords.push(kw);
+        renderKeywords();
+      }
+    }
+
+    function removeKeyword(kw) {
+      activeKeywords = activeKeywords.filter(k => k !== kw);
+      renderKeywords();
+    }
+
+    function renderKeywords() {
+      const listContainer = document.getElementById('active-keywords-list');
+      listContainer.innerHTML = activeKeywords.map(kw => `
+        <span class="inline-flex items-center gap-1.5 text-xs bg-black text-white px-2.5 py-1 rounded-lg">
+          ${kw}
+          <i onclick="removeKeyword('${kw}')" class="fa-solid fa-xmark text-[10px] cursor-pointer hover:text-neutral-300"></i>
+        </span>
+      `).join('');
+    }
+
+    document.getElementById('custom-keyword-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        let val = e.target.value.trim();
+        if (val) {
+          if (!val.startsWith('#')) val = '#' + val;
+          addKeyword(val);
+          e.target.value = '';
+        }
+      }
+    });
+
+    function renderHashtags() {
+      const container = document.getElementById('hashtags-list');
+      container.innerHTML = hashtags.map(tag => `
+        <span class="inline-flex items-center gap-1 text-xs bg-neutral-100 border border-neutral-200 text-neutral-700 px-2.5 py-1 rounded-lg font-medium">
+          ${tag}
+          <i onclick="removeHashtag('${tag}')" class="fa-solid fa-xmark text-[10px] cursor-pointer text-neutral-400 hover:text-black"></i>
+        </span>
+      `).join('') + `
+        <button onclick="addHashtagPrompt()" class="text-xs border border-dashed border-neutral-300 hover:border-black text-neutral-500 hover:text-black px-2 py-1 rounded-lg transition-colors">
+          + 添加话题
+        </button>
+      `;
+    }
+
+    function removeHashtag(tag) {
+      hashtags = hashtags.filter(t => t !== tag);
+      renderHashtags();
+    }
+
+    function addHashtagPrompt() {
+      const tag = prompt("请输入新话题名称 (例如: #软装灵感):");
+      if (tag) {
+        let formatted = tag.trim();
+        if (!formatted.startsWith('#')) formatted = '#' + formatted;
+        if (!hashtags.includes(formatted)) {
+          hashtags.push(formatted);
+          renderHashtags();
+        }
+      }
+    }
+
+    // --- Generation Core Engine ---
+    async function generateCopywriting(isVariant = false) {
+      const apiKey = localStorage.getItem(API_KEY_STORAGE) || "";
+      const persona = document.querySelector('input[name="persona"]:checked').value;
+      const scenario = document.getElementById('selected-scenario').value;
+      const emojiLevel = document.getElementById('emoji-slider').value;
+      const lengthLevel = document.getElementById('length-slider').value;
+
+      // Show UI Loading State
+      document.getElementById('output-placeholder').classList.add('hidden');
+      document.getElementById('output-workspace').classList.add('hidden');
+      document.getElementById('output-loading').classList.remove('hidden');
+
+      // Update Engine Badge
+      const engineBadge = document.getElementById('engine-indicator');
+      if (apiKey) {
+        engineBadge.innerText = 'Gemini 3 Flash 引擎';
+        engineBadge.className = 'text-[11px] px-2.5 py-1 rounded-full bg-black text-white font-medium shadow-xs';
+      } else {
+        engineBadge.innerText = '内置本地引擎';
+        engineBadge.className = 'text-[11px] px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-600 font-medium border border-neutral-200';
+      }
+
+      try {
+        let resultData = null;
+
+        if (apiKey) {
+          resultData = await callGeminiAPI(apiKey, persona, scenario, emojiLevel, lengthLevel, isVariant);
+        } else {
+          // Fallback to rich local generator
+          await new Promise(r => setTimeout(r, 1000)); // Simulate realistic generation delay
+          resultData = generateLocalCopy(persona, scenario, emojiLevel, lengthLevel, isVariant);
         }
 
-        function openApiModal() {
-            document.getElementById('api-key-input').value = state.apiKey;
-            document.getElementById('api-modal').classList.remove('hidden');
-        }
+        currentGeneratedData = resultData;
+        activeTitleIndex = 0;
+        renderGeneratedResult();
 
-        function closeApiModal() {
-            document.getElementById('api-modal').classList.add('hidden');
-        }
+      } catch (err) {
+        console.error('API call error, falling back to local engine:', err);
+        showToast('Gemini 调用遇到问题，已自动切换至本地引擎', 'fa-exclamation-triangle text-amber-400');
+        currentGeneratedData = generateLocalCopy(persona, scenario, emojiLevel, lengthLevel, isVariant);
+        activeTitleIndex = 0;
+        renderGeneratedResult();
+      } finally {
+        document.getElementById('output-loading').classList.add('hidden');
+        document.getElementById('output-workspace').classList.remove('hidden');
+      }
+    }
 
-        function saveApiKey() {
-            const val = document.getElementById('api-key-input').value.trim();
-            state.apiKey = val;
-            localStorage.setItem('cosmo_api_key', val);
-            updateApiKeyStatusDisplay();
-            closeApiModal();
-            showToast('API Key 保存成功');
-        }
+    // Call Gemini 3 Flash API
+    async function callGeminiAPI(apiKey, persona, scenario, emojiLevel, lengthLevel, isVariant) {
+      const memories = JSON.parse(localStorage.getItem(MEMORY_STORAGE) || "[]");
+      
+      const personaDesc = persona === 'blogger' 
+        ? '【家居博主】：强调光影美学、空间氛围感、软装搭配、细腻的生活方式思考。'
+        : '【家居买手店】：强调大师经典作品选品视角、品牌传奇历史、设计工艺细节、高阶极简品味。';
 
-        function updateApiKeyStatusDisplay() {
-            const el = document.getElementById('api-key-status');
-            if (state.apiKey) {
-                el.innerHTML = `<span class="text-green-600 font-semibold">Gemini 已连接</span>`;
-            } else {
-                el.innerText = 'API Key 设置';
-            }
-        }
+      const emojiRule = ['完全不使用任何 Emoji。', '克制点缀 2-4 个符合极简气场的 Emoji。', '丰富使用 8 个以上提升氛围感的 Emoji。'][emojiLevel];
+      const lengthRule = ['50-150字之间，精炼留白。', '200-400字之间，丰富种草。', '500字以上，深度解读与沉浸式叙事。'][lengthLevel];
 
-        function updateMemoryCountDisplay() {
-            document.getElementById('memory-count').innerText = state.adoptedMemories.length;
-        }
+      let systemPrompt = `你是一位顶级极简主义家居文案大师，擅长小红书/Instagram风格的苹果审美极简高级文案。
+人设要求：${personaDesc}
+发布场景：${scenario}
+材质与品牌关键词：${activeKeywords.join(', ')}
+Emoji 规则：${emojiRule}
+篇幅字数：${lengthRule}
 
-        async function generateCopywriting() {
-            // Read UI inputs
-            state.persona = document.getElementById('persona-select').value;
-            state.keyElements = document.getElementById('key-elements').value.trim();
-            state.hashtags = document.getElementById('preset-hashtags').value.trim();
-
-            // Toggle Loading UI
-            document.getElementById('empty-state').classList.add('hidden');
-            document.getElementById('result-content').classList.add('hidden');
-            document.getElementById('action-bar').classList.add('hidden');
-            document.getElementById('loading-state').classList.remove('hidden');
-
-            try {
-                let data = null;
-                if (state.apiKey) {
-                    data = await callGeminiAPI();
-                } else {
-                    // Local Fallback Smart Engine
-                    await new Promise(r => setTimeout(r, 900)); // smooth experience delay
-                    data = generateLocalFallbackCopy();
-                }
-
-                state.currentData = data;
-                state.selectedTitleIndex = 0;
-                renderGeneratedResult();
-                showToast('文案生成成功！');
-
-            } catch (err) {
-                console.error('API Error, falling back to local engine:', err);
-                const data = generateLocalFallbackCopy();
-                state.currentData = data;
-                state.selectedTitleIndex = 0;
-                renderGeneratedResult();
-                showToast('已自动启用本地智能美学引擎生成');
-            } finally {
-                document.getElementById('loading-state').classList.add('hidden');
-            }
-        }
-
-        async function generateVariant() {
-            showToast('正在重构视角，推演新文案...');
-            await generateCopywriting();
-        }
-
-        async function callGeminiAPI() {
-            const systemPrompt = `你是一位顶级高端家居/空间软装文案撰写大师，擅长建筑美学、材质细节感官化描述与小红书/朋友圈高爆款转换。
-人设定位：${state.persona}。
-平台：${state.platform === 'xiaohongshu' ? '小红书' : '微信朋友圈'}。
-发布场景：${state.context}。
-Emoji 密度控制要求：${state.emojiDensity === 0 ? '完全不使用任何 Emoji(0%)，极简冷冽高级' : state.emojiDensity === 15 ? '克制点缀(10%-20%)，仅用2-4个极简优雅符号（如 ▪️ ▫️ 🪵 ✨ 🛋️）' : '丰富氛围(40%+)，生动具亲和力'}。
-篇幅要求：${state.length === 'short' ? '50-150字，精炼短打' : state.length === 'medium' ? '200-400字，黄金种草篇幅' : '500字以上，深度故事解读'}。
-增强关键词/品牌/材质：${state.keyElements || '无'}。
-用户常用话题：${state.hashtags}。
-
-In-Context 记忆参考（学习用户的品味偏好）：
-${state.adoptedMemories.length > 0 ? JSON.stringify(state.adoptedMemories.slice(-3)) : '暂无'}
-
-请必须以 JSON 格式输出，Schema:
+请以 JSON 格式输出结果，格式必须完全按照以下 JSON Schema：
 {
-  "titles": [
-    {"title": "标题1", "type": "材质美学型"},
-    {"title": "标题2", "type": "情绪渲染型"},
-    {"title": "标题3", "type": "空间干货型"},
-    {"title": "标题4", "type": "现货体验型"}
-  ],
-  "body": "精心排版的文案正文，段落清晰，语言高级",
-  "hashtags": "${state.hashtags}",
-  "viralScore": 98,
-  "scoreHighlights": "前3秒黄金Hook · 质感拉满"
+  "titles": ["标题1", "标题2", "标题3", "标题4"],
+  "body": "正文内容..."
 }`;
 
-            const parts = [{ text: "请为提供的空间/家居细节生成爆款文案。" }];
-            
-            // Append base64 image if uploaded
-            if (state.uploadedImages.length > 0) {
-                state.uploadedImages.forEach(img => {
-                    const base64Data = img.split(',')[1];
-                    const mimeType = img.split(';')[0].split(':')[1];
-                    parts.push({
-                        inlineData: {
-                            mimeType: mimeType,
-                            data: base64Data
-                        }
-                    });
-                });
+      if (memories.length > 0) {
+        systemPrompt += `\n\n【用户过往偏好与采纳范例 (Few-Shot Context)】：\n` + 
+          memories.slice(0, 3).map((m, i) => `范例${i+1}：\n标题: ${m.title}\n正文:\n${m.body}`).join('\n\n');
+      }
+
+      let userQuery = `请为当前选品生成一套充满高阶审美、极简高级感文案。
+${isVariant ? '注意：请从全新的视角重新推演与写意，切勿与上一版重复。' : ''}`;
+
+      // Build multimodal payload
+      let contentsParts = [{ text: userQuery }];
+
+      if (uploadedImages.length > 0) {
+        uploadedImages.forEach(img => {
+          const rawBase64 = img.base64.split(',')[1];
+          contentsParts.push({
+            inlineData: {
+              mimeType: img.mimeType,
+              data: rawBase64
             }
+          });
+        });
+      }
 
-            const payload = {
-                contents: [{ parts }],
-                systemInstruction: { parts: [{ text: systemPrompt }] },
-                generationConfig: {
-                    responseMimeType: "application/json"
-                }
-            };
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${state.apiKey}`;
-            const res = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            const result = await res.json();
-            const jsonText = result.candidates[0].content.parts[0].text;
-            return JSON.parse(jsonText);
+      const payload = {
+        contents: [{ role: 'user', parts: contentsParts }],
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        generationConfig: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: "OBJECT",
+            properties: {
+              titles: {
+                type: "ARRAY",
+                items: { type: "STRING" }
+              },
+              body: { type: "STRING" }
+            },
+            required: ["titles", "body"]
+          }
         }
+      };
 
-        function generateLocalFallbackCopy() {
-            const contextMap = {
-                showroom: {
-                    titles: [
-                        { title: "被光影包裹的展厅角落｜新入库的独特性性格家具", type: "材质美学型" },
-                        { title: "推开展厅这扇门，给理想生活一个具体的形状", type: "情绪渲染型" },
-                        { title: "选品指南｜买手店本季最值得亲自触摸的3件现货", type: "空间干货型" },
-                        { title: "现货抵店｜第一批懂它的人已经预约体验了", type: "现货体验型" }
-                    ],
-                    intro: "总是觉得，真正能打动人的空间，从不需要刻意的堆砌。\n新一季的现货件已在展厅陈列完毕。当晨光透墙而入，落在哑光粉体烤漆与实木温润的接缝处，那是属于经典设计的静谧呼吸感。"
-                },
-                installation: {
-                    titles: [
-                        { title: "实装现场｜把买手店的精选，完美缝合进业主的生活", type: "材质美学型" },
-                        { title: "历时半年落成的家｜这才是软装落地该有的质感", type: "情绪渲染型" },
-                        { title: "客户实拍｜高完成度极简空间，家具选品全公开", type: "空间干货型" },
-                        { title: "送货日记｜当它摆进客厅的那一刻，整个空间都亮了", type: "现货体验型" }
-                    ],
-                    intro: "今天去完成最后的实装验收。\n看到图纸上的线条一步步化为触手可及的实木触感与精致光影，所有的等待都有了答案。它不仅契合着建筑的原始尺度，更在细节中折射出主人独到的美学意志。"
-                },
-                inspiration: {
-                    titles: [
-                        { title: "极简不等于冷漠｜用材质与光影搭建家的情绪秩序", type: "材质美学型" },
-                        { title: "在快节奏的日常里，留一个让人彻底慢下来的空间", type: "情绪渲染型" },
-                        { title: "软装灵感｜如何让单品家具成为客厅的视觉锚点？", type: "空间干货型" },
-                        { title: "大师设计背景解读｜穿越时代的经典线条美学", type: "现货体验型" }
-                    ],
-                    intro: "好的家具是有气场的。\n它不喧宾夺主，却能在某个不经意的角落，用流畅的曲面与沉稳的量感，将周遭的气流与光影抚平。设计不只是为了视觉的惊艳，更是为日常陪伴注入恒久的温情。"
-                }
-            };
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
 
-            const ctxObj = contextMap[state.context] || contextMap.showroom;
-            
-            // Weave key elements if typed
-            let keyInsert = "";
-            if (state.keyElements) {
-                keyInsert = `\n\n【细节呈现】\n精选 ${state.keyElements} 的独特工艺，无缝融合于空间之中，触感细腻且富有层次。`;
-            }
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-            // Length adjustments
-            let mainBody = ctxObj.intro + keyInsert;
-            if (state.length === 'short') {
-                mainBody = mainBody.slice(0, 120) + "... \n欢迎预约展厅现场品鉴，近距离感受设计细节。";
-            } else if (state.length === 'long') {
-                mainBody += "\n\n【美学与故事】\n经典设计之所以能抗衡岁月，在于其对材料与人体工学的极尽考究。无论是经典弯曲木工艺，还是精密冲压的微哑光质感，每一个转角都经历了数百次校准。置身其中，感受时间在材质表层留下的温润痕迹。\n\n【搭配建议】\n建议搭配低饱和度大地色系织物与温和散射光源，营造沉静惬意的空间场域。展厅现货提供试摆与软装全案落地支持。";
-            } else {
-                mainBody += "\n\n【空间建议】\n简练的线条配合恰到好处的留白，便能轻松撬动整个空间的艺术气场。展厅现货已入库，欢迎预约亲临感受实物雕琢之美。";
-            }
+      const result = await response.json();
+      const rawJson = result.candidates?.[0]?.content?.parts?.[0]?.text;
+      
+      if (!rawJson) throw new Error("Empty response from API");
 
-            // Emoji density logic
-            if (state.emojiDensity === 0) {
-                // Remove any existing emojis
-                mainBody = mainBody.replace(/[\u1F600-\u1F64F\u1F300-\u1F5FF\u1F680-\u1F6FF\u1F700-\u1F77F\u1F780-\u1F7FF\u1F800-\u1F8FF\u1F900-\u1F9FF\u1FA00-\u1FA6F\u1FA70-\u1FAFF\u2600-\u26FF\u2700-\u27BF]/g, '');
-            } else if (state.emojiDensity === 15) {
-                mainBody = "▪️ " + mainBody.replace(/\n\n/g, "\n\n▫️ ");
-            } else {
-                mainBody = "✨ " + mainBody.replace(/\n\n/g, " ☕️\n\n🛋️ ");
-            }
+      return JSON.parse(rawJson);
+    }
 
-            return {
-                titles: ctxObj.titles,
-                body: mainBody,
-                hashtags: state.hashtags || '#COSMO家居 #极简空间 #软装搭配',
-                viralScore: Math.floor(Math.random() * 4) + 96,
-                scoreHighlights: "前3秒黄金Hook · 材质意境融合 · 互动意向高"
-            };
+    // High Quality Local Engine Fallback
+    function generateLocalCopy(persona, scenario, emojiLevel, lengthLevel, isVariant) {
+      const isBlogger = persona === 'blogger';
+      const kwString = activeKeywords.join(' ');
+
+      const bloggerTitles = [
+        `把光影留给客厅：${activeKeywords[0] || '#极简家具'} 里的治愈时刻`,
+        `用质感重塑空间，我选择这件 ${activeKeywords[1] || '#设计经典'}`,
+        `晨光落入房间那一刻，家的定义被改写了`,
+        `软装的尽头是留白与克制｜${scenario}`
+      ];
+
+      const shopTitles = [
+        `COSMO 现货鉴赏｜${activeKeywords[0] || '#大师作品'} 的建筑线条美学`,
+        `不随波逐流的私藏选品：当 ${activeKeywords[1] || '#设计'} 成为生活哲学`,
+        `经典之所以永恒：探讨空间中的物质与灵魂`,
+        `展厅新到品鉴｜${scenario} 细节实拍`
+      ];
+
+      const titles = isBlogger ? bloggerTitles : shopTitles;
+      if (isVariant) titles.reverse();
+
+      const em = emojiLevel == 0 ? '' : (emojiLevel == 1 ? '✨ ' : '🛋️ 🤍 ☀️ 🍃 ');
+
+      let body = '';
+      if (isBlogger) {
+        body = `${em}一直相信，真正高级的空间不需要冗余的堆砌。\n\n` +
+               `这次在 ${scenario} 中，把 ${kwString} 融入到了整体的气场里。当微风吹拂过材质的天然纹理，光影在角落缓缓流动，整个房间都安静了下来。\n\n` +
+               `好的家居选品，从不是冰冷的物件，而是每日与你对话的生活陪伴者。希望这份质感，也能带给你舒适与笃定。${em}`;
+      } else {
+        body = `${em}【COSMO Design Selection】\n\n` +
+               `关于 ${scenario}，我们始终坚持极致选品的克制与纯粹。\n\n` +
+               `设计不仅仅是形态的呈现，更是对材料、结构与光线相互关联的深刻回应。本次重点呈献 ${kwString}，以精湛的技术与隽永的比例，赋予空间沉静而具辨识度的高级感。\n\n` +
+               `欢迎预约前往展厅实物触摸品鉴。${em}`;
+      }
+
+      if (lengthLevel == 0) {
+        body = body.split('\n\n').slice(0, 2).join('\n\n');
+      } else if (lengthLevel == 2) {
+        body += `\n\n关于细节与触感：每一次手部与表面的亲密接触，都是对匠人精神的敬畏。不需要喧宾夺目的色彩，仅凭结构本身的雕塑感，就能成为空间里静默的视觉锚点。`;
+      }
+
+      return {
+        titles: titles,
+        body: body
+      };
+    }
+
+    // Render Results in UI
+    function renderGeneratedResult() {
+      if (!currentGeneratedData) return;
+
+      // Render Title Candidates
+      const candidatesContainer = document.getElementById('title-candidates-container');
+      candidatesContainer.innerHTML = currentGeneratedData.titles.map((title, idx) => `
+        <div onclick="selectTitleCandidate(${idx})" class="p-2.5 rounded-xl border ${idx === activeTitleIndex ? 'border-black bg-neutral-100 font-semibold' : 'border-neutral-200 bg-white hover:border-neutral-300'} text-xs text-neutral-800 cursor-pointer transition-all flex items-center justify-between">
+          <span class="line-clamp-1">${title}</span>
+          ${idx === activeTitleIndex ? '<i class="fa-solid fa-check text-black text-xs"></i>' : ''}
+        </div>
+      `).join('');
+
+      // Set Main Active Title & Body
+      document.getElementById('main-active-title').innerText = currentGeneratedData.titles[activeTitleIndex];
+      document.getElementById('copy-body-text').innerText = currentGeneratedData.body;
+
+      // Render Hashtags Display
+      document.getElementById('output-hashtags-display').innerText = hashtags.join(' ');
+    }
+
+    function selectTitleCandidate(idx) {
+      activeTitleIndex = idx;
+      renderGeneratedResult();
+    }
+
+    function generateVariant() {
+      generateCopywriting(true);
+    }
+
+    // --- Copy Engine (Foolproof Hybrid Fallback) ---
+    async function copyToClipboard(text, successMsg) {
+      if (!text) return;
+
+      let copied = false;
+
+      // Primary: Navigator Clipboard API
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          copied = true;
         }
+      } catch (err) {
+        console.warn('Navigator clipboard failed, falling back to execCommand', err);
+      }
 
-        function renderGeneratedResult() {
-            const data = state.currentData;
-            if (!data) return;
-
-            // Render score
-            document.getElementById('viral-score').innerText = data.viralScore || 98;
-            document.getElementById('score-highlights').innerText = data.scoreHighlights || "黄金Hook · 极简感官";
-
-            // Render Title Capsules
-            const capsulesContainer = document.getElementById('titles-capsules-container');
-            capsulesContainer.innerHTML = '';
-            data.titles.forEach((item, index) => {
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = `title-capsule px-3 py-1.5 rounded-full border text-xs font-medium transition text-left ${index === state.selectedTitleIndex ? 'active' : 'border-apple-border bg-apple-subtle text-apple-text hover:bg-apple-border'}`;
-                btn.innerHTML = `<span class="opacity-60 font-mono mr-1">[${item.type}]</span>${item.title}`;
-                btn.onclick = () => selectTitleIndex(index);
-                capsulesContainer.appendChild(btn);
-            });
-
-            // Update Current Active Display
-            updateActiveTitleAndBody();
-
-            // Reset Adopt Button
-            const adoptBtn = document.getElementById('adopt-btn');
-            adoptBtn.className = "px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-medium text-xs transition flex items-center gap-1.5 shadow-sm";
-            document.getElementById('adopt-btn-text').innerText = "采纳此版";
-
-            // Show UI sections
-            document.getElementById('result-content').classList.remove('hidden');
-            document.getElementById('action-bar').classList.remove('hidden');
+      // Secondary Fallback: Hidden Textarea
+      if (!copied) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        textarea.style.top = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        try {
+          copied = document.execCommand('copy');
+        } catch (err) {
+          console.error('Fallback execCommand copy failed', err);
         }
+        document.body.removeChild(textarea);
+      }
 
-        function selectTitleIndex(index) {
-            state.selectedTitleIndex = index;
-            // Update capsule styles
-            const capsules = document.querySelectorAll('.title-capsule');
-            capsules.forEach((cap, i) => {
-                if (i === index) {
-                    cap.classList.add('active');
-                    cap.classList.remove('border-apple-border', 'bg-apple-subtle', 'text-apple-text');
-                } else {
-                    cap.classList.remove('active');
-                    cap.classList.add('border-apple-border', 'bg-apple-subtle', 'text-apple-text');
-                }
-            });
-            updateActiveTitleAndBody();
-            showToast('已切换至选定标题');
-        }
+      if (copied) {
+        showToast(successMsg || '已成功复制');
+      } else {
+        showToast('复制失败，请手动选择复制', 'fa-exclamation-circle text-red-400');
+      }
+    }
 
-        function updateActiveTitleAndBody() {
-            const data = state.currentData;
-            if (!data) return;
+    function copyFullPost() {
+      if (!currentGeneratedData) return;
+      const title = currentGeneratedData.titles[activeTitleIndex];
+      const body = currentGeneratedData.body;
+      const tags = hashtags.join(' ');
+      const fullText = `${title}\n\n${body}\n\n${tags}`;
+      copyToClipboard(fullText, '全案文案已复制到剪贴板');
+    }
 
-            const activeObj = data.titles[state.selectedTitleIndex] || data.titles[0];
-            document.getElementById('active-title-text').innerText = activeObj.title;
-            document.getElementById('title-tag').innerText = activeObj.type || '爆款标题';
-            document.getElementById('active-body-text').innerText = data.body;
-            document.getElementById('active-hashtags-text').innerText = data.hashtags;
+    function copyBodyOnly() {
+      if (!currentGeneratedData) return;
+      copyToClipboard(currentGeneratedData.body, '正文内容已复制');
+    }
 
-            // Word count
-            const count = data.body.length;
-            document.getElementById('word-count-info').innerText = `共 ${count} 字 (不含话题)`;
-        }
+    function copyTitleOnly() {
+      if (!currentGeneratedData) return;
+      const title = currentGeneratedData.titles[activeTitleIndex];
+      copyToClipboard(title, '主标题已复制');
+    }
 
-        function adoptCurrentCopy() {
-            if (!state.currentData) return;
+    // --- Toast Notification ---
+    function showToast(msg, iconClass = 'fa-check text-green-400') {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      const toastIcon = document.getElementById('toast-icon');
 
-            const activeTitle = state.currentData.titles[state.selectedTitleIndex].title;
-            const memoryItem = {
-                title: activeTitle,
-                body: state.currentData.body,
-                context: state.context,
-                persona: state.persona,
-                timestamp: new Date().toISOString()
-            };
+      toastMsg.innerText = msg;
+      toastIcon.className = `fa-solid ${iconClass}`;
 
-            state.adoptedMemories.push(memoryItem);
-            localStorage.setItem('cosmo_adopted_memories', JSON.stringify(state.adoptedMemories));
+      toast.classList.remove('opacity-0', '-translate-y-12', 'pointer-events-none');
+      toast.classList.add('opacity-100', 'translate-y-0');
 
-            updateMemoryCountDisplay();
+      setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', '-translate-y-12', 'pointer-events-none');
+      }, 2500);
+    }
 
-            // UI update
-            const adoptBtn = document.getElementById('adopt-btn');
-            adoptBtn.className = "px-3.5 py-1.5 rounded-xl bg-green-600 text-white font-medium text-xs transition flex items-center gap-1.5 shadow-sm";
-            document.getElementById('adopt-btn-text').innerText = "已入集记忆库";
+    // --- AI Few-Shot Adopt & Learning System ---
+    function adoptCurrentVersion() {
+      if (!currentGeneratedData) return;
 
-            showToast('已存入 In-Context 记忆库，AI 进化完成！');
-        }
+      const title = currentGeneratedData.titles[activeTitleIndex];
+      const body = currentGeneratedData.body;
 
-        function copyToClipboard(mode) {
-            if (!state.currentData) return;
+      const memories = JSON.parse(localStorage.getItem(MEMORY_STORAGE) || "[]");
+      memories.unshift({
+        id: Date.now(),
+        title: title,
+        body: body,
+        date: new Date().toLocaleDateString('zh-CN')
+      });
 
-            const activeTitle = state.currentData.titles[state.selectedTitleIndex].title;
-            const body = state.currentData.body;
-            const tags = state.currentData.hashtags;
+      // Limit max saved memories
+      if (memories.length > 10) memories.pop();
 
-            let textToCopy = '';
-            let toastMsg = '';
+      localStorage.setItem(MEMORY_STORAGE, JSON.stringify(memories));
+      updateMemoryBadge();
+      showToast('已采纳并存入 AI 偏好记忆库！', 'fa-star text-amber-400');
+    }
 
-            if (mode === 'all') {
-                textToCopy = `${activeTitle}\n\n${body}\n\n${tags}`;
-                toastMsg = '已复制全案到剪贴板！';
-            } else if (mode === 'title') {
-                textToCopy = activeTitle;
-                toastMsg = '已复制标题到剪贴板！';
-            } else if (mode === 'body') {
-                textToCopy = body;
-                toastMsg = '已复制正文到剪贴板！';
-            } else if (mode === 'hashtags') {
-                textToCopy = tags;
-                toastMsg = '已复制话题 Tag 到剪贴板！';
-            }
+    function updateMemoryBadge() {
+      const memories = JSON.parse(localStorage.getItem(MEMORY_STORAGE) || "[]");
+      document.getElementById('memory-count-badge').innerText = memories.length;
+    }
 
-            // Bulletproof dual-copy algorithm
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    showToast(toastMsg);
-                }).catch(() => {
-                    fallbackCopy(textToCopy, toastMsg);
-                });
-            } else {
-                fallbackCopy(textToCopy, toastMsg);
-            }
-        }
+    function renderMemoryList() {
+      const list = document.getElementById('memory-list');
+      const memories = JSON.parse(localStorage.getItem(MEMORY_STORAGE) || "[]");
 
-        function fallbackCopy(text, toastMsg) {
-            const hiddenArea = document.getElementById('hidden-copy-area');
-            hiddenArea.value = text;
-            hiddenArea.focus();
-            hiddenArea.select();
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast(toastMsg);
-                } else {
-                    showToast('复制失败，请手动选中复制');
-                }
-            } catch (err) {
-                showToast('复制失败，请手动选中复制');
-            }
-        }
-    </script>
+      if (memories.length === 0) {
+        list.innerHTML = `<p class="text-xs text-neutral-400 text-center py-6">暂无积累的采纳偏好。点击“采纳此版”开始记录吧！</p>`;
+        return;
+      }
+
+      list.innerHTML = memories.map(m => `
+        <div class="apple-card-subtle p-3 space-y-1 relative group">
+          <div class="flex justify-between items-center text-[10px] text-neutral-400">
+            <span>${m.date}</span>
+            <i onclick="deleteMemory(${m.id})" class="fa-solid fa-trash cursor-pointer hover:text-red-500"></i>
+          </div>
+          <h4 class="text-xs font-bold text-black line-clamp-1">${m.title}</h4>
+          <p class="text-[11px] text-neutral-600 line-clamp-2">${m.body}</p>
+        </div>
+      `).join('');
+    }
+
+    function deleteMemory(id) {
+      let memories = JSON.parse(localStorage.getItem(MEMORY_STORAGE) || "[]");
+      memories = memories.filter(m => m.id !== id);
+      localStorage.setItem(MEMORY_STORAGE, JSON.stringify(memories));
+      updateMemoryBadge();
+      renderMemoryList();
+    }
+
+    function clearMemory() {
+      if (confirm('确定要清空所有 AI 偏好记忆吗？')) {
+        localStorage.removeItem(MEMORY_STORAGE);
+        updateMemoryBadge();
+        renderMemoryList();
+        showToast('偏好记忆库已清空');
+      }
+    }
+
+    // --- Modal Controls ---
+    function toggleApiModal(show) {
+      document.getElementById('api-modal').classList.toggle('hidden', !show);
+      if (show) {
+        document.getElementById('api-key-input').value = localStorage.getItem(API_KEY_STORAGE) || '';
+      }
+    }
+
+    function toggleMemoryModal(show) {
+      document.getElementById('memory-modal').classList.toggle('hidden', !show);
+      if (show) {
+        renderMemoryList();
+      }
+    }
+
+    document.getElementById('api-key-btn').addEventListener('click', () => toggleApiModal(true));
+    document.getElementById('memory-modal-btn').addEventListener('click', () => toggleMemoryModal(true));
+
+    function saveApiKey() {
+      const key = document.getElementById('api-key-input').value.trim();
+      if (key) {
+        localStorage.setItem(API_KEY_STORAGE, key);
+        showToast('API Key 配置成功');
+      } else {
+        localStorage.removeItem(API_KEY_STORAGE);
+        showToast('已取消 API Key 配置，改用本地引擎');
+      }
+      loadApiKeyStatus();
+      toggleApiModal(false);
+    }
+
+    function loadApiKeyStatus() {
+      const key = localStorage.getItem(API_KEY_STORAGE);
+      const btnText = document.getElementById('api-key-status-text');
+      if (key) {
+        btnText.innerText = 'API Key (已启用)';
+      } else {
+        btnText.innerText = '设置 API Key';
+      }
+    }
+  </script>
 </body>
 </html>
