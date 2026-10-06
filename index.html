@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             theme: {
@@ -24,7 +25,7 @@
                         appleAccent: '#0071E3',
                     },
                     fontFamily: {
-                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Text', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Text', 'SF Pro Display', 'Segoe UI', 'Roboto', 'sans-serif'],
                     },
                     boxShadow: {
                         apple: '0 4px 20px rgba(0, 0, 0, 0.03)',
@@ -35,6 +36,7 @@
             }
         }
     </script>
+    
     <style>
         body {
             background-color: #F5F5F7;
@@ -43,9 +45,8 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Glassmorphism elements */
         .apple-glass {
-            background: rgba(255, 255, 255, 0.82);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(0, 0, 0, 0.06);
@@ -63,7 +64,6 @@
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -79,33 +79,34 @@
             background: #98989D;
         }
 
-        /* Segmented Button Active Animation */
         .segmented-btn {
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Custom Pulse Animation */
         @keyframes subtlePulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.4; }
         }
         .animate-subtle {
-            animation: subtlePulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            animation: subtlePulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-black selection:text-white">
 
     <!-- Navigation Header -->
-    <header class="sticky top-0 z-40 apple-glass border-b border-black/5 px-6 py-4">
+    <header class="sticky top-0 z-40 apple-glass border-b border-black/5 px-6 py-3.5">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 bg-black text-white rounded-xl flex items-center justify-center font-bold text-lg shadow-sm tracking-tighter">
                     C
                 </div>
                 <div>
-                    <h1 class="text-lg font-semibold tracking-tight leading-tight text-appleText">COSMO 文案生成器</h1>
-                    <p class="text-xs text-appleSubtext font-normal">Apple Minimalist Edition · 全局风格自主融合</p>
+                    <h1 class="text-base font-semibold tracking-tight leading-tight text-appleText flex items-center gap-2">
+                        COSMO 文案生成器
+                        <span class="text-[10px] px-2 py-0.5 bg-black/5 rounded-md text-appleSubtext font-normal">v2.5 Variant Pro</span>
+                    </h1>
+                    <p class="text-[11px] text-appleSubtext font-normal">Apple Minimalist Edition · 多视角变体切入引擎</p>
                 </div>
             </div>
 
@@ -113,7 +114,7 @@
                 <!-- API Key Status Badge -->
                 <button onclick="openApiModal()" id="apiKeyBadge" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium bg-black/5 hover:bg-black/10 transition">
                     <span id="apiStatusDot" class="w-2 h-2 rounded-full bg-amber-500"></span>
-                    <span id="apiStatusText" class="text-appleText">使用内置离线引擎</span>
+                    <span id="apiStatusText" class="text-appleText">使用内置离线多视角引擎</span>
                 </button>
             </div>
         </div>
@@ -122,17 +123,17 @@
     <main class="max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 flex-grow">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-            <!-- LEFT PANEL: Inputs & Configuration (7 cols) -->
+            <!-- LEFT PANEL: Inputs & Configurations (7 cols) -->
             <div class="lg:col-span-7 space-y-6">
 
-                <!-- SECTION 1: 全局风格学习库 (Global Auto-Style Hub) -->
+                <!-- SECTION 1: 全局风格学习库 -->
                 <section class="apple-card p-6 bg-white relative overflow-hidden">
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-2">
                             <span class="p-1.5 bg-black/5 rounded-lg text-black">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
                             </span>
-                            <h2 class="text-base font-semibold text-appleText">全局风格参考库</h2>
+                            <h2 class="text-sm font-semibold text-appleText">全局风格参考库</h2>
                         </div>
                         <span id="globalCountBadge" class="text-xs font-semibold px-2.5 py-1 bg-black text-white rounded-full">
                             已自动融合 0 篇参考
@@ -140,14 +141,14 @@
                     </div>
 
                     <p class="text-xs text-appleSubtext mb-4 leading-relaxed">
-                        无需单独勾选或绑定！存入库中的文案将<strong class="text-black font-medium">无缝作为 AI 全局 Few-Shot 参考样本</strong>，在每次生成时自动提取并融合其词汇节奏、语气特征与段落留白。
+                        存入库中的文案将作为 <strong class="text-black font-medium">AI 全局 Few-Shot 语气与断句范本</strong>，每次生成与换版时自动融合其词汇节奏与留白感。
                     </p>
 
                     <!-- Add Text Input Area -->
                     <div class="space-y-3 mb-4">
                         <textarea id="styleInputText" rows="3" placeholder="在此粘贴你的历史爆款文案或高频风格范文..." class="w-full text-xs p-3.5 bg-appleBg rounded-xl border border-black/5 focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black/30 resize-none transition placeholder-appleSubtext"></textarea>
                         <div class="flex justify-between items-center">
-                            <span class="text-[11px] text-appleSubtext">提示：建议存入 2-5 篇风格统一的高质量参考</span>
+                            <span class="text-[11px] text-appleSubtext">建议存入 2-5 篇风格统一的高质量范文</span>
                             <button onclick="saveStyleToLibrary()" class="px-4 py-2 bg-black text-white rounded-xl text-xs font-medium hover:bg-neutral-800 active:scale-[0.98] transition flex items-center gap-1.5 shadow-sm">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                                 存入风格库
@@ -155,16 +156,15 @@
                         </div>
                     </div>
 
-                    <!-- Reference List (Collapsible / Accordion) -->
+                    <!-- Reference List -->
                     <div id="libraryContainer" class="border-t border-black/5 pt-3">
                         <div class="flex items-center justify-between text-xs text-appleSubtext mb-2">
-                            <span>库中已有文案 (<span id="libraryItemCount">0</span>)</span>
-                            <button onclick="clearAllStyles()" id="clearAllBtn" class="text-red-500 hover:underline text-[11px] hidden">一键清空风格库</button>
+                            <span>库中范文 (<span id="libraryItemCount">0</span>)</span>
+                            <button onclick="clearAllStyles()" id="clearAllBtn" class="text-red-500 hover:underline text-[11px] hidden">一键清空</button>
                         </div>
-                        <div id="styleList" class="space-y-2 max-h-40 overflow-y-auto pr-1">
-                            <!-- Style Cards dynamic insertion -->
-                            <div class="text-center py-4 text-xs text-appleSubtext italic">
-                                暂无风格参考文案，直接生成将采用 COSMO 标准家居美学调性。
+                        <div id="styleList" class="space-y-2 max-h-36 overflow-y-auto pr-1">
+                            <div class="text-center py-3 text-xs text-appleSubtext italic">
+                                暂无自定义参考范文，生成将默认使用 COSMO 标准家居美学调性。
                             </div>
                         </div>
                     </div>
@@ -176,7 +176,7 @@
                         <span class="p-1.5 bg-black/5 rounded-lg text-black">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
                         </span>
-                        <h2 class="text-base font-semibold text-appleText">发布与定位配置</h2>
+                        <h2 class="text-sm font-semibold text-appleText">发布与定位配置</h2>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -211,17 +211,17 @@
                     <div>
                         <label class="block text-xs font-semibold text-appleText mb-2">发布场景类别</label>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="scenarioGrid">
-                            <button type="button" onclick="selectScenario('展厅新品/现货入库')" class="scenario-btn p-2.5 text-xs text-center border border-black/10 rounded-xl hover:border-black/30 font-medium transition bg-black text-white border-black" data-val="展厅新品/现货入库">
+                            <button type="button" onclick="selectScenario('展厅新品/现货入库')" class="scenario-btn p-2.5 text-xs text-center border border-black/10 rounded-xl font-medium transition bg-black text-white border-black" data-val="展厅新品/现货入库">
                                 展厅新品/现货入库
                             </button>
-                            <button type="button" onclick="selectScenario('客户实装/送货实拍')" class="scenario-btn p-2.5 text-xs text-center border border-black/10 rounded-xl hover:border-black/30 font-medium transition text-appleText bg-white" data-val="客户实装/送货实拍">
+                            <button type="button" onclick="selectScenario('客户实装/送货实拍')" class="scenario-btn p-2.5 text-xs text-center border border-black/10 rounded-xl font-medium transition text-appleText bg-white hover:border-black/30" data-val="客户实装/送货实拍">
                                 客户实装/送货实拍
                             </button>
-                            <button type="button" onclick="selectScenario('灵感搭配/设计解读')" class="scenario-btn p-2.5 text-xs text-center border border-black/10 rounded-xl hover:border-black/30 font-medium transition text-appleText bg-white" data-val="灵感搭配/设计解读">
+                            <button type="button" onclick="selectScenario('灵感搭配/设计解读')" class="scenario-btn p-2.5 text-xs text-center border border-black/10 rounded-xl font-medium transition text-appleText bg-white hover:border-black/30" data-val="灵感搭配/设计解读">
                                 灵感搭配/设计解读
                             </button>
-                            <button type="button" onclick="selectScenario('空间氛围/日常感受')" class="scenario-btn p-2.5 text-xs text-center border border-black/10 rounded-xl hover:border-black/30 font-medium transition text-appleText bg-white" data-val="空间氛围/日常感受">
-                                空间氛围/日常感受
+                            <button type="button" onclick="selectScenario('极简日常/空间随感')" class="scenario-btn p-2.5 text-xs text-center border border-black/10 rounded-xl font-medium transition text-appleText bg-white hover:border-black/30" data-val="极简日常/空间随感">
+                                极简日常/空间随感
                             </button>
                         </div>
                     </div>
@@ -234,53 +234,54 @@
                             <span class="p-1.5 bg-black/5 rounded-lg text-black">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             </span>
-                            <h2 class="text-base font-semibold text-appleText">产品细节与图片上传</h2>
+                            <h2 class="text-sm font-semibold text-appleText">产品细节与图片上传</h2>
                         </div>
                         <span class="text-xs text-appleSubtext">支持多图多模态分析</span>
                     </div>
 
                     <!-- Multi Image Dropzone -->
-                    <div id="imageDropzone" onclick="document.getElementById('fileInput').click()" class="border-2 border-dashed border-black/10 hover:border-black/30 rounded-2xl p-5 text-center cursor-pointer transition bg-appleBg/50 group">
+                    <div id="imageDropzone" onclick="document.getElementById('fileInput').click()" class="border-2 border-dashed border-black/10 hover:border-black/30 rounded-2xl p-4 text-center cursor-pointer transition bg-appleBg/50 group">
                         <input type="file" id="fileInput" multiple accept="image/*" class="hidden" onchange="handleFileSelect(event)">
-                        <div class="flex flex-col items-center justify-center space-y-2">
-                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-105 transition">
-                                <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        <div class="flex flex-col items-center justify-center space-y-1.5">
+                            <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-105 transition">
+                                <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                             </div>
-                            <p class="text-xs font-medium text-appleText">点击或将产品图片拖拽至此处</p>
-                            <p class="text-[11px] text-appleSubtext">支持 JPG, PNG, WEBP (AI 将结合实物光影与材质细节进行深度发散)</p>
+                            <p class="text-xs font-medium text-appleText">点击或将家具/空间图片拖拽至此处</p>
+                            <p class="text-[11px] text-appleSubtext">支持 JPG, PNG, WEBP（AI 将结合实物光影与材质细节）</p>
                         </div>
                     </div>
 
-                    <!-- Thumbnails List -->
-                    <div id="imagePreviewGrid" class="grid grid-cols-4 sm:grid-cols-6 gap-3 hidden">
-                        <!-- Dynamic Image Cards -->
+                    <!-- Thumbnails Grid -->
+                    <div id="imagePreviewGrid" class="grid grid-cols-4 sm:grid-cols-6 gap-2.5 hidden">
                     </div>
 
-                    <!-- Product Core Details Textarea -->
+                    <!-- Details Textarea -->
                     <div>
                         <label class="block text-xs font-semibold text-appleText mb-1.5">家具/空间卖点与核心描述</label>
                         <textarea id="productDetails" rows="3" placeholder="描述家具名称、设计师、光影感受、空间应用场景或体验感..." class="w-full text-xs p-3.5 bg-appleBg rounded-xl border border-black/5 focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black/30 resize-none transition placeholder-appleSubtext"></textarea>
                     </div>
 
-                    <!-- Quick Tag Pills -->
+                    <!-- Tag Pills -->
                     <div>
-                        <label class="block text-xs font-semibold text-appleText mb-2">快捷选品/材质标签 (点击快速插入)</label>
+                        <label class="block text-xs font-semibold text-appleText mb-2">快捷选品/材质热词 (点击快速插入)</label>
                         <div class="flex flex-wrap gap-1.5" id="tagPills">
-                            <button type="button" onclick="toggleTag('#USM')" class="pill-tag px-3 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#USM</button>
-                            <button type="button" onclick="toggleTag('#Vitra')" class="pill-tag px-3 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#Vitra</button>
-                            <button type="button" onclick="toggleTag('#Louis Poulsen')" class="pill-tag px-3 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#Louis Poulsen</button>
-                            <button type="button" onclick="toggleTag('#Fritz Hansen')" class="pill-tag px-3 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#Fritz Hansen</button>
-                            <button type="button" onclick="toggleTag('#ClassiCon')" class="pill-tag px-3 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#ClassiCon</button>
-                            <button type="button" onclick="toggleTag('#Artek')" class="pill-tag px-3 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#Artek</button>
-                            <button type="button" onclick="toggleTag('#包豪斯')" class="pill-tag px-3 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#包豪斯</button>
-                            <button type="button" onclick="toggleTag('#弯曲木')" class="pill-tag px-3 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#弯曲木</button>
-                            <button type="button" onclick="toggleTag('#哑光烤漆')" class="pill-tag px-3 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#哑光烤漆</button>
-                            <button type="button" onclick="toggleTag('#不锈钢拉丝')" class="pill-tag px-3 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#不锈钢拉丝</button>
+                            <button type="button" onclick="toggleTag('#USM')" class="pill-tag px-2.5 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#USM</button>
+                            <button type="button" onclick="toggleTag('#Vitra')" class="pill-tag px-2.5 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#Vitra</button>
+                            <button type="button" onclick="toggleTag('#LouisPoulsen')" class="pill-tag px-2.5 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#LouisPoulsen</button>
+                            <button type="button" onclick="toggleTag('#FritzHansen')" class="pill-tag px-2.5 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#FritzHansen</button>
+                            <button type="button" onclick="toggleTag('#ClassiCon')" class="pill-tag px-2.5 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#ClassiCon</button>
+                            <button type="button" onclick="toggleTag('#Artek')" class="pill-tag px-2.5 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#Artek</button>
+                            <button type="button" onclick="toggleTag('#包豪斯')" class="pill-tag px-2.5 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#包豪斯</button>
+                            <button type="button" onclick="toggleTag('#实木质感')" class="pill-tag px-2.5 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#实木质感</button>
+                            <button type="button" onclick="toggleTag('#光影')" class="pill-tag px-2.5 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#光影</button>
+                            <button type="button" onclick="toggleTag('#极简空间')" class="pill-tag px-2.5 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#极简空间</button>
+                            <button type="button" onclick="toggleTag('#深圳家居买手店')" class="pill-tag px-2.5 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#深圳家居买手店</button>
+                            <button type="button" onclick="toggleTag('#COSMO家居')" class="pill-tag px-2.5 py-1 rounded-full text-xs font-medium bg-appleBg text-appleText hover:bg-black/10 border border-black/5 transition">#COSMO家居</button>
                         </div>
                     </div>
                 </section>
 
-                <!-- SECTION 4: 细致表达控制 (Emoji & Length) -->
+                <!-- SECTION 4: 细致表达控制 -->
                 <section class="apple-card p-6 bg-white space-y-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <!-- Emoji Density -->
@@ -297,18 +298,18 @@
                         <div>
                             <label class="block text-xs font-semibold text-appleText mb-2">文案篇幅控制</label>
                             <div class="grid grid-cols-3 gap-1 p-1 bg-appleBg rounded-xl border border-black/5 text-center">
-                                <button type="button" onclick="selectLength('短打')" id="len-短打" class="len-btn py-1.5 text-xs font-medium rounded-lg text-appleSubtext hover:text-black transition">短打(100字)</button>
-                                <button type="button" onclick="selectLength('标准')" id="len-标准" class="len-btn py-1.5 text-xs font-medium rounded-lg bg-white shadow-sm text-black transition">标准(300字)</button>
-                                <button type="button" onclick="selectLength('深度')" id="len-深度" class="len-btn py-1.5 text-xs font-medium rounded-lg text-appleSubtext hover:text-black transition">深度(500字+)</button>
+                                <button type="button" onclick="selectLength('短打')" id="len-短打" class="len-btn py-1.5 text-xs font-medium rounded-lg text-appleSubtext hover:text-black transition">精炼短打</button>
+                                <button type="button" onclick="selectLength('标准')" id="len-标准" class="len-btn py-1.5 text-xs font-medium rounded-lg bg-white shadow-sm text-black transition">标准种草</button>
+                                <button type="button" onclick="selectLength('深度')" id="len-深度" class="len-btn py-1.5 text-xs font-medium rounded-lg text-appleSubtext hover:text-black transition">深度解读</button>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- MAIN ACTION BUTTON -->
-                <button onclick="generateCopy()" id="generateBtn" class="w-full py-4 bg-black text-white font-medium text-sm rounded-2xl hover:bg-neutral-800 active:scale-[0.99] transition shadow-lg flex items-center justify-center gap-2">
+                <!-- MAIN GENERATE BUTTON -->
+                <button onclick="triggerGenerate(false)" id="generateBtn" class="w-full py-4 bg-black text-white font-medium text-sm rounded-2xl hover:bg-neutral-800 active:scale-[0.99] transition shadow-lg flex items-center justify-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    <span>✨ 提取全局风格并生成文案</span>
+                    <span>✨ 提取全局风格并生成首版文案</span>
                 </button>
 
             </div>
@@ -317,45 +318,49 @@
             <div class="lg:col-span-5 space-y-6">
 
                 <!-- MAIN PREVIEW CARD -->
-                <div class="apple-card p-6 bg-white min-h-[580px] flex flex-col justify-between relative shadow-sm">
+                <div class="apple-card p-6 bg-white min-h-[620px] flex flex-col justify-between relative shadow-sm">
 
                     <div>
                         <!-- Header & Title Refresh Option -->
-                        <div class="flex items-center justify-between pb-4 border-b border-black/5 mb-4">
+                        <div class="flex items-center justify-between pb-3 border-b border-black/5 mb-3">
                             <div class="flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-black"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-black"></span>
                                 <span class="text-xs font-semibold tracking-wider text-appleText uppercase">预览生成结果</span>
                             </div>
-                            <button onclick="refreshTitlesOnly()" id="refreshTitlesBtn" class="text-xs text-appleSubtext hover:text-black flex items-center gap-1 transition px-2 py-1 rounded-lg hover:bg-black/5" title="仅重新生成4个备选标题">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                                刷新标题
-                            </button>
+                            
+                            <!-- Angle Indicator Badge -->
+                            <span id="activeAngleBadge" class="text-[11px] font-medium px-2.5 py-1 bg-black/5 text-appleText rounded-full border border-black/5">
+                                角度：材质与工艺
+                            </span>
                         </div>
 
-                        <!-- Headline Capsules Carousel/Bar -->
-                        <div class="space-y-1.5 mb-5">
-                            <label class="block text-[11px] font-medium text-appleSubtext uppercase tracking-wider">切换备选爆款标题 (点击应用):</label>
+                        <!-- Headline Capsules Bar -->
+                        <div class="space-y-1.5 mb-4">
+                            <div class="flex items-center justify-between">
+                                <label class="block text-[11px] font-medium text-appleSubtext tracking-wide">备选爆款标题 (点击应用主屏):</label>
+                                <button onclick="refreshTitlesOnly()" id="refreshTitlesBtn" class="text-[11px] text-appleSubtext hover:text-black flex items-center gap-1 transition px-2 py-0.5 rounded-md hover:bg-black/5" title="仅重新摇号4个备选标题">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                    刷新标题
+                                </button>
+                            </div>
                             <div class="grid grid-cols-1 gap-1.5" id="headlineCapsulesContainer">
-                                <div class="p-2.5 bg-appleBg rounded-xl text-xs font-medium text-appleText border border-black/5 cursor-pointer hover:border-black/20 transition flex items-center justify-between">
-                                    <span>标题选项 1 将在此处显示...</span>
-                                    <span class="text-[10px] px-1.5 py-0.5 bg-black/10 rounded text-appleSubtext">风格A</span>
-                                </div>
+                                <!-- Capsules inserted dynamically -->
                             </div>
                         </div>
 
                         <!-- COPY PREVIEW CONTAINER -->
-                        <div class="p-4 bg-appleBg/60 rounded-2xl border border-black/5 space-y-4 text-appleText relative">
+                        <div class="p-4 bg-appleBg/70 rounded-2xl border border-black/5 space-y-3.5 text-appleText relative">
 
                             <!-- Active Title -->
                             <h3 id="previewTitle" class="text-base font-bold text-black tracking-tight leading-snug">
-                                准备就绪：点击“提取全局风格并生成”
+                                准备就绪：点击“生成”或“换一版”
                             </h3>
 
                             <!-- Main Body -->
                             <div id="previewBody" class="text-xs leading-relaxed whitespace-pre-line text-neutral-800 min-h-[220px]">
 按需求输入细节或上传图片，并点击生成按钮。
 
-若已在“全局风格参考库”中输入文案，AI 会全自动提取排版留白、语气词与修辞逻辑！
+每次点击【🎲 换一版切入点】，引擎将自动在 5 大切入视角（材质、光影、大师背景、实用搭配、情绪沉浸）间强制切换，生成截然不同的文案表达！
                             </div>
 
                             <!-- Tags Output -->
@@ -365,33 +370,35 @@
                         </div>
 
                         <!-- Copy Buttons Bar -->
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-4">
-                            <button onclick="copySection('all')" class="py-2 px-3 bg-black/5 hover:bg-black/10 text-appleText text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
-                                复制全案
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mt-3">
+                            <button onclick="copySection('all')" class="py-2 px-2.5 bg-black/5 hover:bg-black/10 active:scale-[0.98] text-appleText text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
+                                📋 复制全案
                             </button>
-                            <button onclick="copySection('body')" class="py-2 px-3 bg-black/5 hover:bg-black/10 text-appleText text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
+                            <button onclick="copySection('body')" class="py-2 px-2.5 bg-black/5 hover:bg-black/10 active:scale-[0.98] text-appleText text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
                                 仅正文
                             </button>
-                            <button onclick="copySection('title')" class="py-2 px-3 bg-black/5 hover:bg-black/10 text-appleText text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
+                            <button onclick="copySection('title')" class="py-2 px-2.5 bg-black/5 hover:bg-black/10 active:scale-[0.98] text-appleText text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
                                 仅标题
                             </button>
-                            <button onclick="copySection('tags')" class="py-2 px-3 bg-black/5 hover:bg-black/10 text-appleText text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
+                            <button onclick="copySection('tags')" class="py-2 px-2.5 bg-black/5 hover:bg-black/10 active:scale-[0.98] text-appleText text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
                                 仅 Tag
                             </button>
                         </div>
                     </div>
 
                     <!-- Bottom Adoption & Variant Actions -->
-                    <div class="pt-5 border-t border-black/5 space-y-2 mt-4">
-                        <div class="grid grid-cols-2 gap-3">
-                            <button onclick="generateVariant()" class="py-2.5 px-4 bg-white border border-black/15 hover:border-black/40 text-black text-xs font-medium rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                    <div class="pt-4 border-t border-black/5 space-y-2 mt-4">
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <button onclick="triggerGenerate(true)" id="variantBtn" class="py-3 px-4 bg-white border border-black/20 hover:border-black text-black text-xs font-semibold rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98]">
                                 🎲 换一版切入点
                             </button>
-                            <button onclick="adoptAndSaveToStyle()" class="py-2.5 px-4 bg-black text-white hover:bg-neutral-800 text-xs font-medium rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                            <button onclick="adoptAndSaveToStyle()" class="py-3 px-4 bg-black text-white hover:bg-neutral-800 text-xs font-semibold rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98]">
                                 🖤 采纳并融入风格库
                             </button>
                         </div>
-                        <p class="text-[10px] text-center text-appleSubtext">点击“采纳并融入风格库”会将当前生成好的优秀版本自动保存，越用越懂你的品味。</p>
+                        <p class="text-[10px] text-center text-appleSubtext">
+                            点击“换一版”将在 5 大核心视角间强制切换，保证每次文案绝不重样。
+                        </p>
                     </div>
 
                 </div>
@@ -412,7 +419,7 @@
             </div>
 
             <p class="text-xs text-appleSubtext leading-relaxed">
-                输入你的 Google Gemini API Key 以解锁原生的真实 AI 全局多模态生成（如未填写，系统将自动平滑降级使用高质量本地内置规则模板引擎，100% 可用）。
+                配置 Google Gemini API Key 可解锁原生多模态视觉发散。未填写时，将自动使用高质离线多视角推演引擎（已全量内置 5 大视角模板）。
             </p>
 
             <div class="space-y-2">
@@ -435,7 +442,41 @@
     </div>
 
     <script>
-        // APP STATE
+        // CORE PERSPECTIVE ANGLES ENGINE
+        const PERSPECTIVES = [
+            {
+                id: 'craft',
+                name: '材质与工艺细节',
+                desc: '聚焦触感、拉丝不锈钢、哑光烤漆、触感皮革与倒角线条等细部质感',
+                tag: '材质视角'
+            },
+            {
+                id: 'light',
+                name: '光影与空间氛围',
+                desc: '聚焦晨光斜射、阴影层级、通透感与呼吸感的空间氛围',
+                tag: '氛围视角'
+            },
+            {
+                id: 'design',
+                name: '大师设计与选品理念',
+                desc: '聚焦经典包豪斯传承、买手选品眼光与经得起时间考验的美学',
+                tag: '选品视角'
+            },
+            {
+                id: 'layout',
+                name: '实用搭配与落地效果',
+                desc: '聚焦客厅中心视觉锚点、实装搭配、送货安装后的出彩质感',
+                tag: '搭配视角'
+            },
+            {
+                id: 'emotion',
+                name: '极简生活情绪与沉浸感',
+                desc: '聚焦回家卸下疲惫、松弛感、情绪价值与静谧的生活仪式感',
+                tag: '情绪视角'
+            }
+        ];
+
+        // GLOBAL APPLICATION STATE
         const state = {
             apiKey: localStorage.getItem('cosmo_gemini_key') || '',
             referenceTexts: JSON.parse(localStorage.getItem('cosmo_global_styles') || '[]'),
@@ -444,31 +485,33 @@
             scenario: '展厅新品/现货入库',
             emojiDensity: '15%',
             length: '标准',
-            selectedTags: [],
-            images: [], // array of { base64, mimeType, previewUrl }
+            images: [], // { id, base64, mimeType, previewUrl }
+            variantIndex: 0,
+            variantCount: 1,
             currentResult: {
+                angleName: '材质与工艺细节',
                 headlines: [
-                    "光影交错间，重新定义优雅美学",
-                    "触感与秩序的对话：现货入库推荐",
-                    "把包豪斯搬回家：实拍空间质感",
-                    "理想极简空间的最后一块拼图"
+                    "光影交错间，触感与细节的深层对话",
+                    "触感与秩序的结合：现货入库推荐",
+                    "近距离触摸哑光质感：实拍空间细节",
+                    "理想极简空间的最后一块材质拼图"
                 ],
                 activeHeadlineIndex: 0,
-                body: "空间不言，却自有一股凝练的力量。\n\n近距离触摸触感，线条流畅得如同一句诗。不管是光线洒在烤漆表面的微哑光泽，还是材质本身带来的踏实感，都让人忍不住停留。\n\n好的设计从不张扬，却能在日常的相处中，静静回应着对居住质感的追寻。",
+                body: "空间不言，细节自有一股凝练的力量。\n\n近距离触摸触感，线条流畅得如同一首诗。不管是光线洒在烤漆表面的微哑光泽，还是材质本身带来的踏实感，都让人忍不住停留。\n\n好的设计从不张扬，却能在日常的相处中，静静回应着对居住质感的追寻。",
                 tags: ["#COSMO家具", "#家居美学", "#极简空间", "#设计家具"]
             }
         };
 
-        // INIT ON LOAD
         window.onload = function() {
             updateApiStatusBadge();
             renderGlobalLibrary();
             renderPreviewUI();
+            setupDropzone();
         };
 
         function openApiModal() {
-            const modal = document.getElementById('apiModal');
             document.getElementById('apiKeyInput').value = state.apiKey;
+            const modal = document.getElementById('apiModal');
             modal.classList.remove('opacity-0', 'pointer-events-none');
         }
 
@@ -494,7 +537,7 @@
                 txt.innerText = 'Gemini API 已就绪';
             } else {
                 dot.className = 'w-2 h-2 rounded-full bg-amber-500';
-                txt.innerText = '使用内置离线引擎';
+                txt.innerText = '使用内置离线多视角引擎';
             }
         }
 
@@ -515,23 +558,21 @@
             localStorage.setItem('cosmo_global_styles', JSON.stringify(state.referenceTexts));
             input.value = '';
             renderGlobalLibrary();
-            showToast('已存入全局风格库！AI生成时将自动学习', '✨');
+            showToast('已存入全局风格库！AI 生成将自动学习', '✨');
         }
 
         function removeStyleItem(id) {
             state.referenceTexts = state.referenceTexts.filter(item => item.id !== id);
             localStorage.setItem('cosmo_global_styles', JSON.stringify(state.referenceTexts));
             renderGlobalLibrary();
-            showToast('已移除该参考范文', '🗑️');
+            showToast('已移除该范文', '🗑️');
         }
 
         function clearAllStyles() {
-            if (confirm('确定要清空全局风格参考库吗？')) {
-                state.referenceTexts = [];
-                localStorage.removeItem('cosmo_global_styles');
-                renderGlobalLibrary();
-                showToast('风格库已清空', '🧹');
-            }
+            state.referenceTexts = [];
+            localStorage.removeItem('cosmo_global_styles');
+            renderGlobalLibrary();
+            showToast('风格库已清空', '🧹');
         }
 
         function renderGlobalLibrary() {
@@ -544,16 +585,13 @@
             countBadge.innerText = `已自动融合 ${count} 篇参考`;
             itemCount.innerText = count;
 
-            if (count > 0) {
-                clearBtn.classList.remove('hidden');
-            } else {
-                clearBtn.classList.add('hidden');
-            }
+            if (count > 0) clearBtn.classList.remove('hidden');
+            else clearBtn.classList.add('hidden');
 
             if (count === 0) {
                 container.innerHTML = `
-                    <div class="text-center py-4 text-xs text-appleSubtext italic">
-                        暂无风格参考文案，直接生成将采用 COSMO 标准家居美学调性。
+                    <div class="text-center py-3 text-xs text-appleSubtext italic">
+                        暂无自定义参考范文，生成将默认使用 COSMO 标准家居美学调性。
                     </div>
                 `;
                 return;
@@ -622,9 +660,23 @@
             showToast(`已插入标签 ${tag}`, '🏷️');
         }
 
+        function setupDropzone() {
+            const dropzone = document.getElementById('imageDropzone');
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, false);
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                processFiles(Array.from(dt.files));
+            });
+        }
+
         function handleFileSelect(e) {
-            const files = Array.from(e.target.files);
-            processFiles(files);
+            processFiles(Array.from(e.target.files));
         }
 
         function processFiles(files) {
@@ -663,96 +715,99 @@
             grid.innerHTML = state.images.map(img => `
                 <div class="relative group rounded-xl overflow-hidden aspect-square border border-black/10 bg-appleBg">
                     <img src="${img.previewUrl}" class="w-full h-full object-cover">
-                    <button onclick="removeImage(${img.id})" class="absolute top-1 right-1 bg-black/60 hover:bg-black text-white rounded-full p-1 transition opacity-0 group-hover:opacity-100">
+                    <button onclick="removeImage(${img.id})" class="absolute top-1 right-1 bg-black/70 hover:bg-black text-white rounded-full p-1 transition opacity-0 group-hover:opacity-100">
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                 </div>
             `).join('');
         }
 
-        /* Drag and Drop event listeners */
-        const dropzone = document.getElementById('imageDropzone');
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropzone.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-            }, false);
-        });
-
-        dropzone.addEventListener('drop', (e) => {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            processFiles(Array.from(files));
-        });
-
-        async function generateCopy() {
-            const btn = document.getElementById('generateBtn');
+        async function triggerGenerate(isVariant = false) {
+            const btn = isVariant ? document.getElementById('variantBtn') : document.getElementById('generateBtn');
             const details = document.getElementById('productDetails').value.trim();
 
+            if (isVariant) {
+                // Advance to the next perspective angle
+                state.variantIndex = (state.variantIndex + 1) % PERSPECTIVES.length;
+                state.variantCount++;
+            } else {
+                state.variantIndex = 0;
+            }
+
+            const currentAngle = PERSPECTIVES[state.variantIndex];
+
+            // UI Loading Animation
+            const originalText = btn.innerHTML;
             btn.disabled = true;
+            btn.classList.add('opacity-80');
             btn.innerHTML = `
-                <svg class="w-4 h-4 animate-spin text-white" fill="none" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <span>正在提取全局风格并深度撰写...</span>
+                <span>${isVariant ? `切换至【${currentAngle.name}】中...` : '正在提取全局风格并撰写...'}</span>
             `;
 
             try {
                 if (state.apiKey) {
-                    await callGeminiApi(details);
+                    await callGeminiApi(details, currentAngle);
                 } else {
-                    // Fallback to high quality offline rule engine
-                    await new Promise(r => setTimeout(r, 600)); // smooth illusion delay
-                    generateOfflineCopy(details);
+                    // Smooth delay illusion for offline rule engine
+                    await new Promise(r => setTimeout(r, 450));
+                    generateOfflineCopy(details, currentAngle);
                 }
+
                 renderPreviewUI();
-                showToast('生成成功！已融合全局库调性', '✨');
+
+                if (isVariant) {
+                    showToast(`已生成第 ${state.variantCount} 版（切入视角：${currentAngle.name}）`, '🎲');
+                } else {
+                    showToast('生成成功！已融合全局库调性', '✨');
+                }
             } catch (err) {
-                console.error("API call error:", err);
-                showToast('API 调用发生异常，已退回本地高质引擎', '⚠️');
-                generateOfflineCopy(details);
+                console.error("Gemini API Error:", err);
+                generateOfflineCopy(details, currentAngle);
                 renderPreviewUI();
+                showToast(`已通过内置引擎生成（视角：${currentAngle.name}）`, '💡');
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = `
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    <span>✨ 提取全局风格并生成文案</span>
-                `;
+                btn.classList.remove('opacity-80');
+                btn.innerHTML = originalText;
             }
         }
 
-        async function callGeminiApi(details) {
-            // Build system & few-shot prompts
+        async function callGeminiApi(details, angle) {
             let styleContext = "";
             if (state.referenceTexts.length > 0) {
-                styleContext = `\n【核心指令：全局 Few-Shot 风格样本注入】\n用户库中共有 ${state.referenceTexts.length} 篇历史参考文案。请极其严密地模仿以下文案的措辞风格、排版断句习惯、留白艺术与语气调性：\n`;
+                styleContext = `\n【核心指令：全局 Few-Shot 语气与断句样本注入】\n用户库共有 ${state.referenceTexts.length} 篇参考文案。请严格模仿以下范文的排版、节奏、用词习惯：\n`;
                 state.referenceTexts.forEach((ref, idx) => {
                     styleContext += `--- 样本 ${idx+1} ---\n${ref.content}\n`;
                 });
             }
 
-            const systemPrompt = `你是一位顶尖高端家居/空间美学资深文案总监。你的任务是为 COSMO 生成极具品味与质感的发布文案。
-请遵守以下严格设置：
-- 发布平台：${state.platform}
+            const systemPrompt = `你是一位顶尖高端家居/美学买手店资深文案总监。你的任务是为 COSMO 生成极具品味与质感的发布文案。
+
+【本次生成强制切入视角】：${angle.name}
+【视角深度指引】：${angle.desc}
+
+配置参数：
+- 发布平台：${state.platform}（如为朋友圈，排版需格外疏朗克制，行间多留白）
 - 博主/店铺人设：${state.persona}
 - 发布场景：${state.scenario}
-- Emoji 点缀密度：${state.emojiDensity}
-- 文案篇幅控制：${state.length}
+- Emoji 密度：${state.emojiDensity}
+- 篇幅控制：${state.length}
 ${styleContext}
 
-请务必输出规范 JSON 格式，严格包含以下结构（不要加 markdown 格式包裹，只需纯 JSON）：
+请务必输出规范纯 JSON 格式（不要包含 markdown 标记）：
 {
   "headlineOptions": ["标题1", "标题2", "标题3", "标题4"],
-  "body": "正文内容（包含恰当段落留白）",
+  "body": "正文内容（需紧扣‘${angle.name}’这一视角，包含恰当段落留白）",
   "tags": ["#Tag1", "#Tag2", "#Tag3"]
 }`;
 
             const userPromptText = `产品与细节描述：${details || "展厅高端极简家具现货，包含精致哑光材质与光影氛围"}`;
-
             const contentsParts = [{ text: userPromptText }];
 
-            // Include base64 image data if present
             state.images.forEach(img => {
                 contentsParts.push({
                     inlineData: {
@@ -793,7 +848,7 @@ ${styleContext}
                 body: JSON.stringify(payload)
             });
 
-            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
 
             const data = await res.json();
             const textJson = data.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -801,7 +856,8 @@ ${styleContext}
             if (textJson) {
                 const parsed = JSON.parse(textJson);
                 state.currentResult = {
-                    headlines: parsed.headlineOptions || ["光影交错间，重新定义空间美学"],
+                    angleName: angle.name,
+                    headlines: parsed.headlineOptions || [`【${angle.name}】光影交错间，重新定义空间美学`],
                     activeHeadlineIndex: 0,
                     body: parsed.body || "空间不言，自有一股凝练的力量。",
                     tags: parsed.tags || ["#COSMO家具", "#家居美学"]
@@ -809,51 +865,116 @@ ${styleContext}
             }
         }
 
-        function generateOfflineCopy(details) {
-            // Intelligent template synthesis for home decor/furniture
+        function generateOfflineCopy(details, angle) {
             const hasUSM = details.includes('USM');
             const hasVitra = details.includes('Vitra');
             const hasBauhaus = details.includes('包豪斯');
 
             let titles = [];
             let body = "";
-            let tags = ["#COSMO家具", "#家居美学", "#空间设计", "#极简风"];
+            let tags = ["#COSMO家具", "#家居美学", "#极简空间", "#设计家具"];
 
-            if (state.platform === '小红书') {
-                titles = [
-                    `光影交错间 ☕️ ${details.slice(0, 10) || '理想极简空间'}的沉浸质感`,
-                    `被问了无数次的展厅角落 🕯️ 触感与线条的完美回应`,
-                    `把对生活的讲究 🛋️ 放在这件感官作品里`,
-                    `现货入库推荐 ✨ 为什么好的家具经得起时间琢磨？`
-                ];
+            const isRedBook = state.platform === '小红书';
+            const isBuyer = state.persona === '家居买手店';
 
-                if (state.persona === '家居买手店') {
-                    body = `COSMO 选品日志 ｜ 现货入库实拍 📦\n\n好的设计从不张扬，却能在光影流动中静静回应你对生活的审美追求。\n\n${details ? '【细节特征】\n' + details + '\n' : ''}\n触感微哑，线条洗练。无论是置于客厅中心作为视觉锚点，还是静静安放于角落，都能赋予空间恰到好处的留白与秩序感。\n\n📍 展厅现货已入库，随时欢迎预约体验这感官触感。`;
-                } else {
-                    body = `住进理想生活的微小瞬间 ☕️\n\n最近很喜欢把空间慢下来的感觉。\n当晨光斜斜落在这微哑的材质上，整个家似乎都有了呼吸的节奏。\n\n${details ? details + '\n\n' : ''}不追求过度的堆叠，留白处皆是情绪。一件真正值得陪伴长久的家具，大概就是这种触感与美学兼备的踏实感吧。`;
-                }
-            } else {
-                // 朋友圈 (Shorter, lower emoji, subtle)
-                titles = [
-                    `COSMO 空间实拍照：静谧之境`,
-                    `关于秩序与材质的对话`,
-                    `现货呈现 · 细节之美`,
-                    `留白与感官`
-                ];
+            // DIVERSIFIED PERSPECTIVE GENERATION ENGINES
+            switch (angle.id) {
+                case 'craft': // 材质与工艺细节
+                    titles = isRedBook ? [
+                        `触感与线条的交错 🪵 微哑质感里的细腻心意`,
+                        `触摸得到的份量 🕯️ 把微哑拉丝拉满的空间细节`,
+                        `现货入库实拍 ✨ 为什么这件家具经得起镜头放大？`,
+                        `光影下的微哑触感 🛋️ 优雅不需繁复雕饰`
+                    ] : [
+                        `COSMO 细节实拍：材质与触感的对话`,
+                        `线条流畅得如同一首诗`,
+                        `哑光与光影的踏实感`,
+                        `微哑触感 · 现货呈现`
+                    ];
 
-                body = `空间不言，却自有一股凝练的力量。\n\n${details ? details + '\n' : ''}近距离摸过触感，线条流畅得如同一首诗。好设计不需要繁复雕饰，在日常的相处中即可感受其份量。`;
+                    body = isBuyer ?
+                        `COSMO 选品日志 ｜ 材质与工艺细节 📦\n\n好的设计从不张扬，却能在微距视角下展示出沉甸甸的品质。\n\n${details ? '【细节表达】\n' + details + '\n\n' : ''}近距离摸过触感，金属拉丝与微哑烤漆的衔接丝丝入扣。不管是清晨日光折射的哑光倒角，还是边缘圆润的弧线，都在无声回应着对工艺的苛求。\n\n📍 展厅现货已入库，随时预约近距离感受这触感。` :
+                        `住进理想生活的微小瞬间 ☕️\n\n一件能陪伴很久的家具，材质往往是最直白的表达。\n\n${details ? details + '\n\n' : ''}不用浮夸的雕饰，摸上去是令人心安的微哑触感。当光线斜斜擦过表面，呈现出温润不晃眼的质感，这就是我理想中空间的踏实感。`;
+                    break;
+
+                case 'light': // 光影与空间氛围
+                    titles = isRedBook ? [
+                        `晨光斜斜洒落时 ☀️ 极简空间里的深层呼吸`,
+                        `有光影落下的角落 🕯️ 才是家里最治愈的地方`,
+                        `通透与留白的艺术 🕊️ 展厅实拍氛围感打卡`,
+                        `把阴影与光线当装饰 🛋️ COSMO 空间随感`
+                    ] : [
+                        `光影与留白：静谧之境`,
+                        `当晨光落在微哑的表面`,
+                        `通透与呼吸感`,
+                        `COSMO 空间实拍：晨光与余晖`
+                    ];
+
+                    body = `光影是空间最好的调味剂。\n\n${details ? '【空间写意】\n' + details + '\n\n' : ''}当晨光斜斜落在这件家具的倒角上，整个房间似乎都有了深呼吸的节奏。不需要繁复的堆叠，留白处皆是情绪。\n\n在光影交错中，重新体会住进心仪空间的平静与安宁。`;
+                    break;
+
+                case 'design': // 大师设计背景与选品理念
+                    titles = isRedBook ? [
+                        `经典经得起时间琢磨 📜 聊聊背后的设计逻辑`,
+                        `包豪斯美学的现代回应 🏛️ 为什么它是选品首选？`,
+                        `买手眼光推荐 ☕️ 不易过时的极简长青之作`,
+                        `设计不言 🛋️ 放在家里十年也不会看腻的选品`
+                    ] : [
+                        `选品思考：经得起时间琢磨的设计`,
+                        `包豪斯传承与现代线条`,
+                        `买手志 · 经典不熄`,
+                        `形功能随 · 美学表达`
+                    ];
+
+                    body = isBuyer ?
+                        `COSMO 选品解读 ｜ 经得起时间考验的美学 📜\n\n我们在挑选这件作品时，最看重的便是其跨越时间的生命力。\n\n${details ? details + '\n\n' : ''}借鉴经典的比例规范，去繁就简。它不仅是一件家具，更是空间中无声的美学锚点，经得起目光的反复停留。` :
+                        `把经典的品味搬回家 ☕️\n\n真正的好设计，是不论潮流怎么变，放在那里都自带气场。\n\n${details ? details + '\n\n' : ''}洗练的线条与严谨的比例，让它无论置于客厅中央还是书房一隅，都能成为提升整个空间气场的灵魂存在。`;
+                    break;
+
+                case 'layout': // 实用搭配与落地效果
+                    titles = isRedBook ? [
+                        `实装落地的惊喜 🏡 客厅中心视觉锚点搭好了`,
+                        `抄作业级搭配 🛋️ 极简风这样放秒变杂志封面`,
+                        `送货实拍反馈 ✨ 客户家里的高光时刻`,
+                        `小户型/大空间都能驾驭的百搭神仙家具`
+                    ] : [
+                        `实装落地记录：完美的视觉锚点`,
+                        `实拍反馈 · 空间气场拉满`,
+                        `极简搭配方案`,
+                        `送货安装实拍`
+                    ];
+
+                    body = `客户实装 / 落地实拍 🚚\n\n摆放就位的那一刻，整个客厅的视觉中心瞬间被定格。\n\n${details ? '【搭配特征】\n' + details + '\n\n' : ''}不管是搭配深色地毯，还是在旁边安放一盏落地灯，它都能完美融入并抬升整体空间格调。不仅好看，日常使用的尺度与体感同样非常贴合。`;
+                    break;
+
+                case 'emotion': // 极简生活情绪与沉浸感
+                default:
+                    titles = isRedBook ? [
+                        `卸下一天疲惫的避风港 🕯️ 属于自己的静谧角落`,
+                        `把生活过成一首诗 ☕️ 松弛感空间的治愈力量`,
+                        `回家这一刻 🕊️ 极简空间带给我的心理安宁`,
+                        `慢下来 🌿 享受静止在光影里的治愈时刻`
+                    ] : [
+                        `归家时刻：松弛与安宁`,
+                        `卸下疲惫，静静独处`,
+                        `空间的心理情绪价值`,
+                        `慢下来的生活节奏`
+                    ];
+
+                    body = `回家这一刻，把纷扰挡在门外 🕯️\n\n极简空间最大的魅力，或许就在于给情绪足够的留白。\n\n${details ? details + '\n\n' : ''}倒一杯热茶，坐在舒服的角落里，看着光影渐渐在表面推移。好的家具不争抢主角，却默默给予你最踏实的陪伴与治愈。`;
+                    break;
             }
 
             if (hasUSM) tags.push("#USM模块家具");
             if (hasVitra) tags.push("#Vitra设计");
             if (hasBauhaus) tags.push("#包豪斯美学");
 
-            // Blend inline style learning cue if library has items
             if (state.referenceTexts.length > 0) {
                 body += `\n\n(已全自动融合全局库中 ${state.referenceTexts.length} 篇范文的节奏与留白感)`;
             }
 
             state.currentResult = {
+                angleName: angle.name,
                 headlines: titles,
                 activeHeadlineIndex: 0,
                 body: body,
@@ -861,33 +982,62 @@ ${styleContext}
             };
         }
 
+        function renderPreviewUI() {
+            const container = document.getElementById('headlineCapsulesContainer');
+            const titleEl = document.getElementById('previewTitle');
+            const bodyEl = document.getElementById('previewBody');
+            const tagsEl = document.getElementById('previewTags');
+            const angleBadge = document.getElementById('activeAngleBadge');
+
+            const res = state.currentResult;
+            angleBadge.innerText = `视角：${res.angleName || '全局美学'}`;
+
+            // Render Capsules
+            container.innerHTML = res.headlines.map((h, idx) => {
+                const isActive = idx === res.activeHeadlineIndex;
+                const activeStyle = isActive
+                    ? 'bg-black text-white border-black font-semibold shadow-sm'
+                    : 'bg-appleBg text-appleText border-black/5 hover:border-black/20';
+
+                return `
+                    <div onclick="selectHeadline(${idx})" class="p-2 rounded-xl text-xs border cursor-pointer transition flex items-center justify-between ${activeStyle}">
+                        <span class="truncate pr-2">${escapeHtml(h)}</span>
+                        <span class="text-[10px] opacity-70 flex-shrink-0">方案 ${String.fromCharCode(65 + idx)}</span>
+                    </div>
+                `;
+            }).join('');
+
+            // Active Headline & Body
+            const currentHeadline = res.headlines[res.activeHeadlineIndex] || "准备就绪";
+            titleEl.innerText = currentHeadline;
+            bodyEl.innerText = res.body;
+            tagsEl.innerText = res.tags.join(' ');
+        }
+
         function refreshTitlesOnly() {
             const btn = document.getElementById('refreshTitlesBtn');
             btn.classList.add('animate-subtle');
 
             setTimeout(() => {
+                const currentAngle = PERSPECTIVES[state.variantIndex];
                 const newTitles = [
-                    "光影与材质的深层呼吸：重新思考空间",
-                    "触觉秩序 ｜ 极简空间里的感官沉淀",
-                    "经典不熄 ｜ 被目光反复停留的细节",
-                    "COSMO 选品推荐：留白美学的极致表达"
+                    `【${currentAngle.tag}】光影与材质的深层呼吸`,
+                    `【${currentAngle.tag}】极简空间里的感官沉淀`,
+                    `【${currentAngle.tag}】被目光反复停留的细节`,
+                    `【${currentAngle.tag}】COSMO 留白美学的极致表达`
                 ];
                 state.currentResult.headlines = newTitles;
                 state.currentResult.activeHeadlineIndex = 0;
                 renderPreviewUI();
                 btn.classList.remove('animate-subtle');
-                showToast('已刷新 4 个备选爆款标题', '🔄');
-            }, 300);
+                showToast('已更新 4 个备选爆款标题', '🔄');
+            }, 250);
         }
 
         function selectHeadline(index) {
             state.currentResult.activeHeadlineIndex = index;
             renderPreviewUI();
-            showToast('已切换主标题', '📌');
-        }
-
-        function generateVariant() {
-            generateCopy();
+            showToast('已应用主标题', '📌');
         }
 
         function adoptAndSaveToStyle() {
@@ -902,37 +1052,7 @@ ${styleContext}
 
             localStorage.setItem('cosmo_global_styles', JSON.stringify(state.referenceTexts));
             renderGlobalLibrary();
-            showToast('已采纳！该优秀版本已加入全局风格库', '🖤');
-        }
-
-        function renderPreviewUI() {
-            const container = document.getElementById('headlineCapsulesContainer');
-            const titleEl = document.getElementById('previewTitle');
-            const bodyEl = document.getElementById('previewBody');
-            const tagsEl = document.getElementById('previewTags');
-
-            const res = state.currentResult;
-
-            // Render Capsules
-            container.innerHTML = res.headlines.map((h, idx) => {
-                const isActive = idx === res.activeHeadlineIndex;
-                const activeStyle = isActive
-                    ? 'bg-black text-white border-black font-semibold shadow-sm'
-                    : 'bg-appleBg text-appleText border-black/5 hover:border-black/20';
-
-                return `
-                    <div onclick="selectHeadline(${idx})" class="p-2.5 rounded-xl text-xs border cursor-pointer transition flex items-center justify-between ${activeStyle}">
-                        <span class="truncate pr-2">${escapeHtml(h)}</span>
-                        <span class="text-[10px] opacity-70 flex-shrink-0">方案 ${String.fromCharCode(65 + idx)}</span>
-                    </div>
-                `;
-            }).join('');
-
-            // Active Headline
-            const currentHeadline = res.headlines[res.activeHeadlineIndex] || "准备就绪";
-            titleEl.innerText = currentHeadline;
-            bodyEl.innerText = res.body;
-            tagsEl.innerText = res.tags.join(' ');
+            showToast('已采纳！该版本已收入全局风格库', '🖤');
         }
 
         function copySection(type) {
@@ -972,7 +1092,7 @@ ${styleContext}
                 document.execCommand('copy');
                 showToast('已复制到剪贴板', '📋');
             } catch (err) {
-                showToast('复制失败，请手动选中复制', '❌');
+                showToast('复制失败，请手动选择', '❌');
             }
             document.body.removeChild(textarea);
         }
@@ -988,7 +1108,7 @@ ${styleContext}
             setTimeout(() => {
                 toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
                 toast.classList.remove('opacity-100', 'translate-y-0');
-            }, 2600);
+            }, 2500);
         }
 
         function escapeHtml(str) {
