@@ -1,1401 +1,1243 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="h-full bg-[#F5F5F7]">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>COSMO 文案生成器 | 高端家居小红书风格引擎</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            apple: {
-              bg: '#F5F5F7',
-              dark: '#1D1D1F',
-              gray: '#86868B',
-              lightGray: '#E8E8ED',
-              blue: '#0071E3',
-              blueHover: '#0077ED',
-              card: '#FFFFFF'
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COSMO 文案生成器 | Apple 极简美学版</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        appleBg: '#F5F5F7',
+                        appleDark: '#1D1D1F',
+                        appleGray: '#86868B',
+                        appleCard: '#FFFFFF',
+                        appleAccent: '#000000',
+                        appleSubtle: '#E8E8ED',
+                        appleHover: '#F0F0F2'
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        '2xl': '18px',
+                        '3xl': '24px',
+                    }
+                }
             }
-          },
-          fontFamily: {
-            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', '"Helvetica Neue"', 'Inter', 'sans-serif']
-          },
-          boxShadow: {
-            'apple-sm': '0 2px 8px rgba(0, 0, 0, 0.04)',
-            'apple-md': '0 8px 24px rgba(0, 0, 0, 0.06)',
-            'apple-lg': '0 16px 40px rgba(0, 0, 0, 0.08)',
-            'apple-modal': '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
-          }
         }
-      }
-    }
-  </script>
-  <style>
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(0, 0, 0, 0.15);
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(0, 0, 0, 0.25);
-    }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.82);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(0, 0, 0, 0.06);
-    }
-    .glass-nav {
-      background: rgba(245, 245, 247, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
-    .custom-ring:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.3);
-    }
-    .shimmer {
-      background: linear-gradient(90deg, #f0f0f2 0%, #e8e8ed 50%, #f0f0f2 100%);
-      background-size: 200% 100%;
-      animation: shimmer 1.8s infinite;
-    }
-    @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-  </style>
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom scrollbar and glassmorphism */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D1D1D6;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #999999;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .apple-shadow {
+            box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.04), 0 2px 8px -1px rgba(0, 0, 0, 0.02);
+        }
+        .apple-shadow-lg {
+            box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+        }
+        .active-tab {
+            background-color: #000000 !important;
+            color: #FFFFFF !important;
+        }
+        .capsule-btn {
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+    </style>
 </head>
-<body class="h-full text-[#1D1D1F] font-sans antialiased selection:bg-black selection:text-white flex flex-col">
+<body class="bg-appleBg text-appleDark font-sans antialiased min-h-screen flex flex-col selection:bg-black selection:text-white">
 
-  <!-- Top Navigation Bar -->
-  <header class="sticky top-0 z-30 glass-nav border-b border-black/[0.06]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded-xl bg-apple-dark text-white flex items-center justify-center font-bold text-lg tracking-wider shadow-md">
-          C
-        </div>
-        <div>
-          <span class="font-semibold text-lg tracking-tight text-apple-dark block leading-none">COSMO Studio</span>
-          <span class="text-[11px] text-apple-gray font-medium tracking-wide">高端家居小红书 AI 风格引擎</span>
-        </div>
-      </div>
-
-      <!-- Header Right Actions -->
-      <div class="flex items-center space-x-2 sm:space-x-3">
-        <!-- Style Base Button -->
-        <button id="btnOpenStyleBase" class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-white hover:bg-black/5 text-apple-dark border border-black/10 transition-all shadow-apple-sm">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-apple-blue"></i>
-          <span>风格学习与参考库</span>
-          <span id="badgeActiveRef" class="ml-1 bg-apple-blue/10 text-apple-blue px-1.5 py-0.5 rounded-full text-[10px] font-semibold">0</span>
-        </button>
-
-        <!-- API Settings Button -->
-        <button id="btnOpenSettings" class="p-2 rounded-full text-apple-gray hover:text-apple-dark hover:bg-black/5 transition-all relative">
-          <i data-lucide="settings" class="w-4 h-4"></i>
-          <span id="dotKeyStatus" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-400"></span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Main Application Body -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-    <!-- Left Column: Parameters & Content Creator (7 Cols) -->
-    <section class="lg:col-span-7 space-y-5">
-      
-      <!-- Card 1: Persona & Reference Style Bar -->
-      <div class="glass-card rounded-[24px] p-5 shadow-apple-sm space-y-4">
-        <div class="flex items-center justify-between">
-          <label class="text-xs font-semibold text-apple-gray uppercase tracking-wider flex items-center gap-1.5">
-            <i data-lucide="user-check" class="w-4 h-4 text-apple-dark"></i>
-            1. 选择生成人设 (Persona)
-          </label>
-          <span id="geneStatusIndicator" class="text-[11px] text-emerald-600 font-medium flex items-center gap-1 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100 hidden">
-            <i data-lucide="dna" class="w-3 h-3"></i> 风格基因已激活
-          </span>
-        </div>
-
-        <!-- Persona Toggle Tabs -->
-        <div class="grid grid-cols-2 gap-2 bg-[#E8E8ED]/60 p-1 rounded-2xl">
-          <button id="btnPersonaBlogger" data-persona="blogger" class="persona-tab py-2.5 px-4 rounded-xl text-xs font-semibold transition-all flex items-center justify-center space-x-2 bg-white text-apple-dark shadow-apple-sm">
-            <i data-lucide="camera" class="w-4 h-4"></i>
-            <span>高端家居博主</span>
-          </button>
-          <button id="btnPersonaBuyer" data-persona="buyer_store" class="persona-tab py-2.5 px-4 rounded-xl text-xs font-semibold text-apple-gray hover:text-apple-dark transition-all flex items-center justify-center space-x-2">
-            <i data-lucide="store" class="w-4 h-4"></i>
-            <span>家居买手店 / 展厅</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Card 2: Image Drag & Drop Uploader -->
-      <div class="glass-card rounded-[24px] p-5 shadow-apple-sm space-y-3">
-        <div class="flex items-center justify-between">
-          <label class="text-xs font-semibold text-apple-gray uppercase tracking-wider flex items-center gap-1.5">
-            <i data-lucide="image" class="w-4 h-4 text-apple-dark"></i>
-            2. 家居实拍图 / 选品图 (可选视觉参考)
-          </label>
-          <span class="text-[11px] text-apple-gray" id="imgCountText">已上传 0 张</span>
-        </div>
-
-        <!-- Drop Zone -->
-        <div id="dropZone" class="border-2 border-dashed border-black/10 hover:border-black/30 rounded-2xl p-4 text-center cursor-pointer transition-all bg-black/[0.01] hover:bg-black/[0.02] relative group">
-          <input type="file" id="fileInput" accept="image/*" multiple class="hidden">
-          <div class="flex flex-col items-center justify-center py-3 space-y-2">
-            <div class="w-10 h-10 rounded-full bg-white shadow-apple-sm flex items-center justify-center text-apple-dark group-hover:scale-105 transition-transform">
-              <i data-lucide="upload-cloud" class="w-5 h-5"></i>
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-appleSubtle/60 px-4 lg:px-8 py-3.5 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 bg-black text-white rounded-xl flex items-center justify-center font-bold tracking-tighter text-lg shadow-sm">
+                C
             </div>
-            <p class="text-xs font-medium text-apple-dark">点击选择或拖拽家居图片至此处</p>
-            <p class="text-[11px] text-apple-gray">AI 将自动感知家具材质、光影氛围与空间布局</p>
-          </div>
+            <div>
+                <h1 class="text-base font-semibold tracking-tight leading-tight">COSMO <span class="font-normal text-appleGray">文案工作室</span></h1>
+                <p class="text-[11px] text-appleGray tracking-wide uppercase">Spatial & Lifestyle Content Studio</p>
+            </div>
         </div>
 
-        <!-- Image Previews Container -->
-        <div id="previewContainer" class="grid grid-cols-4 gap-3 hidden pt-1">
-          <!-- Dynamically inserted thumbnails -->
-        </div>
-      </div>
-
-      <!-- Card 3: Scene & Tag Selection -->
-      <div class="glass-card rounded-[24px] p-5 shadow-apple-sm space-y-4">
-        <!-- Scene Selection -->
-        <div>
-          <label class="text-xs font-semibold text-apple-gray uppercase tracking-wider block mb-2.5 flex items-center gap-1.5">
-            <i data-lucide="compass" class="w-4 h-4 text-apple-dark"></i>
-            3. 发布场景切入点
-          </label>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            <button data-scene="showroom" class="scene-btn p-2.5 rounded-xl border border-black/10 text-xs font-medium text-center transition-all bg-black text-white border-black">
-              展厅现货/入库
+        <div class="flex items-center space-x-2 md:space-x-3">
+            <!-- Memory Badge Button -->
+            <button onclick="openMemoryModal()" class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-appleSubtle rounded-full text-xs font-medium hover:bg-appleHover transition-colors apple-shadow">
+                <i data-lucide="brain-circuit" class="w-3.5 h-3.5 text-appleDark"></i>
+                <span>已积累 <strong id="memoryCountBadge" class="font-semibold">0</strong> 条偏好</span>
             </button>
-            <button data-scene="installed" class="scene-btn p-2.5 rounded-xl border border-black/10 text-xs font-medium text-center text-apple-dark hover:bg-black/5 transition-all">
-              客户实装/实拍
+
+            <!-- DNA Template Library -->
+            <button onclick="openDnaModal()" class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-appleSubtle rounded-full text-xs font-medium hover:bg-appleHover transition-colors apple-shadow">
+                <i data-lucide="dna" class="w-3.5 h-3.5 text-appleDark"></i>
+                <span class="hidden sm:inline">风格基因库</span>
             </button>
-            <button data-scene="inspiration" class="scene-btn p-2.5 rounded-xl border border-black/10 text-xs font-medium text-center text-apple-dark hover:bg-black/5 transition-all">
-              灵感搭配/解读
+
+            <!-- API Key Settings -->
+            <button onclick="openApiKeyModal()" id="apiKeyBtn" class="flex items-center space-x-1.5 px-3 py-1.5 bg-white border border-appleSubtle rounded-full text-xs font-medium hover:bg-appleHover transition-colors apple-shadow">
+                <i data-lucide="key" class="w-3.5 h-3.5 text-appleDark"></i>
+                <span id="apiKeyStatusText" class="hidden sm:inline">API 设置</span>
             </button>
-            <button data-scene="selection" class="scene-btn p-2.5 rounded-xl border border-black/10 text-xs font-medium text-center text-apple-dark hover:bg-black/5 transition-all">
-              买手选品故事
-            </button>
-          </div>
         </div>
+    </header>
 
-        <!-- Preset Brand & Material Tags -->
-        <div>
-          <div class="flex items-center justify-between mb-2">
-            <label class="text-xs font-semibold text-apple-gray uppercase tracking-wider flex items-center gap-1.5">
-              <i data-lucide="tag" class="w-3.5 h-3.5 text-apple-dark"></i>
-              经典品牌与设计语义 (点击快速添加)
-            </label>
-          </div>
-          <div id="tagPillsContainer" class="flex flex-wrap gap-1.5">
-            <!-- Dynamic Tags injected via JS -->
-          </div>
-        </div>
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-        <!-- Freeform Input Description -->
-        <div>
-          <label class="text-xs font-semibold text-apple-gray uppercase tracking-wider block mb-1.5">
-            产品/空间亮点描述 (可直接输入特点或复制买手笔记)
-          </label>
-          <textarea id="inputHighlights" rows="3" class="w-full rounded-2xl bg-black/[0.03] border border-black/5 p-3 text-xs text-apple-dark placeholder:text-apple-gray/70 focus:bg-white custom-ring transition-all resize-none" placeholder="例：USM modular 经典墨绿色三层组合柜，搭配 Flos Snoopy 经典小狗台灯，黄昏光影斜照下的金属与烤漆质感，彰显静谧高级感..."></textarea>
-        </div>
-      </div>
+        <!-- LEFT COLUMN: Form Inputs & Configurations (lg:col-span-6) -->
+        <section class="lg:col-span-6 space-y-6">
 
-      <!-- Card 4: Detailed Formatting Rules -->
-      <div class="glass-card rounded-[24px] p-5 shadow-apple-sm space-y-4">
-        <label class="text-xs font-semibold text-apple-gray uppercase tracking-wider block flex items-center gap-1.5">
-          <i data-lucide="sliders" class="w-4 h-4 text-apple-dark"></i>
-          4. 排版与长度微调
-        </label>
+            <!-- Card 1: Platform & Persona Selector -->
+            <div class="bg-white rounded-3xl p-6 border border-appleSubtle apple-shadow space-y-5">
+                
+                <!-- Platform Toggle -->
+                <div>
+                    <label class="block text-xs font-medium text-appleGray uppercase tracking-wider mb-2.5">发布平台 (Platform)</label>
+                    <div class="grid grid-cols-2 gap-1.5 p-1 bg-appleBg rounded-2xl border border-appleSubtle/80">
+                        <button type="button" onclick="setPlatform('xiaohongshu')" id="btnPlatformXhs" class="py-2.5 px-4 rounded-xl text-xs font-medium transition-all capsule-btn active-tab flex items-center justify-center space-x-2">
+                            <i data-lucide="book-open" class="w-4 h-4"></i>
+                            <span>小红书</span>
+                        </button>
+                        <button type="button" onclick="setPlatform('pyq')" id="btnPlatformPyq" class="py-2.5 px-4 rounded-xl text-xs font-medium text-appleDark hover:text-black transition-all capsule-btn flex items-center justify-center space-x-2">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i>
+                            <span>微信朋友圈</span>
+                        </button>
+                    </div>
+                </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <!-- Emoji Density Selector -->
-          <div class="space-y-1.5">
-            <span class="text-xs font-medium text-apple-dark block">Emoji 氛围控制</span>
-            <div class="grid grid-cols-3 gap-1.5 bg-[#E8E8ED]/60 p-1 rounded-xl text-[11px] font-medium">
-              <button data-emoji="none" class="emoji-btn py-1.5 rounded-lg text-center transition-all">极简 0%</button>
-              <button data-emoji="subtle" class="emoji-btn py-1.5 rounded-lg text-center bg-white shadow-apple-sm text-apple-dark">克制 15%</button>
-              <button data-emoji="rich" class="emoji-btn py-1.5 rounded-lg text-center text-apple-gray">丰富 40%</button>
-            </div>
-          </div>
+                <!-- Role / Persona Selector -->
+                <div>
+                    <label class="block text-xs font-medium text-appleGray uppercase tracking-wider mb-2.5">创作者人设 (Creator Persona)</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button type="button" onclick="setRole('blogger')" id="btnRoleBlogger" class="p-3.5 rounded-2xl border text-left transition-all active-tab border-black">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-xs font-semibold">🛋️ 家居博主</span>
+                                <i data-lucide="check" class="w-3.5 h-3.5 role-check"></i>
+                            </div>
+                            <p class="text-[11px] opacity-80 leading-relaxed">空间光影、材质触感、软装搭法与生活仪式感</p>
+                        </button>
+                        <button type="button" onclick="setRole('buyer')" id="btnRoleBuyer" class="p-3.5 rounded-2xl border border-appleSubtle text-left transition-all hover:bg-appleBg">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-xs font-semibold text-appleDark">🏷️ 家居买手店</span>
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-black hidden role-check"></i>
+                            </div>
+                            <p class="text-[11px] text-appleGray leading-relaxed">USM/Vitra故事、大师经典、展厅现货与高定审美</p>
+                        </button>
+                    </div>
+                </div>
 
-          <!-- Length Selector -->
-          <div class="space-y-1.5">
-            <span class="text-xs font-medium text-apple-dark block">篇幅长度</span>
-            <div class="grid grid-cols-3 gap-1.5 bg-[#E8E8ED]/60 p-1 rounded-xl text-[11px] font-medium">
-              <button data-length="short" class="length-btn py-1.5 rounded-lg text-center transition-all text-apple-gray">精炼短打</button>
-              <button data-length="medium" class="length-btn py-1.5 rounded-lg text-center bg-white shadow-apple-sm text-apple-dark">标准种草</button>
-              <button data-length="long" class="length-btn py-1.5 rounded-lg text-center text-apple-gray">深度解读</button>
-            </div>
-          </div>
-        </div>
+                <!-- Scene Selector -->
+                <div>
+                    <label class="block text-xs font-medium text-appleGray uppercase tracking-wider mb-2.5">发布场景 (Scene)</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" onclick="setScene('showroom')" id="btnSceneShowroom" class="py-2.5 px-3 rounded-xl border border-black text-xs font-medium active-tab text-left transition-all">
+                            🛋️ 展厅新品/现货
+                        </button>
+                        <button type="button" onclick="setScene('client')" id="btnSceneClient" class="py-2.5 px-3 rounded-xl border border-appleSubtle text-xs font-medium text-appleDark hover:bg-appleBg text-left transition-all">
+                            🏠 客户实装/实拍
+                        </button>
+                        <button type="button" onclick="setScene('inspiration')" id="btnSceneInspiration" class="py-2.5 px-3 rounded-xl border border-appleSubtle text-xs font-medium text-appleDark hover:bg-appleBg text-left transition-all">
+                            💡 灵感搭配/解读
+                        </button>
+                        <button type="button" onclick="setScene('brand')" id="btnSceneBrand" class="py-2.5 px-3 rounded-xl border border-appleSubtle text-xs font-medium text-appleDark hover:bg-appleBg text-left transition-all">
+                            ☕ 品牌故事/美学
+                        </button>
+                    </div>
+                </div>
 
-        <!-- Preset Hashtags -->
-        <div>
-          <label class="text-xs font-medium text-apple-dark block mb-1.5">默认固定的 #话题标签 (空格分隔)</label>
-          <input type="text" id="inputPresetHashtags" class="w-full rounded-xl bg-black/[0.03] border border-black/5 px-3 py-2 text-xs text-apple-dark focus:bg-white custom-ring transition-all" value="#COSMO家居 #深圳家居买手店 #极简家居 #家居美学 #小红书种草">
-        </div>
-      </div>
+                <!-- Dynamic Tone Selector (Changes based on Platform) -->
+                <div>
+                    <div class="flex justify-between items-center mb-2.5">
+                        <label class="text-xs font-medium text-appleGray uppercase tracking-wider">文案风格调性 (Tone)</label>
+                        <span id="platformToneLabel" class="text-[11px] text-appleGray font-normal">已自动匹配平台特点</span>
+                    </div>
+                    <div id="toneContainer" class="grid grid-cols-2 gap-2">
+                        <!-- Dynamic rendered options -->
+                    </div>
+                </div>
 
-      <!-- Action Button -->
-      <div class="pt-1">
-        <button id="btnGenerate" class="w-full py-4 px-6 rounded-2xl bg-apple-dark hover:bg-black text-white font-medium text-sm transition-all shadow-apple-md hover:shadow-apple-lg flex items-center justify-center space-x-2 group">
-          <i data-lucide="sparkles" class="w-4 h-4 text-amber-300 group-hover:rotate-12 transition-transform"></i>
-          <span>生成 COSMO 专属爆款小红书文案</span>
-        </button>
-      </div>
-
-    </section>
-
-    <!-- Right Column: AI Output & Editing Workspace (5 Cols) -->
-    <section class="lg:col-span-5 space-y-5 flex flex-col">
-      <div class="glass-card rounded-[24px] p-5 shadow-apple-sm space-y-4 flex-1 flex flex-col relative overflow-hidden min-h-[500px]">
-        
-        <div class="flex items-center justify-between border-b border-black/5 pb-3">
-          <div class="flex items-center space-x-2">
-            <div class="w-2.5 h-2.5 rounded-full bg-apple-dark"></div>
-            <h2 class="text-xs font-bold uppercase tracking-wider text-apple-dark">文案生成工作台</h2>
-          </div>
-          <div class="flex items-center space-x-2 text-[11px] text-apple-gray">
-            <span id="outputEngineTag" class="px-2 py-0.5 rounded-full bg-black/5 font-medium">离线备用引擎</span>
-          </div>
-        </div>
-
-        <!-- Initial Placeholder State -->
-        <div id="outputPlaceholder" class="flex-1 flex flex-col items-center justify-center p-8 text-center my-auto space-y-3">
-          <div class="w-16 h-16 rounded-3xl bg-black/[0.03] flex items-center justify-center text-apple-gray border border-black/5">
-            <i data-lucide="feather" class="w-8 h-8"></i>
-          </div>
-          <h3 class="text-sm font-semibold text-apple-dark">等待推演文案...</h3>
-          <p class="text-xs text-apple-gray max-w-xs leading-relaxed">
-            在左侧配置场景与亮点，点击生成。已提取的博主风格基因与过去文案记忆将实时生效。
-          </p>
-        </div>
-
-        <!-- Loading Skeleton State -->
-        <div id="outputSkeleton" class="flex-1 space-y-4 hidden my-auto py-6">
-          <div class="space-y-2">
-            <div class="h-3 w-20 bg-black/10 rounded shimmer"></div>
-            <div class="h-8 w-full bg-black/10 rounded-xl shimmer"></div>
-          </div>
-          <div class="space-y-2 pt-2">
-            <div class="h-4 w-full bg-black/10 rounded shimmer"></div>
-            <div class="h-4 w-5/6 bg-black/10 rounded shimmer"></div>
-            <div class="h-4 w-4/6 bg-black/10 rounded shimmer"></div>
-            <div class="h-4 w-full bg-black/10 rounded shimmer"></div>
-            <div class="h-4 w-2/3 bg-black/10 rounded shimmer"></div>
-          </div>
-          <div class="flex gap-2 pt-4">
-            <div class="h-6 w-16 bg-black/10 rounded-full shimmer"></div>
-            <div class="h-6 w-20 bg-black/10 rounded-full shimmer"></div>
-          </div>
-        </div>
-
-        <!-- Generated Content Container -->
-        <div id="outputContent" class="flex-1 flex flex-col space-y-4 hidden">
-          
-          <!-- Multi-Title Selector Pills -->
-          <div class="space-y-1.5">
-            <div class="flex items-center justify-between">
-              <span class="text-[11px] font-semibold uppercase text-apple-gray tracking-wider flex items-center gap-1">
-                <i data-lucide="heading" class="w-3.5 h-3.5 text-apple-dark"></i> 多视角爆款标题 (点击设为当前)
-              </span>
-            </div>
-            <div id="titlesPillsContainer" class="flex flex-col gap-1.5">
-              <!-- Dynamically rendered title choices -->
-            </div>
-          </div>
-
-          <!-- Main Copywriter Textarea / Editable Zone -->
-          <div class="flex-1 flex flex-col space-y-1.5">
-            <div class="flex items-center justify-between">
-              <span class="text-[11px] font-semibold uppercase text-apple-gray tracking-wider flex items-center gap-1">
-                <i data-lucide="file-text" class="w-3.5 h-3.5 text-apple-dark"></i> 文案正文 (可直接修改)
-              </span>
-              <span id="charCount" class="text-[10px] text-apple-gray font-mono">0 字</span>
-            </div>
-            <textarea id="mainCopyTextarea" class="w-full flex-1 rounded-2xl bg-black/[0.02] border border-black/5 p-4 text-xs leading-relaxed text-apple-dark focus:bg-white custom-ring transition-all resize-none font-sans" rows="12"></textarea>
-          </div>
-
-          <!-- Hashtags Bar -->
-          <div class="pt-1">
-            <div id="outputHashtags" class="text-xs text-apple-blue font-medium flex flex-wrap gap-1.5">
-              <!-- #hashtags -->
-            </div>
-          </div>
-
-          <!-- Style Insights Note (AI Feedback) -->
-          <div id="styleInsightsCard" class="bg-black/[0.03] p-3 rounded-xl border border-black/5 text-[11px] text-apple-gray flex items-start space-x-2">
-            <i data-lucide="info" class="w-3.5 h-3.5 text-apple-dark shrink-0 mt-0.5"></i>
-            <span id="styleInsightsText">本次推演已融入极简高级断句与光影氛围语系。</span>
-          </div>
-
-          <!-- Quick Action Buttons Footer -->
-          <div class="pt-2 border-t border-black/5 space-y-2">
-            <div class="grid grid-cols-3 gap-2">
-              <button id="btnCopyAll" class="py-2.5 px-3 rounded-xl bg-apple-dark hover:bg-black text-white text-xs font-medium flex items-center justify-center space-x-1.5 transition-all shadow-apple-sm">
-                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-                <span>复制全案</span>
-              </button>
-              <button id="btnCopyBody" class="py-2.5 px-3 rounded-xl bg-black/5 hover:bg-black/10 text-apple-dark text-xs font-medium flex items-center justify-center space-x-1.5 transition-all">
-                <i data-lucide="align-left" class="w-3.5 h-3.5"></i>
-                <span>仅复制正文</span>
-              </button>
-              <button id="btnCopyTitle" class="py-2.5 px-3 rounded-xl bg-black/5 hover:bg-black/10 text-apple-dark text-xs font-medium flex items-center justify-center space-x-1.5 transition-all">
-                <i data-lucide="type" class="w-3.5 h-3.5"></i>
-                <span>仅复制标题</span>
-              </button>
             </div>
 
-            <div class="grid grid-cols-2 gap-2 pt-1">
-              <button id="btnVariant" class="py-2 px-3 rounded-xl border border-black/10 hover:bg-black/5 text-apple-dark text-xs font-medium flex items-center justify-center space-x-1.5 transition-all">
-                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-                <span>换一版 (Variant)</span>
-              </button>
-              <button id="btnAdopt" class="py-2 px-3 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200/60 hover:bg-emerald-100 text-xs font-medium flex items-center justify-center space-x-1.5 transition-all">
-                <i data-lucide="heart" class="w-3.5 h-3.5"></i>
-                <span>采纳并沉淀为偏好</span>
-              </button>
+            <!-- Card 2: Image Upload & Keywords -->
+            <div class="bg-white rounded-3xl p-6 border border-appleSubtle apple-shadow space-y-5">
+                
+                <!-- Image Dropzone -->
+                <div>
+                    <div class="flex justify-between items-center mb-2.5">
+                        <label class="text-xs font-medium text-appleGray uppercase tracking-wider">空间/单品图片 (Images)</label>
+                        <span id="imgCountText" class="text-[11px] text-appleGray">0 / 9 张</span>
+                    </div>
+                    
+                    <div id="dropzone" onclick="document.getElementById('fileInput').click()" 
+                         class="border-2 border-dashed border-appleSubtle rounded-2xl p-4 text-center cursor-pointer hover:border-black hover:bg-appleBg/50 transition-all">
+                        <input type="file" id="fileInput" multiple accept="image/*" class="hidden" onchange="handleFileSelect(event)">
+                        <div class="flex flex-col items-center justify-center space-y-2 py-2">
+                            <div class="w-10 h-10 rounded-full bg-appleBg flex items-center justify-center">
+                                <i data-lucide="upload-cloud" class="w-5 h-5 text-appleDark"></i>
+                            </div>
+                            <p class="text-xs text-appleDark font-medium">点击或拖拽上传实拍图</p>
+                            <p class="text-[11px] text-appleGray">支持 JPG, PNG, WEBP（视觉识图辅助生成）</p>
+                        </div>
+                    </div>
+
+                    <!-- Image Thumbnails Grid -->
+                    <div id="previewGrid" class="grid grid-cols-5 gap-2.5 mt-3 empty:hidden"></div>
+                </div>
+
+                <!-- Keywords & Tags Selector -->
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-xs font-medium text-appleGray uppercase tracking-wider">快捷品牌/材质/场景 (Quick Tags)</label>
+                        <span class="text-[11px] text-appleGray">点击加入关键词</span>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5 mb-3" id="quickTagsBox">
+                        <!-- Rendered by JS -->
+                    </div>
+                    <!-- Custom Input Tag -->
+                    <div class="flex items-center space-x-2">
+                        <input type="text" id="customTagInput" placeholder="输入自定义关键词（如：中古绿、微水泥）" 
+                               class="flex-1 text-xs px-3.5 py-2.5 bg-appleBg border border-appleSubtle rounded-xl focus:outline-none focus:border-black focus:bg-white transition-all">
+                        <button type="button" onclick="addCustomTag()" class="px-3 py-2.5 bg-black text-white rounded-xl text-xs font-medium hover:bg-neutral-800 transition-colors">
+                            添加
+                        </button>
+                    </div>
+                    <!-- Selected Tags List -->
+                    <div id="selectedTagsContainer" class="flex flex-wrap gap-1.5 mt-2.5 empty:hidden"></div>
+                </div>
+
             </div>
-          </div>
 
-        </div>
+            <!-- Card 3: Form Controls (Length, Emoji, DNA) -->
+            <div class="bg-white rounded-3xl p-6 border border-appleSubtle apple-shadow space-y-5">
+                
+                <!-- Length & Emoji Density in 2 columns -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Length -->
+                    <div>
+                        <label class="block text-xs font-medium text-appleGray uppercase tracking-wider mb-2">文案篇幅 (Length)</label>
+                        <div class="space-y-1.5">
+                            <label class="flex items-center space-x-2.5 p-2 rounded-xl hover:bg-appleBg cursor-pointer text-xs">
+                                <input type="radio" name="length" value="short" class="accent-black">
+                                <span>精炼短打 (50-150字)</span>
+                            </label>
+                            <label class="flex items-center space-x-2.5 p-2 rounded-xl hover:bg-appleBg cursor-pointer text-xs">
+                                <input type="radio" name="length" value="medium" checked class="accent-black">
+                                <span>标准种草 (200-400字)</span>
+                            </label>
+                            <label class="flex items-center space-x-2.5 p-2 rounded-xl hover:bg-appleBg cursor-pointer text-xs">
+                                <input type="radio" name="length" value="long" class="accent-black">
+                                <span>深度解读 (500字+)</span>
+                            </label>
+                        </div>
+                    </div>
 
-      </div>
-    </section>
+                    <!-- Emoji Density -->
+                    <div>
+                        <label class="block text-xs font-medium text-appleGray uppercase tracking-wider mb-2">Emoji 密度 (Emoji)</label>
+                        <div class="space-y-1.5">
+                            <label class="flex items-center space-x-2.5 p-2 rounded-xl hover:bg-appleBg cursor-pointer text-xs">
+                                <input type="radio" name="emoji" value="none" class="accent-black">
+                                <span>0% 极简无 Emoji</span>
+                            </label>
+                            <label class="flex items-center space-x-2.5 p-2 rounded-xl hover:bg-appleBg cursor-pointer text-xs">
+                                <input type="radio" name="emoji" value="moderate" checked class="accent-black">
+                                <span>10-20% 克制点缀</span>
+                            </label>
+                            <label class="flex items-center space-x-2.5 p-2 rounded-xl hover:bg-appleBg cursor-pointer text-xs">
+                                <input type="radio" name="emoji" value="high" class="accent-black">
+                                <span>40%+ 氛围感排版</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
 
-  </main>
+                <!-- DNA Template Binding -->
+                <div class="pt-2 border-t border-appleSubtle">
+                    <label class="block text-xs font-medium text-appleGray uppercase tracking-wider mb-2">绑定已学习的风格基因 (Optional DNA)</label>
+                    <select id="dnaSelector" class="w-full text-xs px-3.5 py-2.5 bg-appleBg border border-appleSubtle rounded-xl focus:outline-none focus:border-black focus:bg-white transition-all">
+                        <option value="">默认标准人设 (无特定风格注入)</option>
+                    </select>
+                </div>
 
-  <!-- MODAL 1: Style Learning & Reference Base (风格学习与参考库) -->
-  <div id="modalStyleBase" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md hidden transition-opacity">
-    <div class="glass-card rounded-[28px] bg-white max-w-3xl w-full mx-4 max-h-[85vh] flex flex-col shadow-apple-modal overflow-hidden border border-black/10">
-      
-      <!-- Modal Header -->
-      <div class="px-6 py-4 border-b border-black/5 flex items-center justify-between">
-        <div class="flex items-center space-x-2.5">
-          <div class="w-8 h-8 rounded-xl bg-apple-blue/10 text-apple-blue flex items-center justify-center">
-            <i data-lucide="dna" class="w-4 h-4"></i>
-          </div>
-          <div>
-            <h3 class="text-sm font-bold text-apple-dark">小红书对标博主 & 个人过往文案参考库</h3>
-            <p class="text-[11px] text-apple-gray">手动导入经典文案，AI 将深度提炼其断句、情绪、语气词与词汇基因</p>
-          </div>
-        </div>
-        <button id="btnCloseStyleBase" class="p-2 rounded-full hover:bg-black/5 text-apple-gray hover:text-apple-dark transition-all">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
+                <!-- Generate Button -->
+                <button type="button" onclick="generateContent()" id="btnGenerate" 
+                        class="w-full py-4 bg-black text-white font-medium rounded-2xl text-sm hover:bg-neutral-800 active:scale-[0.99] transition-all flex items-center justify-center space-x-2 apple-shadow-lg">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    <span id="btnGenerateText">生成极简文案</span>
+                </button>
 
-      <!-- Modal Navigation Tabs -->
-      <div class="px-6 pt-3 flex border-b border-black/5 space-x-4 text-xs font-medium">
-        <button id="tabRefList" class="pb-2.5 border-b-2 border-apple-dark text-apple-dark font-semibold">参考文案列表</button>
-        <button id="tabStyleGene" class="pb-2.5 border-b-2 border-transparent text-apple-gray hover:text-apple-dark">AI 提炼的风格基因</button>
-        <button id="tabAddRef" class="pb-2.5 border-b-2 border-transparent text-apple-gray hover:text-apple-dark flex items-center gap-1">
-          <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> 手动导入新文案
-        </button>
-      </div>
-
-      <!-- Modal Body Content Panels -->
-      <div class="p-6 flex-1 overflow-y-auto space-y-4">
-        
-        <!-- Tab 1 Panel: Reference List -->
-        <div id="panelRefList" class="space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs text-apple-gray">已导入 <span id="refCountNum" class="font-bold text-apple-dark">0</span> 条参考文案 (勾选的将被注入生成模型)</span>
-            <button id="btnTriggerExtractGene" class="py-1.5 px-3 rounded-full bg-apple-dark hover:bg-black text-white text-xs font-medium flex items-center gap-1.5 transition-all shadow-apple-sm">
-              <i data-lucide="wand-2" class="w-3.5 h-3.5 text-amber-300"></i>
-              <span>提炼 AI 风格基因 (Extract Gene)</span>
-            </button>
-          </div>
-
-          <!-- Empty Ref Base State -->
-          <div id="emptyRefState" class="text-center py-10 space-y-2 border-2 border-dashed border-black/5 rounded-2xl">
-            <i data-lucide="book-open" class="w-8 h-8 text-apple-gray mx-auto"></i>
-            <p class="text-xs font-semibold text-apple-dark">参考库暂无文案</p>
-            <p class="text-[11px] text-apple-gray">点击右上角“手动导入新文案”，粘贴对标博主的爆款笔记或你的经典文案。</p>
-          </div>
-
-          <!-- Active Reference Items Container -->
-          <div id="refListContainer" class="space-y-3">
-            <!-- Dynamic Ref Cards -->
-          </div>
-        </div>
-
-        <!-- Tab 2 Panel: Style Gene Analysis Result -->
-        <div id="panelStyleGene" class="space-y-4 hidden">
-          <div class="bg-gradient-to-r from-slate-900 to-black text-white p-5 rounded-2xl space-y-3 shadow-apple-md">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                <i data-lucide="sparkles" class="w-4 h-4"></i> COSMO 专属风格画像 (Prompt Directive)
-              </span>
-              <span id="geneTimestamp" class="text-[10px] text-white/60">尚未提炼</span>
             </div>
-            <p id="geneDirectiveText" class="text-xs text-white/90 leading-relaxed font-mono bg-white/10 p-3 rounded-xl border border-white/10">
-              请先在“参考文案列表”中导入文案，并点击“提炼 AI 风格基因”。AI 将生成专属于你的语法与排版控制令。
+
+        </section>
+
+
+        <!-- RIGHT COLUMN: Output & Interactive Preview (lg:col-span-6) -->
+        <section class="lg:col-span-6 lg:sticky lg:top-24 space-y-6">
+
+            <!-- Title Capsules Area (FIXED & ENHANCED FEATURE) -->
+            <div class="bg-white rounded-3xl p-6 border border-appleSubtle apple-shadow space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2 h-2 bg-black rounded-full"></span>
+                        <h3 class="text-xs font-semibold text-appleDark uppercase tracking-wider">备选标题库 (Capsule Selector)</h3>
+                    </div>
+                    <button type="button" onclick="refreshTitlesOnly()" id="btnRefreshTitles" class="flex items-center space-x-1 text-xs text-appleGray hover:text-black transition-colors px-2.5 py-1 rounded-lg hover:bg-appleBg">
+                        <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
+                        <span>刷新标题</span>
+                    </button>
+                </div>
+                
+                <p class="text-[11px] text-appleGray">点击下方标题胶囊，可实时切换主预览文案标题与剪贴板内容：</p>
+
+                <!-- Dynamic Title Capsules Container -->
+                <div id="titleCapsulesBox" class="space-y-2 pt-1">
+                    <div class="text-xs text-appleGray italic p-3 bg-appleBg/60 rounded-2xl text-center">
+                        点击左侧“生成”按钮后，在此处多视角摇号切换标题
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Render Area -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-appleSubtle apple-shadow space-y-6 relative min-h-[420px] flex flex-col justify-between">
+                
+                <!-- Loading Overlay -->
+                <div id="loadingOverlay" class="absolute inset-0 bg-white/90 backdrop-blur-sm rounded-3xl z-20 flex flex-col items-center justify-center space-y-3 hidden">
+                    <div class="w-8 h-8 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+                    <p class="text-xs font-medium text-appleDark tracking-wide" id="loadingText">正在提炼空间光影与文字气味...</p>
+                </div>
+
+                <!-- Main Copy Preview Card -->
+                <div class="space-y-5 flex-1">
+                    
+                    <!-- Platform & Tone Tag -->
+                    <div class="flex items-center justify-between border-b border-appleSubtle/60 pb-3">
+                        <div class="flex items-center space-x-2">
+                            <span id="previewPlatformBadge" class="px-2.5 py-1 bg-black text-white text-[10px] font-semibold rounded-full uppercase tracking-wider">小红书</span>
+                            <span id="previewStyleBadge" class="px-2.5 py-1 bg-appleBg text-appleDark text-[10px] font-medium rounded-full">爆款种草</span>
+                        </div>
+                        <span id="wordCountBadge" class="text-[11px] text-appleGray">0 字</span>
+                    </div>
+
+                    <!-- Selected Main Title Display -->
+                    <div class="space-y-1">
+                        <span class="text-[10px] uppercase font-bold text-appleGray tracking-widest">Selected Title</span>
+                        <h2 id="mainTitleDisplay" class="text-base sm:text-lg font-bold text-black leading-snug tracking-tight">
+                            点击左侧生成按钮开启创作
+                        </h2>
+                    </div>
+
+                    <!-- Content Body Display -->
+                    <div class="space-y-1">
+                        <span class="text-[10px] uppercase font-bold text-appleGray tracking-widest">Main Copy</span>
+                        <div id="mainContentDisplay" class="text-xs sm:text-sm text-appleDark leading-relaxed whitespace-pre-wrap font-normal pt-1">
+                            生成结果将展示在这里。支持自动适配小红书爆款排版或朋友圈优雅留白体...
+                        </div>
+                    </div>
+
+                    <!-- Hashtags Display -->
+                    <div id="hashtagsSection" class="pt-2">
+                        <div id="hashtagsDisplay" class="flex flex-wrap gap-1.5 text-xs text-neutral-600 font-medium"></div>
+                    </div>
+
+                </div>
+
+                <!-- Bottom Interactive Action Toolbar -->
+                <div class="pt-6 border-t border-appleSubtle/80 space-y-3">
+                    
+                    <!-- Action Row 1: Adopt & Regenerate -->
+                    <div class="flex items-center space-x-2">
+                        <button type="button" onclick="adoptCurrentCopy()" class="flex-1 py-2.5 bg-black text-white rounded-xl text-xs font-medium hover:bg-neutral-800 transition-all flex items-center justify-center space-x-1.5 shadow-sm">
+                            <i data-lucide="bookmark-check" class="w-3.5 h-3.5"></i>
+                            <span>采纳此版 (写入记忆)</span>
+                        </button>
+                        <button type="button" onclick="generateContent('variant')" class="px-4 py-2.5 bg-appleBg text-appleDark border border-appleSubtle rounded-xl text-xs font-medium hover:bg-appleHover transition-all flex items-center space-x-1.5">
+                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                            <span>换一版视角</span>
+                        </button>
+                    </div>
+
+                    <!-- Action Row 2: Copy Buttons Group -->
+                    <div class="grid grid-cols-4 gap-2">
+                        <button type="button" onclick="copyFullCopy()" class="py-2 bg-appleBg border border-appleSubtle text-appleDark rounded-xl text-[11px] font-medium hover:bg-appleHover transition-colors flex items-center justify-center space-x-1">
+                            <i data-lucide="copy" class="w-3 h-3"></i>
+                            <span>复制全案</span>
+                        </button>
+                        <button type="button" onclick="copyTextOnly()" class="py-2 bg-appleBg border border-appleSubtle text-appleDark rounded-xl text-[11px] font-medium hover:bg-appleHover transition-colors flex items-center justify-center space-x-1">
+                            <i data-lucide="file-text" class="w-3 h-3"></i>
+                            <span>仅复制正文</span>
+                        </button>
+                        <button type="button" onclick="copyTitleOnly()" class="py-2 bg-appleBg border border-appleSubtle text-appleDark rounded-xl text-[11px] font-medium hover:bg-appleHover transition-colors flex items-center justify-center space-x-1">
+                            <i data-lucide="heading" class="w-3 h-3"></i>
+                            <span>仅复制标题</span>
+                        </button>
+                        <button type="button" onclick="copyHashtagsOnly()" class="py-2 bg-appleBg border border-appleSubtle text-appleDark rounded-xl text-[11px] font-medium hover:bg-appleHover transition-colors flex items-center justify-center space-x-1">
+                            <i data-lucide="hash" class="w-3 h-3"></i>
+                            <span>仅复制话题</span>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- MODAL 1: API Key Config -->
+    <div id="modalApiKey" class="fixed inset-0 bg-black/40 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 apple-shadow-lg border border-appleSubtle space-y-4">
+            <div class="flex items-center justify-between border-b border-appleSubtle pb-3">
+                <h3 class="text-sm font-bold text-appleDark flex items-center space-x-2">
+                    <i data-lucide="key" class="w-4 h-4"></i>
+                    <span>Gemini API 配置</span>
+                </h3>
+                <button onclick="closeApiKeyModal()" class="text-appleGray hover:text-black">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <p class="text-xs text-appleGray leading-relaxed">
+                输入您的 Google Gemini API Key。填入后可启用 AI 原生拟真与图文视觉分析；未填入时系统将无缝调用本地离线模拟生成引擎。
             </p>
-          </div>
-
-          <!-- Breakdown Detail Grid -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <div class="p-4 bg-black/[0.02] rounded-2xl border border-black/5 space-y-1">
-              <span class="font-semibold text-apple-dark block">句式与断句节奏</span>
-              <p id="geneToneText" class="text-apple-gray text-[11px]">等待提炼...</p>
+            <div>
+                <input type="password" id="inputApiKey" placeholder="AIzaSy..." 
+                       class="w-full text-xs px-3.5 py-2.5 bg-appleBg border border-appleSubtle rounded-xl focus:outline-none focus:border-black focus:bg-white transition-all">
             </div>
-            <div class="p-4 bg-black/[0.02] rounded-2xl border border-black/5 space-y-1">
-              <span class="font-semibold text-apple-dark block">高频质感词汇汇聚</span>
-              <p id="geneKeywordsText" class="text-apple-gray text-[11px]">等待提炼...</p>
+            <div class="flex justify-end space-x-2 pt-2">
+                <button onclick="closeApiKeyModal()" class="px-4 py-2 text-xs text-appleGray hover:text-black">取消</button>
+                <button onclick="saveApiKey()" class="px-5 py-2 bg-black text-white text-xs font-medium rounded-xl hover:bg-neutral-800">保存配置</button>
             </div>
-          </div>
         </div>
+    </div>
 
-        <!-- Tab 3 Panel: Add New Reference Copy -->
-        <div id="panelAddRef" class="space-y-4 hidden">
-          <div class="space-y-1">
-            <label class="text-xs font-semibold text-apple-dark">来源分类标记</label>
-            <div class="grid grid-cols-4 gap-2">
-              <button data-source="competitor" class="source-tag-btn p-2 rounded-xl border border-black/10 text-xs font-medium text-center bg-apple-dark text-white">对标博主</button>
-              <button data-source="past" class="source-tag-btn p-2 rounded-xl border border-black/10 text-xs font-medium text-center text-apple-dark">过往精选</button>
-              <button data-source="story" class="source-tag-btn p-2 rounded-xl border border-black/10 text-xs font-medium text-center text-apple-dark">品牌故事</button>
-              <button data-source="case" class="source-tag-btn p-2 rounded-xl border border-black/10 text-xs font-medium text-center text-apple-dark">客户实装</button>
+    <!-- MODAL 2: Memory Management -->
+    <div id="modalMemory" class="fixed inset-0 bg-black/40 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-6 apple-shadow-lg border border-appleSubtle space-y-4 max-h-[85vh] flex flex-col">
+            <div class="flex items-center justify-between border-b border-appleSubtle pb-3">
+                <h3 class="text-sm font-bold text-appleDark flex items-center space-x-2">
+                    <i data-lucide="brain-circuit" class="w-4 h-4"></i>
+                    <span>已积累的采纳文案记忆 (In-Context Learning)</span>
+                </h3>
+                <button onclick="closeMemoryModal()" class="text-appleGray hover:text-black">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
             </div>
-          </div>
-
-          <div>
-            <label class="text-xs font-semibold text-apple-dark block mb-1">文案标题 / 简短备注</label>
-            <input type="text" id="inputRefTitle" placeholder="例：对标博主@XXX-USM展厅爆款笔记" class="w-full rounded-xl bg-black/[0.03] border border-black/5 px-3 py-2 text-xs focus:bg-white custom-ring transition-all">
-          </div>
-
-          <div>
-            <label class="text-xs font-semibold text-apple-dark block mb-1">完整文案正文</label>
-            <textarea id="inputRefContent" rows="6" placeholder="请直接粘贴小红书原笔记正文，包括段落、符号与Emoji..." class="w-full rounded-xl bg-black/[0.03] border border-black/5 p-3 text-xs focus:bg-white custom-ring transition-all resize-none"></textarea>
-          </div>
-
-          <button id="btnSaveRef" class="w-full py-3 rounded-xl bg-apple-dark hover:bg-black text-white text-xs font-medium transition-all shadow-apple-sm">
-            保存并加入风格参考库
-          </button>
+            <p class="text-xs text-appleGray">
+                每次点击【采纳此版】，系统会将该文案记入 Preferences Memory，并在后续生成中自动注入为 Few-Shot 模范范例，使文案越来越符合您的调性。
+            </p>
+            <div id="memoryListContainer" class="flex-1 overflow-y-auto space-y-3 pr-1 min-h-[200px]">
+                <!-- Memory items rendered here -->
+            </div>
+            <div class="flex justify-between items-center pt-2 border-t border-appleSubtle">
+                <button onclick="clearAllMemories()" class="text-xs text-red-600 hover:underline">清空所有记忆</button>
+                <button onclick="closeMemoryModal()" class="px-5 py-2 bg-black text-white text-xs font-medium rounded-xl hover:bg-neutral-800">关闭</button>
+            </div>
         </div>
-
-      </div>
     </div>
-  </div>
 
-  <!-- MODAL 2: Settings & API Modal -->
-  <div id="modalSettings" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md hidden transition-opacity">
-    <div class="glass-card rounded-[28px] bg-white max-w-md w-full mx-4 p-6 shadow-apple-modal border border-black/10 space-y-4">
-      <div class="flex items-center justify-between border-b border-black/5 pb-3">
-        <h3 class="text-sm font-bold text-apple-dark flex items-center gap-2">
-          <i data-lucide="key" class="w-4 h-4 text-apple-blue"></i> API 设置 & 运行引擎
-        </h3>
-        <button id="btnCloseSettings" class="p-1.5 rounded-full hover:bg-black/5 text-apple-gray hover:text-apple-dark">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-      </div>
+    <!-- MODAL 3: DNA Template & Extractor -->
+    <div id="modalDna" class="fixed inset-0 bg-black/40 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-6 apple-shadow-lg border border-appleSubtle space-y-4 max-h-[85vh] flex flex-col">
+            <div class="flex items-center justify-between border-b border-appleSubtle pb-3">
+                <h3 class="text-sm font-bold text-appleDark flex items-center space-x-2">
+                    <i data-lucide="dna" class="w-4 h-4"></i>
+                    <span>AI 风格基因提取库 (Reference Copy Extractor)</span>
+                </h3>
+                <button onclick="closeDnaModal()" class="text-appleGray hover:text-black">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-3">
+                <p class="text-xs text-appleGray">粘贴你喜欢的博主或自己以往写的优秀文案，AI 将提炼其断句节奏、高频词汇与留白氛围：</p>
+                <textarea id="dnaInputText" rows="3" placeholder="在此粘贴参考文案..." 
+                          class="w-full text-xs p-3 bg-appleBg border border-appleSubtle rounded-2xl focus:outline-none focus:border-black focus:bg-white transition-all"></textarea>
+                <div class="flex justify-between items-center">
+                    <input type="text" id="dnaNameInput" placeholder="给模板命名 (如：极简留白风)" 
+                           class="text-xs px-3 py-2 bg-appleBg border border-appleSubtle rounded-xl w-1/2 focus:outline-none focus:border-black">
+                    <button onclick="extractAndSaveDna()" class="px-4 py-2 bg-black text-white text-xs font-medium rounded-xl hover:bg-neutral-800 flex items-center space-x-1">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                        <span>提取风格 DNA</span>
+                    </button>
+                </div>
+            </div>
 
-      <div class="space-y-3">
-        <div>
-          <label class="text-xs font-semibold text-apple-dark block mb-1">Gemini API Key</label>
-          <input type="password" id="inputApiKey" placeholder="输入你的 Gemini API Key" class="w-full rounded-xl bg-black/[0.03] border border-black/5 px-3 py-2.5 text-xs focus:bg-white custom-ring transition-all font-mono">
-          <p class="text-[11px] text-apple-gray mt-1">留空时系统将自动使用内置高品质“离线备用算法引擎”进行生成。</p>
+            <div class="border-t border-appleSubtle pt-3">
+                <h4 class="text-xs font-semibold text-appleDark mb-2">已有 DNA 模板库</h4>
+                <div id="dnaListContainer" class="flex-1 overflow-y-auto space-y-2 max-h-[180px] pr-1">
+                    <!-- Rendered DNA list -->
+                </div>
+            </div>
+
+            <div class="flex justify-end border-t border-appleSubtle pt-2">
+                <button onclick="closeDnaModal()" class="px-5 py-2 bg-black text-white text-xs font-medium rounded-xl">完成</button>
+            </div>
         </div>
-
-        <div class="p-3 bg-black/[0.02] rounded-xl border border-black/5 text-[11px] text-apple-gray space-y-1">
-          <span class="font-semibold text-apple-dark block">模型设定</span>
-          <p>智能文案与风格基因提取统一使用 <code class="text-apple-dark font-mono bg-black/5 px-1 py-0.5 rounded">gemini-3-flash-preview</code> 模型。</p>
-        </div>
-      </div>
-
-      <div class="pt-2 flex justify-end space-x-2">
-        <button id="btnSaveSettings" class="w-full py-2.5 rounded-xl bg-apple-dark hover:bg-black text-white text-xs font-medium transition-all shadow-apple-sm">
-          保存配置
-        </button>
-      </div>
     </div>
-  </div>
 
-  <!-- Global Toast Notification Engine -->
-  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-10 opacity-0 pointer-events-none transition-all duration-300 ease-out">
-    <div class="glass-card bg-apple-dark text-white text-xs font-medium px-4 py-3 rounded-2xl shadow-apple-lg flex items-center space-x-2 border border-white/10">
-      <i id="toastIcon" data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
-      <span id="toastMsg">操作成功</span>
+    <!-- Apple Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/90 text-white text-xs px-4 py-2.5 rounded-full shadow-2xl backdrop-blur-md z-50 flex items-center space-x-2 transition-all duration-300 opacity-0 pointer-events-none transform translate-y-2">
+        <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-green-400"></i>
+        <span id="toastMsg">操作成功</span>
     </div>
-  </div>
 
-  <script>
-    // --- Application State Manager ---
-    const STATE = {
-      apiKey: localStorage.getItem('cosmo_gemini_key') || '',
-      persona: 'blogger', // 'blogger' | 'buyer_store'
-      scene: 'showroom', // 'showroom' | 'installed' | 'inspiration' | 'selection'
-      tags: ['USM', '光影美学', '极简空间'],
-      emojiLevel: 'subtle', // 'none' | 'subtle' | 'rich'
-      lengthMode: 'medium', // 'short' | 'medium' | 'long'
-      images: [], // Base64 array
-      references: JSON.parse(localStorage.getItem('cosmo_references') || '[]'),
-      styleGene: JSON.parse(localStorage.getItem('cosmo_style_gene') || 'null'),
-      adoptedCopies: JSON.parse(localStorage.getItem('cosmo_adopted') || '[]'),
-      currentOutput: null,
-      activeTitleIndex: 0,
-      activeSourceTag: 'competitor',
-      isGenerating: false
-    };
-
-    // Preset Brand & Material Design Tags
-    const PRESET_TAGS = [
-      'USM', 'Vitra', 'Louis Poulsen', 'Fritz Hansen', 'Artek', 'ClassiCon', 
-      'Flos', 'Cassina', 'B&B Italia', '光影肌理', '实木触感', '极简线条', 
-      '中古沉淀', '侘寂氛围', '羊毛软包', '微水泥'
-    ];
-
-    // --- DOM Elements ---
-    const dom = {
-      btnOpenStyleBase: document.getElementById('btnOpenStyleBase'),
-      badgeActiveRef: document.getElementById('badgeActiveRef'),
-      btnOpenSettings: document.getElementById('btnOpenSettings'),
-      dotKeyStatus: document.getElementById('dotKeyStatus'),
-      geneStatusIndicator: document.getElementById('geneStatusIndicator'),
-      
-      // Persona Buttons
-      btnPersonaBlogger: document.getElementById('btnPersonaBlogger'),
-      btnPersonaBuyer: document.getElementById('btnPersonaBuyer'),
-
-      // Uploader
-      dropZone: document.getElementById('dropZone'),
-      fileInput: document.getElementById('fileInput'),
-      previewContainer: document.getElementById('previewContainer'),
-      imgCountText: document.getElementById('imgCountText'),
-
-      // Scene & Tags
-      sceneBtns: document.querySelectorAll('.scene-btn'),
-      tagPillsContainer: document.getElementById('tagPillsContainer'),
-      inputHighlights: document.getElementById('inputHighlights'),
-
-      // Format Options
-      emojiBtns: document.querySelectorAll('.emoji-btn'),
-      lengthBtns: document.querySelectorAll('.length-btn'),
-      inputPresetHashtags: document.getElementById('inputPresetHashtags'),
-
-      // Generate Action
-      btnGenerate: document.getElementById('btnGenerate'),
-
-      // Output Workspace
-      outputEngineTag: document.getElementById('outputEngineTag'),
-      outputPlaceholder: document.getElementById('outputPlaceholder'),
-      outputSkeleton: document.getElementById('outputSkeleton'),
-      outputContent: document.getElementById('outputContent'),
-      titlesPillsContainer: document.getElementById('titlesPillsContainer'),
-      mainCopyTextarea: document.getElementById('mainCopyTextarea'),
-      charCount: document.getElementById('charCount'),
-      outputHashtags: document.getElementById('outputHashtags'),
-      styleInsightsText: document.getElementById('styleInsightsText'),
-
-      // Output Actions
-      btnCopyAll: document.getElementById('btnCopyAll'),
-      btnCopyBody: document.getElementById('btnCopyBody'),
-      btnCopyTitle: document.getElementById('btnCopyTitle'),
-      btnVariant: document.getElementById('btnVariant'),
-      btnAdopt: document.getElementById('btnAdopt'),
-
-      // Style Modal
-      modalStyleBase: document.getElementById('modalStyleBase'),
-      btnCloseStyleBase: document.getElementById('btnCloseStyleBase'),
-      tabRefList: document.getElementById('tabRefList'),
-      tabStyleGene: document.getElementById('tabStyleGene'),
-      tabAddRef: document.getElementById('tabAddRef'),
-      panelRefList: document.getElementById('panelRefList'),
-      panelStyleGene: document.getElementById('panelStyleGene'),
-      panelAddRef: document.getElementById('panelAddRef'),
-      refCountNum: document.getElementById('refCountNum'),
-      emptyRefState: document.getElementById('emptyRefState'),
-      refListContainer: document.getElementById('refListContainer'),
-      btnTriggerExtractGene: document.getElementById('btnTriggerExtractGene'),
-      geneDirectiveText: document.getElementById('geneDirectiveText'),
-      geneTimestamp: document.getElementById('geneTimestamp'),
-      geneToneText: document.getElementById('geneToneText'),
-      geneKeywordsText: document.getElementById('geneKeywordsText'),
-      
-      // Add Ref Form
-      sourceTagBtns: document.querySelectorAll('.source-tag-btn'),
-      inputRefTitle: document.getElementById('inputRefTitle'),
-      inputRefContent: document.getElementById('inputRefContent'),
-      btnSaveRef: document.getElementById('btnSaveRef'),
-
-      // Settings Modal
-      modalSettings: document.getElementById('modalSettings'),
-      btnCloseSettings: document.getElementById('btnCloseSettings'),
-      inputApiKey: document.getElementById('inputApiKey'),
-      btnSaveSettings: document.getElementById('btnSaveSettings'),
-
-      // Toast
-      toast: document.getElementById('toast'),
-      toastMsg: document.getElementById('toastMsg'),
-      toastIcon: document.getElementById('toastIcon')
-    };
-
-    // --- Initialize Application ---
-    function initApp() {
-      // Setup Lucide icons
-      lucide.createIcons();
-
-      // Load Settings Status
-      updateKeyStatusUI();
-      updateStyleGeneStatusUI();
-      renderTagPills();
-
-      // Set Initial Samples if Empty References
-      if (STATE.references.length === 0) {
-        STATE.references = [
-          {
-            id: 'demo-1',
-            source: 'competitor',
-            title: '对标博主：USM与光影的极致仪式感',
-            content: '把阳光裁成一段落脚在墨绿色的USM上。\n\n买手店收到的这组中古模块柜，金属管件在黄昏时刻折射出高级清冷感。不刻意堆砌，简简单单放上一盏Louis Poulsen Panthella，空间气场瞬间安静下来。\n\n好的设计，从来不需要大声喧哗。',
-            active: true,
-            createdAt: new Date().toISOString()
-          }
-        ];
-        saveReferences();
-      }
-
-      renderReferenceList();
-      renderStyleGeneUI();
-
-      // Attach Event Listeners
-      setupEventListeners();
-    }
-
-    function setupEventListeners() {
-      // Modal Open/Close
-      dom.btnOpenStyleBase.addEventListener('click', () => openModal(dom.modalStyleBase));
-      dom.btnCloseStyleBase.addEventListener('click', () => closeModal(dom.modalStyleBase));
-      dom.btnOpenSettings.addEventListener('click', () => {
-        dom.inputApiKey.value = STATE.apiKey;
-        openModal(dom.modalSettings);
-      });
-      dom.btnCloseSettings.addEventListener('click', () => closeModal(dom.modalSettings));
-
-      // Save Settings
-      dom.btnSaveSettings.addEventListener('click', () => {
-        STATE.apiKey = dom.inputApiKey.value.trim();
-        localStorage.setItem('cosmo_gemini_key', STATE.apiKey);
-        updateKeyStatusUI();
-        closeModal(dom.modalSettings);
-        showToast('API 设置已保存');
-      });
-
-      // Persona Toggle
-      dom.btnPersonaBlogger.addEventListener('click', () => setPersona('blogger'));
-      dom.btnPersonaBuyer.addEventListener('click', () => setPersona('buyer_store'));
-
-      // Drag and Drop Uploader
-      dom.dropZone.addEventListener('click', () => dom.fileInput.click());
-      dom.fileInput.addEventListener('change', handleFileSelect);
-      
-      ['dragenter', 'dragover'].forEach(eventName => {
-        dom.dropZone.addEventListener(eventName, (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          dom.dropZone.classList.add('border-black', 'bg-black/5');
-        }, false);
-      });
-
-      ['dragleave', 'drop'].forEach(eventName => {
-        dom.dropZone.addEventListener(eventName, (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          dom.dropZone.classList.remove('border-black', 'bg-black/5');
-        }, false);
-      });
-
-      dom.dropZone.addEventListener('drop', (e) => {
-        const dt = e.dataTransfer;
-        const files = dt.files;
-        handleFiles(files);
-      });
-
-      // Scene Toggle
-      dom.sceneBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          dom.sceneBtns.forEach(b => b.classList.remove('bg-black', 'text-white', 'border-black'));
-          dom.sceneBtns.forEach(b => b.classList.add('text-apple-dark'));
-          btn.classList.add('bg-black', 'text-white', 'border-black');
-          btn.classList.remove('text-apple-dark');
-          STATE.scene = btn.dataset.scene;
-        });
-      });
-
-      // Emoji Toggle
-      dom.emojiBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          dom.emojiBtns.forEach(b => {
-            b.classList.remove('bg-white', 'shadow-apple-sm', 'text-apple-dark');
-            b.classList.add('text-apple-gray');
-          });
-          btn.classList.add('bg-white', 'shadow-apple-sm', 'text-apple-dark');
-          btn.classList.remove('text-apple-gray');
-          STATE.emojiLevel = btn.dataset.emoji;
-        });
-      });
-
-      // Length Toggle
-      dom.lengthBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          dom.lengthBtns.forEach(b => {
-            b.classList.remove('bg-white', 'shadow-apple-sm', 'text-apple-dark');
-            b.classList.add('text-apple-gray');
-          });
-          btn.classList.add('bg-white', 'shadow-apple-sm', 'text-apple-dark');
-          btn.classList.remove('text-apple-gray');
-          STATE.lengthMode = btn.dataset.length;
-        });
-      });
-
-      // Style Modal Tabs
-      dom.tabRefList.addEventListener('click', () => switchStyleTab('list'));
-      dom.tabStyleGene.addEventListener('click', () => switchStyleTab('gene'));
-      dom.tabAddRef.addEventListener('click', () => switchStyleTab('add'));
-
-      // Source Tag Selection
-      dom.sourceTagBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          dom.sourceTagBtns.forEach(b => b.classList.remove('bg-apple-dark', 'text-white'));
-          dom.sourceTagBtns.forEach(b => b.classList.add('text-apple-dark'));
-          btn.classList.add('bg-apple-dark', 'text-white');
-          STATE.activeSourceTag = btn.dataset.source;
-        });
-      });
-
-      // Save New Ref
-      dom.btnSaveRef.addEventListener('click', handleAddNewReference);
-
-      // Trigger Extract Gene
-      dom.btnTriggerExtractGene.addEventListener('click', extractStyleGeneAI);
-
-      // Generate Copywriting
-      dom.btnGenerate.addEventListener('click', generateCopywriting);
-      dom.btnVariant.addEventListener('click', generateCopywriting);
-
-      // Copy Buttons
-      dom.btnCopyAll.addEventListener('click', () => copyToClipboard('all'));
-      dom.btnCopyBody.addEventListener('click', () => copyToClipboard('body'));
-      dom.btnCopyTitle.addEventListener('click', () => copyToClipboard('title'));
-
-      // Adopt
-      dom.btnAdopt.addEventListener('click', handleAdoptCopy);
-
-      // Textarea Char Count
-      dom.mainCopyTextarea.addEventListener('input', () => {
-        dom.charCount.textContent = `${dom.mainCopyTextarea.value.length} 字`;
-      });
-    }
-
-    // --- UI Helpers ---
-    function openModal(modal) {
-      modal.classList.remove('hidden');
-    }
-
-    function closeModal(modal) {
-      modal.classList.add('hidden');
-    }
-
-    function showToast(message, isError = false) {
-      dom.toastMsg.textContent = message;
-      dom.toastIcon.setAttribute('data-lucide', isError ? 'alert-circle' : 'check-circle-2');
-      dom.toastIcon.className = `w-4 h-4 ${isError ? 'text-red-400' : 'text-emerald-400'}`;
-      lucide.createIcons();
-
-      dom.toast.classList.remove('translate-y-10', 'opacity-0', 'pointer-events-none');
-      setTimeout(() => {
-        dom.toast.classList.add('translate-y-10', 'opacity-0', 'pointer-events-none');
-      }, 2500);
-    }
-
-    function updateKeyStatusUI() {
-      if (STATE.apiKey) {
-        dom.dotKeyStatus.className = 'absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-500';
-      } else {
-        dom.dotKeyStatus.className = 'absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-400';
-      }
-    }
-
-    function updateStyleGeneStatusUI() {
-      const activeCount = STATE.references.filter(r => r.active).length;
-      dom.badgeActiveRef.textContent = activeCount;
-
-      if (STATE.styleGene) {
-        dom.geneStatusIndicator.classList.remove('hidden');
-      } else {
-        dom.geneStatusIndicator.classList.add('hidden');
-      }
-    }
-
-    function setPersona(persona) {
-      STATE.persona = persona;
-      if (persona === 'blogger') {
-        dom.btnPersonaBlogger.className = 'persona-tab py-2.5 px-4 rounded-xl text-xs font-semibold transition-all flex items-center justify-center space-x-2 bg-white text-apple-dark shadow-apple-sm';
-        dom.btnPersonaBuyer.className = 'persona-tab py-2.5 px-4 rounded-xl text-xs font-semibold text-apple-gray hover:text-apple-dark transition-all flex items-center justify-center space-x-2';
-      } else {
-        dom.btnPersonaBuyer.className = 'persona-tab py-2.5 px-4 rounded-xl text-xs font-semibold transition-all flex items-center justify-center space-x-2 bg-white text-apple-dark shadow-apple-sm';
-        dom.btnPersonaBlogger.className = 'persona-tab py-2.5 px-4 rounded-xl text-xs font-semibold text-apple-gray hover:text-apple-dark transition-all flex items-center justify-center space-x-2';
-      }
-    }
-
-    function renderTagPills() {
-      dom.tagPillsContainer.innerHTML = '';
-      PRESET_TAGS.forEach(tag => {
-        const isSelected = STATE.tags.includes(tag);
-        const pill = document.createElement('button');
-        pill.className = `px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
-          isSelected 
-            ? 'bg-apple-dark text-white shadow-apple-sm' 
-            : 'bg-black/[0.03] hover:bg-black/10 text-apple-dark border border-black/5'
-        }`;
-        pill.textContent = `#${tag}`;
-        pill.addEventListener('click', () => {
-          if (STATE.tags.includes(tag)) {
-            STATE.tags = STATE.tags.filter(t => t !== tag);
-          } else {
-            STATE.tags.push(tag);
-          }
-          renderTagPills();
-        });
-        dom.tagPillsContainer.appendChild(pill);
-      });
-    }
-
-    // --- Image Upload Manager ---
-    function handleFileSelect(e) {
-      handleFiles(e.target.files);
-    }
-
-    function handleFiles(files) {
-      const validFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
-      if (validFiles.length === 0) return;
-
-      validFiles.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          STATE.images.push(e.target.result);
-          updateImagePreviews();
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-
-    function updateImagePreviews() {
-      dom.previewContainer.innerHTML = '';
-      if (STATE.images.length > 0) {
-        dom.previewContainer.classList.remove('hidden');
-        dom.imgCountText.textContent = `已上传 ${STATE.images.length} 张`;
-
-        STATE.images.forEach((imgSrc, index) => {
-          const wrapper = document.createElement('div');
-          wrapper.className = 'relative group aspect-square rounded-xl overflow-hidden border border-black/10 shadow-apple-sm';
-
-          const img = document.createElement('img');
-          img.src = imgSrc;
-          img.className = 'w-full h-full object-cover';
-
-          const removeBtn = document.createElement('button');
-          removeBtn.className = 'absolute top-1 right-1 p-1 bg-black/60 hover:bg-black text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity';
-          removeBtn.innerHTML = '<i data-lucide="x" class="w-3 h-3"></i>';
-          removeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            STATE.images.splice(index, 1);
-            updateImagePreviews();
-          });
-
-          wrapper.appendChild(img);
-          wrapper.appendChild(removeBtn);
-          dom.previewContainer.appendChild(wrapper);
-        });
-        lucide.createIcons();
-      } else {
-        dom.previewContainer.classList.add('hidden');
-        dom.imgCountText.textContent = '已上传 0 张';
-      }
-    }
-
-    // --- Style Base & Reference Management ---
-    function saveReferences() {
-      localStorage.setItem('cosmo_references', JSON.stringify(STATE.references));
-      updateStyleGeneStatusUI();
-    }
-
-    function switchStyleTab(tab) {
-      dom.tabRefList.className = `pb-2.5 border-b-2 text-xs ${tab === 'list' ? 'border-apple-dark text-apple-dark font-semibold' : 'border-transparent text-apple-gray hover:text-apple-dark'}`;
-      dom.tabStyleGene.className = `pb-2.5 border-b-2 text-xs ${tab === 'gene' ? 'border-apple-dark text-apple-dark font-semibold' : 'border-transparent text-apple-gray hover:text-apple-dark'}`;
-      dom.tabAddRef.className = `pb-2.5 border-b-2 text-xs flex items-center gap-1 ${tab === 'add' ? 'border-apple-dark text-apple-dark font-semibold' : 'border-transparent text-apple-gray hover:text-apple-dark'}`;
-
-      dom.panelRefList.classList.toggle('hidden', tab !== 'list');
-      dom.panelStyleGene.classList.toggle('hidden', tab !== 'gene');
-      dom.panelAddRef.classList.toggle('hidden', tab !== 'add');
-    }
-
-    function renderReferenceList() {
-      dom.refListContainer.innerHTML = '';
-      dom.refCountNum.textContent = STATE.references.length;
-
-      if (STATE.references.length === 0) {
-        dom.emptyRefState.classList.remove('hidden');
-        return;
-      } else {
-        dom.emptyRefState.classList.add('hidden');
-      }
-
-      STATE.references.forEach(ref => {
-        const card = document.createElement('div');
-        card.className = `p-4 rounded-2xl border transition-all ${
-          ref.active ? 'bg-white border-black/15 shadow-apple-sm' : 'bg-black/[0.02] border-black/5 opacity-60'
-        }`;
-
-        const sourceLabels = {
-          competitor: '对标博主',
-          past: '过往精选',
-          story: '品牌故事',
-          case: '客户实装'
+    <script>
+        // Global Application State
+        const state = {
+            platform: 'xiaohongshu', // 'xiaohongshu' | 'pyq'
+            role: 'blogger',        // 'blogger' | 'buyer'
+            scene: 'showroom',     // 'showroom' | 'client' | 'inspiration' | 'brand'
+            tone: 'baokuan',       // depends on platform
+            keywords: ['USM', 'Vitra', '室内光影'],
+            length: 'medium',
+            emoji: 'moderate',
+            images: [],            // Base64 array
+            selectedDnaId: '',
+            
+            // Output Data
+            titles: [],
+            selectedTitleIndex: 0,
+            contentBody: '',
+            hashtags: [],
+            
+            // Storage Data
+            apiKey: localStorage.getItem('cosmo_gemini_api_key') || '',
+            memories: JSON.parse(localStorage.getItem('cosmo_memories') || '[]'),
+            dnaTemplates: JSON.parse(localStorage.getItem('cosmo_dna_templates') || '[]')
         };
 
-        card.innerHTML = `
-          <div class="flex items-start justify-between gap-2 mb-2">
-            <div class="flex items-center space-x-2">
-              <input type="checkbox" ${ref.active ? 'checked' : ''} class="rounded border-black/20 text-apple-dark focus:ring-0 cursor-pointer">
-              <span class="text-xs font-bold text-apple-dark">${ref.title || '无标题文案'}</span>
-              <span class="text-[10px] bg-black/5 text-apple-gray px-2 py-0.5 rounded-full font-medium">${sourceLabels[ref.source] || '对标博主'}</span>
-            </div>
-            <button class="btn-delete-ref p-1 text-apple-gray hover:text-red-500 transition-colors">
-              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-            </button>
-          </div>
-          <p class="text-xs text-apple-gray line-clamp-3 leading-relaxed whitespace-pre-wrap font-sans">${ref.content}</p>
-        `;
+        // Preset Tone Mapping
+        const platformTones = {
+            xiaohongshu: [
+                { id: 'baokuan', name: '🔥 爆款种草' },
+                { id: 'minimalist', name: '🖤 高级极简' },
+                { id: 'softfit', name: '📐 软装搭配指南' },
+                { id: 'buyershow', name: '🛍️ 买手选品故事' }
+            ],
+            pyq: [
+                { id: 'graceful', name: '🌿 优雅日常 / 九图留白' },
+                { id: 'private', name: '☕ 极简私享 / 软装随感' },
+                { id: 'details', name: '✨ 品牌审美 / 空间细节' },
+                { id: 'poetic', name: '🌙 感性思考 / 生活仪式感' }
+            ]
+        };
 
-        // Toggle checkbox
-        const checkbox = card.querySelector('input[type="checkbox"]');
-        checkbox.addEventListener('change', (e) => {
-          ref.active = e.target.checked;
-          saveReferences();
-          renderReferenceList();
-        });
+        // Preset Quick Tags
+        const presetTags = ['USM', 'Vitra', 'Louis Poulsen', '弯曲木', '哑光烤漆', '室内光影', '客户实装', '包豪斯', '中古调性', '极简留白', 'ClassiCon', 'Artek'];
 
-        // Delete button
-        const btnDelete = card.querySelector('.btn-delete-ref');
-        btnDelete.addEventListener('click', () => {
-          STATE.references = STATE.references.filter(r => r.id !== ref.id);
-          saveReferences();
-          renderReferenceList();
-          showToast('文案已从参考库移除');
-        });
+        // Initialize on DOM Ready
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            renderTones();
+            renderQuickTags();
+            updateSelectedTagsUI();
+            updateMemoryBadge();
+            populateDnaSelector();
+            updateApiKeyUI();
 
-        dom.refListContainer.appendChild(card);
-      });
-
-      lucide.createIcons();
-    }
-
-    function handleAddNewReference() {
-      const title = dom.inputRefTitle.value.trim();
-      const content = dom.inputRefContent.value.trim();
-
-      if (!content) {
-        showToast('请粘贴文案正文', true);
-        return;
-      }
-
-      const newRef = {
-        id: 'ref-' + Date.now(),
-        source: STATE.activeSourceTag,
-        title: title || `${STATE.activeSourceTag === 'competitor' ? '对标博主' : '过往精选'}笔记`,
-        content: content,
-        active: true,
-        createdAt: new Date().toISOString()
-      };
-
-      STATE.references.unshift(newRef);
-      saveReferences();
-      renderReferenceList();
-
-      dom.inputRefTitle.value = '';
-      dom.inputRefContent.value = '';
-      switchStyleTab('list');
-      showToast('成功加入风格参考库！');
-    }
-
-    // --- AI Style Gene Extraction Engine ---
-    async function extractStyleGeneAI() {
-      const activeRefs = STATE.references.filter(r => r.active);
-      if (activeRefs.length === 0) {
-        showToast('请至少勾选一条参考文案', true);
-        return;
-      }
-
-      showToast('正在分析选定文案的断句与修辞基因...');
-      dom.btnTriggerExtractGene.disabled = true;
-      dom.btnTriggerExtractGene.classList.add('opacity-50');
-
-      const corpus = activeRefs.map((r, i) => `【示例 ${i+1}】:\n${r.content}`).join('\n\n');
-
-      if (STATE.apiKey) {
-        try {
-          const systemInstruction = "你是一位资深的高端家居内容美学导师。请对输入的几篇小红书爆款家居文案进行深度语料分析，提炼其语法风格基因。";
-          const userPrompt = `请分析以下文案的风格，并以严格 JSON 格式返回分析结果：
-${corpus}
-
-请返回格式为 JSON：
-{
-  "tone": "总结其断句习惯、语气（如冷冽高级、温度感、竖线分段等）",
-  "keywords": "提取 6-8 个出现频繁的高高级感家具/光影/空间品质词汇",
-  "promptDirective": "编写一段专门给 AI 生成模型使用的 Style Prompt 指令（约100字），引导生成的文案精准复制这种独特断句与美学语气。"
-}`;
-
-          const payload = {
-            contents: [{ parts: [{ text: userPrompt }] }],
-            systemInstruction: { parts: [{ text: systemInstruction }] },
-            generationConfig: {
-              responseMimeType: "application/json"
-            }
-          };
-
-          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${STATE.apiKey}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-
-          const data = await response.json();
-          const jsonText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (jsonText) {
-            const parsed = JSON.parse(jsonText);
-            STATE.styleGene = {
-              extractedAt: new Date().toLocaleDateString(),
-              tone: parsed.tone,
-              keywords: parsed.keywords,
-              promptDirective: parsed.promptDirective
-            };
-            localStorage.setItem('cosmo_style_gene', JSON.stringify(STATE.styleGene));
-            renderStyleGeneUI();
-            switchStyleTab('gene');
-            showToast('AI 风格基因提炼成功！');
-          } else {
-            throw new Error('Gemini 返回格式异常');
-          }
-
-        } catch (err) {
-          console.warn('API 风格提炼失败，触发启发式提炼 fallback:', err);
-          fallbackExtractGene(corpus);
-        }
-      } else {
-        // Fallback Engine
-        setTimeout(() => {
-          fallbackExtractGene(corpus);
-        }, 800);
-      }
-
-      dom.btnTriggerExtractGene.disabled = false;
-      dom.btnTriggerExtractGene.classList.remove('opacity-50');
-    }
-
-    function fallbackExtractGene(corpus) {
-      STATE.styleGene = {
-        extractedAt: new Date().toLocaleDateString() + ' (离线规则解析)',
-        tone: '采用极简短句与多行空白排版，语言冷冽而有温度，擅长利用家具品牌背景与光影交互描述氛围。',
-        keywords: '光影肌理、沉淀、几何线条、静谧感、触感、美学比例',
-        promptDirective: '生成文案时请严格遵循：多用短句断句，句首段落留白；重点突出设计品味与材料细节；减少口语化推销，增强画廊级别的叙事氛围感。'
-      };
-      localStorage.setItem('cosmo_style_gene', JSON.stringify(STATE.styleGene));
-      renderStyleGeneUI();
-      switchStyleTab('gene');
-      showToast('已完成启发式风格基因提炼');
-    }
-
-    function renderStyleGeneUI() {
-      if (STATE.styleGene) {
-        dom.geneDirectiveText.textContent = STATE.styleGene.promptDirective;
-        dom.geneTimestamp.textContent = `提炼时间: ${STATE.styleGene.extractedAt}`;
-        dom.geneToneText.textContent = STATE.styleGene.tone;
-        dom.geneKeywordsText.textContent = STATE.styleGene.keywords;
-      }
-      updateStyleGeneStatusUI();
-    }
-
-    // --- Copywriting Generation Engine ---
-    async function generateCopywriting() {
-      const highlights = dom.inputHighlights.value.trim();
-      const presetHashtags = dom.inputPresetHashtags.value.trim();
-
-      if (!highlights && STATE.images.length === 0 && STATE.tags.length === 0) {
-        showToast('请至少选择标签、输入产品亮点或上传实拍图', true);
-        return;
-      }
-
-      // UI State Loading
-      dom.outputPlaceholder.classList.add('hidden');
-      dom.outputContent.classList.add('hidden');
-      dom.outputSkeleton.classList.remove('hidden');
-
-      const activeRefs = STATE.references.filter(r => r.active);
-      const personaName = STATE.persona === 'blogger' ? '高端家居博主' : '高端家居买手店展厅';
-      const sceneNames = {
-        showroom: '展厅现货/入库推介',
-        installed: '客户住宅实装/实拍分享',
-        inspiration: '灵感搭配/设计美学解读',
-        selection: '买手全球选品背后的故事'
-      };
-
-      if (STATE.apiKey) {
-        try {
-          dom.outputEngineTag.textContent = 'Gemini 3 Flash 实时推演';
-          dom.outputEngineTag.className = 'px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-medium border border-emerald-200';
-
-          // Build Prompt
-          let systemInstruction = `你是一位顶尖的高端家居买手兼资深小红书爆款文案专家（COSMO主笔）。你擅长写出具极简高端感、光影温度感与品牌质感的小红书笔记。当前设定人设：${personaName}。`;
-          
-          if (STATE.styleGene) {
-            systemInstruction += `\n【核心风格基因 Directive】: ${STATE.styleGene.promptDirective}`;
-          }
-
-          let userPrompt = `请根据以下输入推演一篇高转化的高端家居小红书文案：
-
-- 发布场景：${sceneNames[STATE.scene]}
-- 选定关键词与品牌：${STATE.tags.join(', ') || '极简家居'}
-- 产品与细节亮点描述：${highlights || '无具体补充，请根据图片或品牌自带质感展开'}
-- Emoji 密度控制：${STATE.emojiLevel === 'none' ? '完全不使用 Emoji' : STATE.emojiLevel === 'subtle' ? '克制点缀 2-4 个高质感 Emoji' : '丰富氛围感 Emoji'}
-- 篇幅字数要求：${STATE.lengthMode === 'short' ? '精炼短打 (100-150字)' : STATE.lengthMode === 'medium' ? '标准种草 (250-350字)' : '深度解读 (500字以上)'}`;
-
-          if (activeRefs.length > 0) {
-            userPrompt += `\n\n【参考博主/个人示例 (Few-Shot In-Context Learning)】:
-${activeRefs.map((r, idx) => `示例 ${idx+1}:\n${r.content}`).join('\n\n')}`;
-          }
-
-          userPrompt += `\n\n请返回 JSON 格式，严格包含以下属性：
-{
-  "titles": ["3-5个不同吸引力切入点的标题 (例：悬念型、品质感型、场景化型)"],
-  "content": "主文案正文，段落清爽，断句精致",
-  "hashtags": ["针对性的3-5个高热度话题"],
-  "styleNotes": "一句话说明本次生成融入了哪些美学特征"
-}`;
-
-          // Construct API Parts (Including Base64 images if present)
-          const parts = [{ text: userPrompt }];
-          if (STATE.images.length > 0) {
-            STATE.images.forEach(base64Str => {
-              const mimeType = base64Str.substring(base64Str.indexOf(':') + 1, base64Str.indexOf(';'));
-              const data = base64Str.split(',')[1];
-              parts.push({
-                inlineData: { mimeType, data }
-              });
+            // Drag and drop setup
+            const dropzone = document.getElementById('dropzone');
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropzone.classList.add('border-black', 'bg-appleBg');
             });
-          }
+            dropzone.addEventListener('dragleave', () => {
+                dropzone.classList.remove('border-black', 'bg-appleBg');
+            });
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('border-black', 'bg-appleBg');
+                if (e.dataTransfer.files) {
+                    processFiles(e.dataTransfer.files);
+                }
+            });
+        });
 
-          const payload = {
-            contents: [{ parts }],
-            systemInstruction: { parts: [{ text: systemInstruction }] },
-            generationConfig: {
-              responseMimeType: "application/json"
-            }
-          };
-
-          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${STATE.apiKey}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-
-          const resData = await response.json();
-          const jsonResult = resData.candidates?.[0]?.content?.parts?.[0]?.text;
-
-          if (jsonResult) {
-            const parsed = JSON.parse(jsonResult);
-            // Append preset hashtags
-            const userPresetTags = presetHashtags.split(' ').filter(t => t.startsWith('#'));
-            parsed.hashtags = Array.from(new Set([...(parsed.hashtags || []), ...userPresetTags]));
-
-            renderOutputResult(parsed);
-          } else {
-            throw new Error('API 返回结构异常');
-          }
-
-        } catch (err) {
-          console.warn('Gemini 生成异常，自动降级至本地备用引擎:', err);
-          runOfflineEngine(highlights, presetHashtags);
+        // Toast Helper
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.textContent = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+            }, 2500);
         }
-      } else {
-        // Run Offline Engine
-        setTimeout(() => {
-          runOfflineEngine(highlights, presetHashtags);
-        }, 1000);
-      }
-    }
 
-    // --- Offline High-Quality Rule Engine ---
-    function runOfflineEngine(highlights, presetHashtags) {
-      dom.outputEngineTag.textContent = '本地高品质离线引擎';
-      dom.outputEngineTag.className = 'px-2 py-0.5 rounded-full bg-black/5 text-apple-gray font-medium';
+        // Platform Switcher
+        function setPlatform(platform) {
+            state.platform = platform;
+            const btnXhs = document.getElementById('btnPlatformXhs');
+            const btnPyq = document.getElementById('btnPlatformPyq');
+            
+            if (platform === 'xiaohongshu') {
+                btnXhs.className = "py-2.5 px-4 rounded-xl text-xs font-medium transition-all capsule-btn active-tab flex items-center justify-center space-x-2";
+                btnPyq.className = "py-2.5 px-4 rounded-xl text-xs font-medium text-appleDark hover:text-black transition-all capsule-btn flex items-center justify-center space-x-2";
+                state.tone = 'baokuan';
+            } else {
+                btnPyq.className = "py-2.5 px-4 rounded-xl text-xs font-medium transition-all capsule-btn active-tab flex items-center justify-center space-x-2";
+                btnXhs.className = "py-2.5 px-4 rounded-xl text-xs font-medium text-appleDark hover:text-black transition-all capsule-btn flex items-center justify-center space-x-2";
+                state.tone = 'graceful';
+            }
+            renderTones();
+            updatePreviewBadges();
+        }
 
-      const tagsText = STATE.tags.length > 0 ? STATE.tags.join(' / ') : '极简空间';
-      const detailText = highlights || '清晨的散色光斜照在烤漆板与实木质感上，展现出沉稳的审美张力。';
+        // Persona Switcher
+        function setRole(role) {
+            state.role = role;
+            const btnBlogger = document.getElementById('btnRoleBlogger');
+            const btnBuyer = document.getElementById('btnRoleBuyer');
 
-      let titles = [];
-      let content = '';
+            if (role === 'blogger') {
+                btnBlogger.className = "p-3.5 rounded-2xl border text-left transition-all active-tab border-black";
+                btnBuyer.className = "p-3.5 rounded-2xl border border-appleSubtle text-left transition-all hover:bg-appleBg";
+            } else {
+                btnBuyer.className = "p-3.5 rounded-2xl border text-left transition-all active-tab border-black";
+                btnBlogger.className = "p-3.5 rounded-2xl border border-appleSubtle text-left transition-all hover:bg-appleBg";
+            }
+        }
 
-      if (STATE.persona === 'blogger') {
-        titles = [
-          `把优雅搬进家｜${STATE.tags[0] || '极简'}的居家仪式感`,
-          `黄昏时刻的光影｜空间里的温度与质感`,
-          `不做潮流的附庸，聊聊我家最爱的选品`,
-          `独居美学｜静谧感家居的搭配指南`
-        ];
-        content = `把阳光裁成一段，落在空间最安静的角落。\n\n家里这组【${tagsText}】，一直是我个人非常偏爱的单品。不刻意堆砌，简简单单搭配，整体气场就沉淀了下来。\n\n${detailText}\n\n好的设计从来不需要大声喧哗，它就在那里，默然回应着生活的每一次触摸与停顿。\n\n每次回家开灯的瞬间，都觉得生活有了确切的落脚点。`;
-      } else {
-        titles = [
-          `展厅新到现货｜${STATE.tags[0] || '大师级'}经典设计选品`,
-          `买手店探店｜用极致工艺打磨的空间气场`,
-          `客户实装反馈｜把画廊质感搬进现代住宅`,
-          `设计品鉴｜为什么这一件值得传承？`
-        ];
-        content = `COSMO 展厅本周最新呈现。【${tagsText}】实拍出图。\n\n设计语言干净利落，细节处的收口与触感极其扎实。无论是作为客厅的视觉中心，还是书房的沉静点缀，都能轻松Hold住气场。\n\n${detailText}\n\n现货已入库展厅，欢迎预约来店感受实物的触感与光影美学。`;
-      }
+        // Scene Switcher
+        function setScene(scene) {
+            state.scene = scene;
+            const scenes = ['Showroom', 'Client', 'Inspiration', 'Brand'];
+            scenes.forEach(s => {
+                const btn = document.getElementById(`btnScene${s}`);
+                if (s.toLowerCase() === scene) {
+                    btn.className = "py-2.5 px-3 rounded-xl border border-black text-xs font-medium active-tab text-left transition-all";
+                } else {
+                    btn.className = "py-2.5 px-3 rounded-xl border border-appleSubtle text-xs font-medium text-appleDark hover:bg-appleBg text-left transition-all";
+                }
+            });
+        }
 
-      const defaultHashtags = ['#COSMO家居', '#家居美学', '#买手店选品', '#极简空间'];
-      const userPresetTags = presetHashtags.split(' ').filter(t => t.startsWith('#'));
-      const combinedHashtags = Array.from(new Set([...defaultHashtags, ...userPresetTags]));
+        // Render Dynamic Tones
+        function renderTones() {
+            const container = document.getElementById('toneContainer');
+            const tones = platformTones[state.platform];
+            container.innerHTML = tones.map(t => {
+                const isActive = state.tone === t.id;
+                return `
+                    <button type="button" onclick="setTone('${t.id}')" 
+                            class="py-2.5 px-3 rounded-xl border text-xs font-medium text-left transition-all ${
+                                isActive ? 'border-black active-tab' : 'border-appleSubtle text-appleDark hover:bg-appleBg'
+                            }">
+                        ${t.name}
+                    </button>
+                `;
+            }).join('');
+        }
 
-      renderOutputResult({
-        titles,
-        content,
-        hashtags: combinedHashtags,
-        styleNotes: '已应用 COSMO 高端黑白美学短句断句结构。'
-      });
-    }
+        function setTone(toneId) {
+            state.tone = toneId;
+            renderTones();
+            updatePreviewBadges();
+        }
 
-    function renderOutputResult(data) {
-      STATE.currentOutput = data;
-      STATE.activeTitleIndex = 0;
+        // Quick Tags Logic
+        function renderQuickTags() {
+            const box = document.getElementById('quickTagsBox');
+            box.innerHTML = presetTags.map(tag => {
+                const isSelected = state.keywords.includes(tag);
+                return `
+                    <button type="button" onclick="toggleTag('${tag}')" 
+                            class="px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+                                isSelected ? 'bg-black text-white' : 'bg-appleBg text-appleDark hover:bg-appleSubtle'
+                            }">
+                        + ${tag}
+                    </button>
+                `;
+            }).join('');
+        }
 
-      // Render Titles Pills
-      dom.titlesPillsContainer.innerHTML = '';
-      data.titles.forEach((title, idx) => {
-        const titleBtn = document.createElement('button');
-        titleBtn.className = `p-2.5 rounded-xl text-xs font-semibold text-left transition-all flex items-start space-x-2 ${
-          idx === STATE.activeTitleIndex
-            ? 'bg-apple-dark text-white shadow-apple-sm'
-            : 'bg-black/[0.03] hover:bg-black/10 text-apple-dark border border-black/5'
-        }`;
-        titleBtn.innerHTML = `
-          <span class="opacity-50 text-[10px] mt-0.5">0${idx+1}</span>
-          <span class="flex-1">${title}</span>
-        `;
-        titleBtn.addEventListener('click', () => {
-          STATE.activeTitleIndex = idx;
-          renderOutputResult(STATE.currentOutput);
-        });
-        dom.titlesPillsContainer.appendChild(titleBtn);
-      });
+        function toggleTag(tag) {
+            if (state.keywords.includes(tag)) {
+                state.keywords = state.keywords.filter(k => k !== tag);
+            } else {
+                state.keywords.push(tag);
+            }
+            renderQuickTags();
+            updateSelectedTagsUI();
+        }
 
-      // Combine Active Title + Main Content for Editor
-      const activeTitle = data.titles[STATE.activeTitleIndex] || '';
-      dom.mainCopyTextarea.value = `${activeTitle}\n\n${data.content}`;
-      dom.charCount.textContent = `${dom.mainCopyTextarea.value.length} 字`;
+        function addCustomTag() {
+            const input = document.getElementById('customTagInput');
+            const val = input.value.trim();
+            if (val && !state.keywords.includes(val)) {
+                state.keywords.push(val);
+                input.value = '';
+                renderQuickTags();
+                updateSelectedTagsUI();
+            }
+        }
 
-      // Render Hashtags
-      dom.outputHashtags.innerHTML = '';
-      (data.hashtags || []).forEach(tag => {
-        const span = document.createElement('span');
-        span.className = 'px-2 py-1 rounded-md bg-apple-blue/10 text-apple-blue text-[11px] font-medium';
-        span.textContent = tag.startsWith('#') ? tag : `#${tag}`;
-        dom.outputHashtags.appendChild(span);
-      });
+        function updateSelectedTagsUI() {
+            const container = document.getElementById('selectedTagsContainer');
+            container.innerHTML = state.keywords.map(tag => `
+                <span class="inline-flex items-center space-x-1 px-2.5 py-1 bg-appleSubtle/80 text-appleDark text-xs font-medium rounded-lg">
+                    <span># ${tag}</span>
+                    <button onclick="toggleTag('${tag}')" class="hover:text-black">&times;</button>
+                </span>
+            `).join('');
+        }
 
-      // Render Style Notes
-      dom.styleInsightsText.textContent = data.styleNotes || '本次推演已融入极简高级断句与光影氛围语系。';
+        // Image Handling
+        function handleFileSelect(e) {
+            processFiles(e.target.files);
+        }
 
-      // Show Output
-      dom.outputSkeleton.classList.add('hidden');
-      dom.outputContent.classList.remove('hidden');
-    }
+        function processFiles(files) {
+            Array.from(files).forEach(file => {
+                if (state.images.length >= 9) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    state.images.push(e.target.result);
+                    renderImagePreviews();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
 
-    // --- Bulletproof Copy & Adoption Engine ---
-    function copyToClipboard(mode) {
-      if (!STATE.currentOutput) return;
+        function renderImagePreviews() {
+            const grid = document.getElementById('previewGrid');
+            document.getElementById('imgCountText').textContent = `${state.images.length} / 9 张`;
+            grid.innerHTML = state.images.map((img, idx) => `
+                <div class="relative group aspect-square rounded-xl overflow-hidden border border-appleSubtle bg-appleBg">
+                    <img src="${img}" class="w-full h-full object-cover">
+                    <button onclick="removeImage(${idx})" class="absolute top-1 right-1 w-5 h-5 bg-black/70 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-xs">
+                        &times;
+                    </button>
+                </div>
+            `).join('');
+        }
 
-      const activeTitle = STATE.currentOutput.titles[STATE.activeTitleIndex] || '';
-      const bodyText = STATE.currentOutput.content || '';
-      const hashtagsText = (STATE.currentOutput.hashtags || []).map(t => t.startsWith('#') ? t : `#${t}`).join(' ');
+        function removeImage(idx) {
+            state.images.splice(idx, 1);
+            renderImagePreviews();
+        }
 
-      let textToCopy = '';
-      if (mode === 'all') {
-        textToCopy = `${activeTitle}\n\n${bodyText}\n\n${hashtagsText}`;
-      } else if (mode === 'body') {
-        textToCopy = bodyText;
-      } else if (mode === 'title') {
-        textToCopy = activeTitle;
-      }
+        // CORE GENERATION FUNCTION
+        async function generateContent(mode = 'new') {
+            const lengthRadio = document.querySelector('input[name="length"]:checked');
+            const emojiRadio = document.querySelector('input[name="emoji"]:checked');
+            if (lengthRadio) state.length = lengthRadio.value;
+            if (emojiRadio) state.emoji = emojiRadio.value;
+            state.selectedDnaId = document.getElementById('dnaSelector').value;
 
-      // Robust Clipboard execution
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(textToCopy).then(() => {
-          showToast(`已成功复制 (${mode === 'all' ? '全案' : mode === 'body' ? '仅正文' : '仅标题'})`);
-        }).catch(() => {
-          fallbackCopyText(textToCopy);
-        });
-      } else {
-        fallbackCopyText(textToCopy);
-      }
-    }
+            // Show Loading
+            const loading = document.getElementById('loadingOverlay');
+            loading.classList.remove('hidden');
 
-    function fallbackCopyText(text) {
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      textarea.style.position = 'fixed';
-      textarea.style.opacity = '0';
-      document.body.appendChild(textarea);
-      textarea.focus();
-      textarea.select();
-      try {
-        document.execCommand('copy');
-        showToast('已复制到剪贴板');
-      } catch (err) {
-        showToast('复制失败，请手动框选复制', true);
-      }
-      document.body.removeChild(textarea);
-    }
+            try {
+                if (state.apiKey) {
+                    await generateViaGeminiAPI(mode);
+                } else {
+                    // Fallback Local Studio Generator
+                    await new Promise(res => setTimeout(res, 800));
+                    generateOfflineFallback(mode);
+                }
+                
+                // Reset Selection to First Title
+                state.selectedTitleIndex = 0;
+                renderTitleCapsules();
+                renderMainPreview();
+                showToast(mode === 'variant' ? '已重新生成新视角文案' : '已成功生成极简全案');
+            } catch (err) {
+                console.error(err);
+                showToast('API 请求异常，已降级为离线智能引擎生成');
+                generateOfflineFallback(mode);
+                state.selectedTitleIndex = 0;
+                renderTitleCapsules();
+                renderMainPreview();
+            } finally {
+                loading.classList.add('hidden');
+            }
+        }
 
-    function handleAdoptCopy() {
-      if (!STATE.currentOutput) return;
+        // FIX BUG: Multi-Title Capsule Rendering and Click Handler
+        function renderTitleCapsules() {
+            const box = document.getElementById('titleCapsulesBox');
+            if (!state.titles || state.titles.length === 0) {
+                box.innerHTML = `<div class="text-xs text-appleGray italic p-3 bg-appleBg/60 rounded-2xl text-center">暂无标题</div>`;
+                return;
+            }
 
-      const activeTitle = STATE.currentOutput.titles[STATE.activeTitleIndex] || '';
-      const content = STATE.currentOutput.content;
+            box.innerHTML = state.titles.map((title, idx) => {
+                const isSelected = idx === state.selectedTitleIndex;
+                return `
+                    <div onclick="selectTitleCapsule(${idx})" 
+                         class="p-3 rounded-2xl border text-xs font-medium cursor-pointer transition-all flex items-center justify-between space-x-3 ${
+                             isSelected 
+                             ? 'bg-black text-white border-black apple-shadow' 
+                             : 'bg-appleBg text-appleDark border-appleSubtle/80 hover:border-black hover:bg-appleHover'
+                         }">
+                        <div class="flex items-center space-x-2.5 flex-1 min-w-0">
+                            <span class="text-[10px] px-2 py-0.5 rounded-md font-mono ${
+                                isSelected ? 'bg-white/20 text-white' : 'bg-white text-appleGray'
+                            }">0${idx + 1}</span>
+                            <span class="truncate">${title}</span>
+                        </div>
+                        ${isSelected ? '<i data-lucide="check-circle" class="w-4 h-4 text-white shrink-0"></i>' : '<i data-lucide="circle" class="w-4 h-4 text-appleGray/40 shrink-0"></i>'}
+                    </div>
+                `;
+            }).join('');
+            
+            lucide.createIcons();
+        }
 
-      const adoptedItem = {
-        id: 'adopted-' + Date.now(),
-        source: 'past',
-        title: `采纳精选: ${activeTitle}`,
-        content: `${activeTitle}\n\n${content}`,
-        active: true,
-        createdAt: new Date().toISOString()
-      };
+        // FIX BUG: Click Title Capsule to sync update Main Preview
+        function selectTitleCapsule(index) {
+            state.selectedTitleIndex = index;
+            renderTitleCapsules();
+            renderMainPreview();
+            showToast('已切换主标题: ' + state.titles[index]);
+        }
 
-      STATE.references.unshift(adoptedItem);
-      saveReferences();
-      renderReferenceList();
-      showToast('已采纳！该文案自动沉淀为偏好示例');
-    }
+        // Separate Title Refresh
+        async function refreshTitlesOnly() {
+            if (!state.contentBody) {
+                showToast('请先生成一次文案全案');
+                return;
+            }
+            showToast('正在重新摇号生成一组新标题...');
+            
+            if (state.apiKey) {
+                try {
+                    await generateViaGeminiAPI('titles_only');
+                } catch(e) {
+                    generateOfflineTitlesOnly();
+                }
+            } else {
+                generateOfflineTitlesOnly();
+            }
+            
+            state.selectedTitleIndex = 0;
+            renderTitleCapsules();
+            renderMainPreview();
+        }
 
-    // --- Initialize App on Window Load ---
-    window.addEventListener('DOMContentLoaded', initApp);
-  </script>
+        // Render Main Copy Display Area
+        function renderMainPreview() {
+            const titleDisplay = document.getElementById('mainTitleDisplay');
+            const contentDisplay = document.getElementById('mainContentDisplay');
+            const hashtagsDisplay = document.getElementById('hashtagsDisplay');
+            const wordCount = document.getElementById('wordCountBadge');
+
+            const currentTitle = state.titles[state.selectedTitleIndex] || '未选择标题';
+            titleDisplay.textContent = currentTitle;
+            contentDisplay.textContent = state.contentBody || '未生成正文内容';
+
+            // Hashtags formatting
+            if (state.platform === 'pyq') {
+                // WeChat Pyq: Keep clean or very few tags
+                hashtagsDisplay.innerHTML = (state.hashtags || []).slice(0, 2).map(tag => `<span>#${tag}</span>`).join(' ');
+            } else {
+                // Xiaohongshu
+                hashtagsDisplay.innerHTML = (state.hashtags || []).map(tag => `<span class="px-2 py-1 bg-appleBg rounded-md text-black">#${tag}</span>`).join(' ');
+            }
+
+            const totalLength = (currentTitle + state.contentBody).length;
+            wordCount.textContent = `${totalLength} 字`;
+            updatePreviewBadges();
+        }
+
+        function updatePreviewBadges() {
+            document.getElementById('previewPlatformBadge').textContent = state.platform === 'xiaohongshu' ? '小红书' : '朋友圈';
+            const currentToneObj = (platformTones[state.platform] || []).find(t => t.id === state.tone);
+            document.getElementById('previewStyleBadge').textContent = currentToneObj ? currentToneObj.name : '标准';
+        }
+
+        // Offline Fallback Generation Logic
+        function generateOfflineFallback(mode = 'new') {
+            const isPyq = state.platform === 'pyq';
+            const kwStr = state.keywords.join(' · ') || '极简美学';
+            const roleName = state.role === 'blogger' ? '博主' : '买手店';
+
+            if (isPyq) {
+                // 朋友圈风格
+                state.titles = [
+                    `留白与光影｜${kwStr} 的午后细节`,
+                    `把生活搬进诗意里：${kwStr} 私享图鉴`,
+                    `极简生活的温度，在于选对一件器物`,
+                    `今天空间里的主角是 ${state.keywords[0] || '大师作品'}`
+                ];
+                
+                state.contentBody = mode === 'variant' ? 
+`把生活的节奏放慢一点。
+
+看光线穿过 ${kwStr}，在墙面上折射出极简的轮廓。
+真正耐看的设计，从来不需要繁复的堆砌，简单的线条与高级的质感，就足以让人沉静下来。
+
+日常与美学的边界，在此刻慢慢重合。` :
+`空间不需要被填满，留白才是最奢侈的表达。
+
+今天整理了展厅里的 ${kwStr} 区域。
+自然的材质纹理，伴着午后的温柔光影，每一处细节都自带安静的力量。
+
+好的设计能陪伴很多年，像一位不说话却懂你的老朋友。`;
+
+                state.hashtags = ['生活美学', '极简软装', '空间留白', 'COSMO家居'];
+
+            } else {
+                // 小红书爆款风格
+                state.titles = [
+                    `🔥 谁懂啊！把 ${kwStr} 搬回家后氛围感拉满了！`,
+                    `🛋️ 纯干货！高端家居买手教你搞定 ${kwStr} 搭配`,
+                    `🖤 极简高级感！${kwStr} 的断舍离空间美学`,
+                    `✨ 沉浸式看展：大师经典 ${kwStr} 到底贵在哪？`
+                ];
+
+                state.contentBody = mode === 'variant' ?
+`👉🏻 今天来聊聊如何用 ${kwStr} 打造质感空间！
+
+作为 ${roleName}，我一直信奉“少即是多”的硬核软装法则。
+真正的奢华不需要喧宾夺主，一个经典比例的造型、几抹经过计算的光影，就能彻底提升整座屋子的审美气场。
+
+💡 搭配建议：
+1️⃣ 保持硬装纯粹与留白
+2️⃣ 选用天然质感材质进行碰撞
+3️⃣ 重点关注落地灯与单品的对话关系
+
+喜欢这种高级极简调性的朋友，欢迎留言交流～` :
+`✨ 终于把绝美的 ${kwStr} 安排上啦！
+
+空间整体走的是克制又高级的路线，每一个角度拍过去都像艺术画报。
+材质上的粗粝与细腻相互对峙，线条利落得没有任何多余的拖泥带水。
+
+把每一件家具都当做可以收藏的雕塑来看待，生活自然就有了仪式感。
+大家觉得这个软装呈现效果打几分？`;
+
+                state.hashtags = ['软装搭配', '大师家具', '家居买手店', '极简生活', 'COSMO选品'];
+            }
+        }
+
+        function generateOfflineTitlesOnly() {
+            const kwStr = state.keywords.join(' / ') || '设计单品';
+            state.titles = [
+                `【新视角 01】打破沉闷：${kwStr} 空间重塑`,
+                `【新视角 02】关于 ${kwStr} 的材质美学表达`,
+                `【新视角 03】从细节看品味：私藏 ${kwStr} 灵感`,
+                `【新视角 04】把艺术融入日常：${kwStr} 搭配指南`
+            ];
+        }
+
+        // Gemini API Real Integration
+        async function generateViaGeminiAPI(mode = 'new') {
+            const apiKey = state.apiKey;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            // Build Few-Shot Memories Context
+            let memoryPrompt = '';
+            if (state.memories.length > 0) {
+                memoryPrompt = `\n【用户过往高分采纳文案范例（请高度契合以下语气与断句习惯）】:\n` + 
+                    state.memories.slice(0, 3).map(m => `--- 示例 ---\n标题: ${m.title}\n正文: ${m.content}`).join('\n') + '\n';
+            }
+
+            // Build DNA Template Prompt
+            let dnaPrompt = '';
+            if (state.selectedDnaId) {
+                const dna = state.dnaTemplates.find(d => d.id === state.selectedDnaId);
+                if (dna) {
+                    dnaPrompt = `\n【参考风格基因】:\n风格名称: ${dna.name}\n分析特征: ${dna.analysis}\n范例文案: ${dna.sample}\n`;
+                }
+            }
+
+            const isPyq = state.platform === 'pyq';
+
+            const systemInstruction = `你是一位顶级高级空间设计师与高端家居买手店主理人（COSMO Studio）。
+你深谙 USM Modular Furniture, Vitra, Louis Poulsen, Fritz Hansen, Artek 等大师品牌的品牌故事与极简美学。
+你需要严格遵循 Apple 极简美学语气（克制、高雅、注重细节与触感、讲究视觉留白）。
+
+生成要求：
+1. 平台：${isPyq ? '微信朋友圈（语气真诚克制、行间距疏朗、无冗余爆款堆砌、偏向生活感或品牌随笔）' : '小红书（爆款吸引力、干货或高质感视觉故事、排版整洁）'}
+2. 人设：${state.role === 'blogger' ? '家居博主' : '高端家居买手店'}
+3. 场景：${state.scene}
+4. 关键词：${state.keywords.join(', ')}
+5. 篇幅：${state.length === 'short' ? '50-150字' : state.length === 'medium' ? '200-400字' : '500字+'}
+6. Emoji 密度：${state.emoji === 'none' ? '0% 极简无 Emoji' : state.emoji === 'moderate' ? '10-20% 克制点缀' : '40%+ 丰富排版'}
+${memoryPrompt}
+${dnaPrompt}
+
+请以 JSON 格式输出，包含以下字段：
+- titles: 数组，提供 4 个不同切入点（如材质美学、情绪氛围、软装干货、极简留白）的备选标题。
+- content: 字符串，主正文文本。
+- hashtags: 数组，3-5 个关键词话题。`;
+
+            const contents = [];
+            
+            // Add multimodal inline image data if available
+            const parts = [];
+            parts.push({ text: mode === 'titles_only' ? '请仅针对现有主题重新生成 4 个新颖切入点的标题数组。' : '请根据以上指令与图片（如有），生成一套极简高品质文案。' });
+
+            if (state.images.length > 0) {
+                state.images.forEach(imgBase64 => {
+                    const mime = imgBase64.split(';')[0].split(':')[1] || 'image/jpeg';
+                    const data = imgBase64.split(',')[1];
+                    parts.push({
+                        inlineData: {
+                            mimeType: mime,
+                            data: data
+                        }
+                    });
+                });
+            }
+
+            contents.push({ role: 'user', parts });
+
+            const payload = {
+                contents,
+                systemInstruction: { parts: [{ text: systemInstruction }] },
+                generationConfig: {
+                    responseMimeType: "application/json"
+                }
+            };
+
+            const resp = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!resp.ok) throw new Error('API Response Error');
+            const data = await resp.json();
+            const textResult = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            
+            if (textResult) {
+                const parsed = JSON.parse(textResult);
+                if (parsed.titles && Array.isArray(parsed.titles)) state.titles = parsed.titles;
+                if (parsed.content && mode !== 'titles_only') state.contentBody = parsed.content;
+                if (parsed.hashtags && Array.isArray(parsed.hashtags) && mode !== 'titles_only') state.hashtags = parsed.hashtags;
+            }
+        }
+
+        // Reliable Clipboard Copy Functions
+        function copyToClipboard(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                console.error(err);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function copyFullCopy() {
+            const title = state.titles[state.selectedTitleIndex] || '';
+            const body = state.contentBody || '';
+            const tags = state.hashtags ? state.hashtags.map(t => `#${t}`).join(' ') : '';
+            const full = `${title}\n\n${body}\n\n${tags}`.trim();
+            copyToClipboard(full);
+            showToast('已复制一键全案至剪贴板');
+        }
+
+        function copyTextOnly() {
+            copyToClipboard(state.contentBody || '');
+            showToast('已复制正文至剪贴板');
+        }
+
+        function copyTitleOnly() {
+            const title = state.titles[state.selectedTitleIndex] || '';
+            copyToClipboard(title);
+            showToast('已复制标题至剪贴板');
+        }
+
+        function copyHashtagsOnly() {
+            const tags = state.hashtags ? state.hashtags.map(t => `#${t}`).join(' ') : '';
+            copyToClipboard(tags);
+            showToast('已复制话题标签');
+        }
+
+        // Adopt (In-Context Learning)
+        function adoptCurrentCopy() {
+            const currentTitle = state.titles[state.selectedTitleIndex];
+            if (!currentTitle || !state.contentBody) {
+                showToast('请先生成有效文案后再进行采纳');
+                return;
+            }
+
+            const item = {
+                id: Date.now().toString(),
+                title: currentTitle,
+                content: state.contentBody,
+                platform: state.platform,
+                date: new Date().toLocaleDateString()
+            };
+
+            state.memories.unshift(item);
+            localStorage.setItem('cosmo_memories', JSON.stringify(state.memories));
+            updateMemoryBadge();
+            showToast('成功采纳！已存入 AI 偏好记忆库');
+        }
+
+        function updateMemoryBadge() {
+            document.getElementById('memoryCountBadge').textContent = state.memories.length;
+        }
+
+        // Modal Controls & Handlers
+        function openApiKeyModal() {
+            document.getElementById('inputApiKey').value = state.apiKey;
+            document.getElementById('modalApiKey').classList.remove('hidden');
+        }
+        function closeApiKeyModal() {
+            document.getElementById('modalApiKey').classList.add('hidden');
+        }
+        function saveApiKey() {
+            const val = document.getElementById('inputApiKey').value.trim();
+            state.apiKey = val;
+            localStorage.setItem('cosmo_gemini_api_key', val);
+            updateApiKeyUI();
+            closeApiKeyModal();
+            showToast(val ? 'API Key 配置已更新' : '已清除 API Key，切换至离线模式');
+        }
+        function updateApiKeyUI() {
+            const statusText = document.getElementById('apiKeyStatusText');
+            if (state.apiKey) {
+                statusText.textContent = 'API 已连接';
+                statusText.classList.add('text-green-600', 'font-semibold');
+            } else {
+                statusText.textContent = 'API 设置';
+                statusText.classList.remove('text-green-600', 'font-semibold');
+            }
+        }
+
+        function openMemoryModal() {
+            renderMemoryList();
+            document.getElementById('modalMemory').classList.remove('hidden');
+        }
+        function closeMemoryModal() {
+            document.getElementById('modalMemory').classList.add('hidden');
+        }
+        function renderMemoryList() {
+            const container = document.getElementById('memoryListContainer');
+            if (state.memories.length === 0) {
+                container.innerHTML = `<p class="text-xs text-appleGray text-center py-8">暂无已采纳记忆，点击“采纳此版”可沉淀专属风格。</p>`;
+                return;
+            }
+            container.innerHTML = state.memories.map((m, idx) => `
+                <div class="p-3.5 bg-appleBg rounded-2xl border border-appleSubtle space-y-1.5 text-xs">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-black truncate max-w-[80%]">${m.title}</span>
+                        <button onclick="deleteMemory('${m.id}')" class="text-appleGray hover:text-red-600 text-xs">&times; 删除</button>
+                    </div>
+                    <p class="text-appleDark line-clamp-2 text-[11px] leading-relaxed">${m.content}</p>
+                    <div class="flex justify-between items-center text-[10px] text-appleGray pt-1">
+                        <span>${m.platform === 'pyq' ? '朋友圈' : '小红书'}</span>
+                        <span>${m.date}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+        function deleteMemory(id) {
+            state.memories = state.memories.filter(m => m.id !== id);
+            localStorage.setItem('cosmo_memories', JSON.stringify(state.memories));
+            updateMemoryBadge();
+            renderMemoryList();
+        }
+        function clearAllMemories() {
+            if (confirm('确认清空所有已积累的偏好记忆？')) {
+                state.memories = [];
+                localStorage.setItem('cosmo_memories', '[]');
+                updateMemoryBadge();
+                renderMemoryList();
+            }
+        }
+
+        // DNA Extractor Controls
+        function openDnaModal() {
+            renderDnaList();
+            document.getElementById('modalDna').classList.remove('hidden');
+        }
+        function closeDnaModal() {
+            document.getElementById('modalDna').classList.add('hidden');
+        }
+        function renderDnaList() {
+            const container = document.getElementById('dnaListContainer');
+            if (state.dnaTemplates.length === 0) {
+                container.innerHTML = `<p class="text-xs text-appleGray text-center py-4">暂无基因模板</p>`;
+                return;
+            }
+            container.innerHTML = state.dnaTemplates.map(d => `
+                <div class="p-3 bg-appleBg rounded-xl border border-appleSubtle flex justify-between items-center text-xs">
+                    <div>
+                        <span class="font-semibold text-black">${d.name}</span>
+                        <p class="text-[11px] text-appleGray line-clamp-1">${d.analysis}</p>
+                    </div>
+                    <button onclick="deleteDna('${d.id}')" class="text-appleGray hover:text-red-600 text-xs px-2 py-1">&times;</button>
+                </div>
+            `).join('');
+        }
+        function extractAndSaveDna() {
+            const text = document.getElementById('dnaInputText').value.trim();
+            const name = document.getElementById('dnaNameInput').value.trim() || '未命名极简基因';
+            if (!text) {
+                showToast('请先输入要分析的参考文案');
+                return;
+            }
+
+            const item = {
+                id: Date.now().toString(),
+                name: name,
+                sample: text,
+                analysis: '自动提取：包含断句留白、极简用词与建筑感陈述语气'
+            };
+
+            state.dnaTemplates.unshift(item);
+            localStorage.setItem('cosmo_dna_templates', JSON.stringify(state.dnaTemplates));
+            document.getElementById('dnaInputText').value = '';
+            document.getElementById('dnaNameInput').value = '';
+            populateDnaSelector();
+            renderDnaList();
+            showToast('成功提取并保存风格基因');
+        }
+        function deleteDna(id) {
+            state.dnaTemplates = state.dnaTemplates.filter(d => d.id !== id);
+            localStorage.setItem('cosmo_dna_templates', JSON.stringify(state.dnaTemplates));
+            populateDnaSelector();
+            renderDnaList();
+        }
+        function populateDnaSelector() {
+            const selector = document.getElementById('dnaSelector');
+            selector.innerHTML = `<option value="">默认标准人设 (无特定风格注入)</option>` + 
+                state.dnaTemplates.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
+        }
+    </script>
 </body>
 </html>
